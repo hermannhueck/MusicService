@@ -1,0 +1,33 @@
+
+
+
+  def deleteRecordingById(rId: Long): Future[Int] = {
+    deleteAllPerformersFromRecording(rId) flatMap { _ =>
+      db.run {
+        TableQuery[Recordings].filter(_.id === rId).delete
+      }
+    }
+  }
+
+  def deleteAllRecordings(): Future[Int] = {
+    val futureSeqInt = for {
+      seqOptsId <- findAllRecordings map { rs => rs.map(_.id) }
+      seqInt <- Future.sequence( seqOptsId map { optId => deleteRecordingById(optId.get) } )
+    } yield seqInt
+    futureSeqInt map { _.length }
+/*
+    db.run {
+      TableQuery[Recordings].delete
+    }
+*/
+  }
+
+
+
+
+  def deleteAllPerformersFromRecording(rId: Long): Future[Option[Recording]] = {
+    findRecordingById(rId) map { _.get.performers map { ps => ps.id }
+    } flatMap { optPIds =>
+      deletePerformersFromRecording(rId, optPIds.map(_.get))
+    }
+  }
