@@ -1,5 +1,5 @@
 # MusicService
-The MusicService is a case study for Scala, Akka (not yet) and Play.
+A case study for Scala, Akka (not yet) and Play
 
 The MusicService is designed to manage two kinds of entities:
 - Recording entities are music recordings
