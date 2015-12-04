@@ -143,7 +143,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
   }
 
 
-  def performersSearch = Action.async(BodyParsers.parse.form(performerForm)) { implicit request =>
+  def performersSearch = Action.async(BodyParsers.parse.urlFormEncoded) { implicit request =>
 
     l.debug("performersSearch()")
 

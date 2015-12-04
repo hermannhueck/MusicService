@@ -83,10 +83,12 @@ case object Global extends GlobalSettings {
   }
 
   override def onRequestReceived(request: RequestHeader): (RequestHeader, Handler) = {
+    l.debug("onRequestReceived(): request = " + request)
     super.onRequestReceived(request)
   }
 
   override def onError(request: RequestHeader, ex: Throwable): Future[Result] = {
+    l.debug("onError(): request = " + request + ", ex = " + ex)
     super.onError(request, ex)
   }
 
