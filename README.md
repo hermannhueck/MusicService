@@ -26,4 +26,4 @@ them. No promises. No time lines. This is just a fun job.
 
 Note: There is a README in each project directory.
 
-Hermann Hueck
+Hermann
