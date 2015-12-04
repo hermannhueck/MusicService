@@ -25,7 +25,9 @@ Currently there is none. But I've some ideas for future client implementations.
 Work is in progress. I'll add more projects depending on the time I can spare to implement
 them. No promises. No time lines. This is just a fun job.
 
-Note: There is a README in each project directory.
+Note: There is a README in each project directory containing some brief informations,
+which help you to unterstand the fundamentals of the architecture as well as how to compile,
+test and run the respective application.
 
 Have fun.
 
