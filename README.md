@@ -10,7 +10,7 @@ for future implementations.
 - RESTful Web Service implementation with Play in Scala (implemented)
 - RESTful Web service implementation with Akka-HTTP in Scala (not yet implemented)
 
-The "Clients" subdirectory shall contain different implementions of MusicService REST clients.
+The "Clients" subdirectory shall contain different implementions of the MusicService REST clients.
 Currently there is none. But I've some ideas for future client implementations.
 
 - Web App in Play using the web service client library of Play (not yet implemented)
