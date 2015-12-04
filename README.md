@@ -4,6 +4,7 @@ A case study for Scala, Akka (not yet) and Play
 The MusicService is designed to manage two kinds of entities:
 - Recording entities are music recordings
 - Performer entities are performers who perform in the recordings. A Performer can be either a "Soloist" or an "Ensemble" or a "Conductor.
+- Many-to-Many describes the type of relationship of these two entities. (A performer can perform in many recordings. A recording can have many performers.)
 
 The "Services" subdirectory contains different implementations of the MusicService web service.
 Currently there is only one implementation written with Play in Scala. But I've some ideas
