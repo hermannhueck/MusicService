@@ -1,7 +1,9 @@
 # MusicService
+The MusicService is a case study for Scala, Akka (not yet) and Play.
 
-The MusicService is a case study for Scala, Akka and Play.
-
+The MusicService is designed to manage two kinds of entities:
+- Recording entities are music recordings
+- Performer entities are performers who perform in the recordings. A Performer can be either a "Soloist" or an "Ensemble" or a "Conductor.
 
 The "Services" subdirectory contains different implementations of the MusicService web service.
 Currently there is only one implementation written with Play in Scala. But I've some ideas
@@ -21,5 +23,7 @@ Currently there is none. But I've some ideas for future client implementations.
 
 Work is in progress. I'll add more projects depending on the time I can spare to implement
 them. No promises. No time lines. This is just a fun job.
+
+Note: There is a README in each project directory.
 
 Hermann Hueck
