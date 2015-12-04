@@ -2,11 +2,23 @@
 
 The MusicService is a case study for Scala, Akka and Play.
 
-The "Services" subdirectory contains different implementations of the MusicService.
-Currently there is only one implementation written with Play in Scala.
 
-The "Clients" subdirectory contains different implementions of MusicService clients
-Currently there is none.
+The "Services" subdirectory contains different implementations of the MusicService web service.
+Currently there is only one implementation written with Play in Scala. But I've some ideas
+for future implementations.
+
+- RESTful Web Service implementation with Play in Scala (implemented)
+- RESTful Web service implementation with Akka-HTTP in Scala (not yet implemented)
+
+
+The "Clients" subdirectory shall contain different implementions of MusicService REST clients.
+Currently there is none. But I've some ideas for future client implementations.
+
+- Web App in Play using the web service client library of Play
+- Web App in Play using the web service client library of Akka-HTTP
+- Web App in Play using Retrofit (with RxScala) as web service client library
+- Single Page Web App in HTML5, CSS and JavaScript accessing the web service in JavaScript
+- Android App using Retrofit (with RxJava) as web service client library
 
 Work is in progress. I'll add more projects depending on the time I can spare to implement
 them. No promises. No time lines. This is just a fun job.
