@@ -23,7 +23,6 @@ build/
 /.settings
 /RUNNING_PID
 /projectFilesBackup*
-scratch-file.txt
 
 logs
 target/

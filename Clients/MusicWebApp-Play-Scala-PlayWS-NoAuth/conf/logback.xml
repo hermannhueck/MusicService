@@ -1,0 +1,35 @@
+<configuration>
+
+  <conversionRule conversionWord="coloredLevel" converterClass="play.api.Logger$ColoredLevel" />
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%date [%-5level] - %logger.%method[%line] - %message%n%xException</pattern>
+      <!-- <pattern>%coloredLevel - %logger - %message%n%xException</pattern> -->
+    </encoder>
+  </appender>
+
+  <!--
+    The logger name is typically the Java/Scala package name.
+    This configures the log level to log at for a package and its children packages.
+  -->
+  <logger name="play" level="INFO" />
+  <logger name="application" level="INFO" />
+  <logger name="musicsvc.Global" level="INFO" />
+
+  <logger name="musicsvc.controllers.WebService" level="INFO" />
+  <logger name="musicsvc.controllers.WebApplication" level="INFO" />
+  <logger name="musicsvc.persistence.RepositoryRecordings" level="INFO" />
+  <logger name="musicsvc.persistence.RepositoryPerformers" level="INFO" />
+
+  <logger name="musicsvc.test.RepositoryRecordingsSpec" level="INFO" />
+  <logger name="musicsvc.test.RepositoryPerformersSpec" level="INFO" />
+  <logger name="musicsvc.test.WebApplicationSpec" level="INFO" />
+  <logger name="musicsvc.test.WebServiceSpec" level="INFO" />
+  <logger name="musicsvc.test.IntegrationSpec" level="INFO" />
+
+  <root level="ERROR">
+    <appender-ref ref="STDOUT" />
+  </root>
+
+</configuration>

@@ -1,0 +1,83 @@
+@import _root_.musicsvc.models.{Recording, Performer, Soloist, Ensemble, Conductor}
+@import _root_.musicsvc.controllers.OptionalPerformerData
+@import helper._
+
+
+@(ps: Seq[Performer], rs: Seq[Recording], searchForm: Form[OptionalPerformerData])(implicit messages: Messages)
+
+@main("Classic Music Service") {
+
+<h3>Search for Performers</h3>
+
+@form(action = musicsvc.controllers.routes.WebApplication.performersSearch()) {
+<table>
+    <tr>
+        <td>
+            @input(searchForm("name"), '_label -> "Name:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
+                <input id="inputName" type="text" name="@name" value="@value" size="50" maxlength="200" @toHtmlArgs(args) />
+            }
+
+            @select(field = searchForm("performerType"),
+                                options = options(Map(  "" -> "Select a Performer Type",
+                                                        Soloist.toString -> Soloist.toString,
+                                                        Ensemble.toString -> Ensemble.toString,
+                                                        Conductor.toString -> Conductor.toString)),
+                                '_label -> "Performer Type:", '_showConstraints -> false, '_showErrors -> true)
+
+            @input(searchForm("performingIn"), '_label -> "Performing in:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
+                <select id="selectPerformingIn" name="@name" @toHtmlArgs(args) >
+                    <option value="">Select a Recording</option>
+                    @for( r <- rs ) {
+                        @if( value != None && value.get == r.id.get.toString ) {
+                            <option value="@r.id" selected>@r.title, @r.composer, @r.year</option>
+                        } else {
+                            <option value="@r.id">@r.title, @r.composer, @r.year</option>
+                        }
+                    }
+                </select>
+            }
+        </td>
+        <td align="right" valign="bottom"> <input id="buttonSearch" type="submit" value="Search" /> </td>
+    </tr>
+</table>
+}
+
+<hr style="width:40%; text-align:left; margin-left:0" />
+
+<h3>List of Performers</h3>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Performer Type</th>
+    </tr>
+    @for(p <- ps) {
+    <tr>
+        <td>@p.name</td>
+        <td>@p.performerType.toString</td>
+        <td>
+            <input id="buttonDetails" type="button" value="Details" onclick='window.open("/webApp/performers/@p.id/details", "_self");' />
+        </td>
+        <td>
+            <input id="buttonEdit" type="button" value="Edit" onclick='window.open("/webApp/performers/@p.id/edit", "_self");' />
+        </td>
+        <td>
+            <input id="buttonDelete" type="button" value="Delete" onclick='window.open("/webApp/performers/@p.id/delete", "_self");' />
+        </td>
+    </tr>
+    }
+</table>
+
+<hr style="width:40%; text-align:left; margin-left:0" />
+
+<table>
+    <tr>
+        <td><input id="buttonNew" type="button" value="New Performer" onclick='window.open("/webApp/performers/editNew", "_self");' /></td>
+        <td><input id="buttonDeleteAll" type="button" value="Delete All Performers" onclick='window.open("/webApp/performers/deleteAll", "_self");' /></td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+</script>
+
+}
