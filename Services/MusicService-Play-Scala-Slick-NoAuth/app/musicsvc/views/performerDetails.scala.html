@@ -42,20 +42,17 @@
     <dd>
         <table>
             <tr>
-                @if( p.recordings.isEmpty) {
-                        <td>-- No Recordings yet --</td>
-                } else {
-                    <td>
-                        <select multiple="multiple" id="selectRecordingsToDelete" name="recordingsToDelete" size="5" style="width:350px" >
-                        @for( r <- p.recordings ) {
-                            <option value="@r.id">@r.title, @r.composer, @r.year</option>
-                        }
-                        </select>
-                    </td>
-                    <td align="right" valign="bottom">
-                        <input id="buttonDeleteRecordings" type="button" value="Delete Recordings" onclick='deleteRecordingsFromPerformer(this);' />
-                    </td>
-                }
+                <td>
+                    <div id="divNoRecordings">-- No Recordings yet --</div>
+                    <select multiple="multiple" id="selectRecordingsToDelete" name="recordingsToDelete" size="5" style="width:350px" >
+                    @for( r <- p.recordings ) {
+                        <option value="@r.id">@r.title, @r.composer, @r.year</option>
+                    }
+                    </select>
+                </td>
+                <td align="right" valign="bottom">
+                    <input id="buttonDeleteRecordings" type="button" value="Delete Recordings" onclick='deleteRecordingsFromPerformer(this);' />
+                </td>
             </tr>
         </table>
     </dd>
@@ -94,6 +91,9 @@
 
 <script type="text/javascript">
 
+    document.getElementById("divNoRecordings").style.visibility = "@if(p.recordings.isEmpty) {visible} else {hidden}"
+    document.getElementById("selectRecordingsToDelete").style.visibility = "@if(p.recordings.isEmpty) {hidden} else {visible}"
+
     var text_LabelRecordings_Readonly = "Recordings:"
     var text_LabelRecordings_Editing = "Current Recordings: @if(!p.recordings.isEmpty) { (select to delete) }"
 
@@ -131,12 +131,12 @@
 
     function deleteRecordingsFromPerformer(buttonDeleteRecordings) {
 
-        window.open("/webApp/performers/@p.id/deleteRecordingsFromPerformer/" + collectIds(selectRecordingsToDelete), "_self")
+        window.open("/webApp/performers/@p.id/deleteRecordings/" + collectIds(selectRecordingsToDelete), "_self")
     }
 
     function addRecordingsToPerformer(buttonAddRecordings) {
 
-        window.open("/webApp/performers/@p.id/addRecordingsToPerformer/" + collectIds(selectRecordingsToAdd), "_self")
+        window.open("/webApp/performers/@p.id/addRecordings/" + collectIds(selectRecordingsToAdd), "_self")
     }
 
     function collectIds(selectBox) {

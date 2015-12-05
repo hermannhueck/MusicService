@@ -38,20 +38,17 @@
     <dd>
         <table>
             <tr>
-                @if( r.performers.isEmpty) {
-                        <td>-- No Performers yet --</td>
-                } else {
-                    <td>
-                        <select multiple="multiple" id="selectPerformersToDelete" name="performersToDelete" size="5" style="width:350px" >
-                        @for( p <- r.performers ) {
-                            <option value="@p.id">@p.name, @p.performerType</option>
-                        }
-                        </select>
-                    </td>
-                    <td align="right" valign="bottom">
-                        <input id="buttonDeletePerformers" type="button" value="Delete Performers" onclick='deletePerformersFromRecording(this);' />
-                    </td>
-                }
+                <td>
+                    <div id="divNoPerformers">-- No Performers yet --</div>
+                    <select multiple="multiple" id="selectPerformersToDelete" name="performersToDelete" size="5" style="width:350px" >
+                    @for( p <- r.performers ) {
+                        <option value="@p.id">@p.name, @p.performerType</option>
+                    }
+                    </select>
+                </td>
+                <td align="right" valign="bottom">
+                    <input id="buttonDeletePerformers" type="button" value="Delete Performers" onclick='deletePerformersFromRecording(this);' />
+                </td>
             </tr>
         </table>
     </dd>
@@ -90,6 +87,9 @@
 
 <script type="text/javascript">
 
+    document.getElementById("divNoPerformers").style.visibility = "@if(r.performers.isEmpty) {visible} else {hidden}"
+    document.getElementById("selectPerformersToDelete").style.visibility = "@if(r.performers.isEmpty) {hidden} else {visible}"
+
     var text_LabelPerformers_Readonly = "Performers:"
     var text_LabelPerformers_Editing = "Current Performers: @if(!r.performers.isEmpty) { (select to delete) }"
 
@@ -127,12 +127,12 @@
 
     function deletePerformersFromRecording(buttonDeletePerformers) {
 
-        window.open("/webApp/recordings/@r.id/deletePerformersFromRecording/" + collectIds(selectPerformersToDelete), "_self")
+        window.open("/webApp/recordings/@r.id/deletePerformers/" + collectIds(selectPerformersToDelete), "_self")
     }
 
     function addPerformersToRecording(buttonAddPerformers) {
 
-        window.open("/webApp/recordings/@r.id/addPerformersToRecording/" + collectIds(selectPerformersToAdd), "_self")
+        window.open("/webApp/recordings/@r.id/addPerformers/" + collectIds(selectPerformersToAdd), "_self")
     }
 
     function collectIds(selectBox) {

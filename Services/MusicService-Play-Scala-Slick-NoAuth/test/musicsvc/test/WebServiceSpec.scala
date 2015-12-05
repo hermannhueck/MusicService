@@ -622,8 +622,9 @@ class WebServiceSpec extends PlaySpecification with Results with BeforeAfter wit
       updateByIdResponse.header(CONTENT_TYPE) must beSome.which(_.startsWith("application/json"))
 
       val jsonUpdated: JsValue = Json.parse(updateByIdResponse.body)
-      jsonUpdated.isInstanceOf[JsBoolean] must_=== true
-      jsonUpdated.as[Boolean] must_=== true
+      jsonUpdated.isInstanceOf[JsObject] must_=== true
+      val pUpdated: Performer = jsonUpdated.as[Performer]
+      isPerformerCorrect(pUpdated, pForUpdate) must_=== true
 
 
       val findByIdResponse: WSResponse = await( WS.url(performersUrl + "/" + pIds(1)).execute(GET) )
@@ -650,8 +651,9 @@ class WebServiceSpec extends PlaySpecification with Results with BeforeAfter wit
       updateByIdResponse.header(CONTENT_TYPE) must beSome.which(_.startsWith("application/json"))
 
       val jsonUpdated: JsValue = Json.parse(updateByIdResponse.body)
-      jsonUpdated.isInstanceOf[JsBoolean] must_=== true
-      jsonUpdated.as[Boolean] must_=== true
+      jsonUpdated.isInstanceOf[JsObject] must_=== true
+      val rUpdated: Recording = jsonUpdated.as[Recording]
+      isRecordingCorrect(rUpdated, rForUpdate) must_=== true
 
 
       val findByIdResponse: WSResponse = await( WS.url(recordingsUrl + "/" + rIds(1)).execute(GET) )

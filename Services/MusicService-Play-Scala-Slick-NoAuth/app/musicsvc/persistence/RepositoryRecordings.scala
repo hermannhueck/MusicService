@@ -72,10 +72,6 @@ class RepositoryRecordings(val db: BasicProfile#Backend#Database) {
 
 
   // ----- add & delete performers ----------
-  def addPerformerToRecording(rId: Long, pId: Long): Future[Option[Recording]] = {
-    addPerformersToRecording(rId, Seq(pId))
-  }
-
   def addPerformersToRecording(rId: Long, pIds: Seq[Long]): Future[Option[Recording]] = {
     existAllPerformers(pIds) flatMap {
       case false =>
@@ -98,10 +94,6 @@ class RepositoryRecordings(val db: BasicProfile#Backend#Database) {
     db.run {
       TableQuery[Performers].filter(_.id === pId).length.result
     } map { _ == 1 }
-  }
-
-  def deletePerformerFromRecording(rId: Long, pId: Long): Future[Option[Recording]] = {
-    deletePerformersFromRecording(rId, Seq(pId))
   }
 
   def deletePerformersFromRecording(rId: Long, pIds: Seq[Long]): Future[Option[Recording]] = {

@@ -2,19 +2,17 @@ package musicsvc.controllers
 
 import java.io.File
 
-import musicsvc.persistence.{Repository, RepositoryRecordings}
-import play.api.{Play, Logger}
+import musicsvc.json.Implicits._
+import musicsvc.models.{Performer, PerformerWithRecordingIds, Recording, RecordingWithPerformerIds}
+import musicsvc.persistence.Repository
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.Files.TemporaryFile
 import play.api.libs.json._
 import play.api.mvc.MultipartFormData.FilePart
 import play.api.mvc._
-
+import play.api.{Logger, Play}
 import slick.backend.DatabaseConfig
 import slick.driver.JdbcProfile
-
-import musicsvc.json.Implicits._
-import musicsvc.models.{RecordingWithPerformerIds, PerformerWithRecordingIds, Performer, Recording}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -305,7 +303,7 @@ class WebService extends Controller {
   ////////////  route:   PUT     /performers/:id
   def updatePerformerById(pId: Long) = Action.async(BodyParsers.parse.json) { request =>
 
-    l.debug("updatePerformerById()")
+    l.debug("updatePerformerById(pId = " + pId + ")")
 
     val validationResult: JsResult[Performer] = request.body.validate[Performer]
 
@@ -317,7 +315,7 @@ class WebService extends Controller {
         val pForUpdate = Performer(Some(pId), data.name, data.performerType, data.recordings)
         repo.updatePerformer(pForUpdate) map {
           case None => notFound("Performer with id " + pId + " not found.")
-          case Some(_) => Ok(Json.toJson(true))
+          case Some(p) => Ok(Json.toJson(p))
         }
       }
     )
@@ -327,7 +325,7 @@ class WebService extends Controller {
   ////////////  route:   PUT     /recordings/:id
   def updateRecordingById(rId: Long) = Action.async(BodyParsers.parse.json) { request =>
 
-    l.debug("updateRecordingById()")
+    l.debug("updateRecordingById(rId = " + rId + ")")
 
     val jsResult: JsResult[Recording] = request.body.validate[Recording]
 
@@ -339,7 +337,7 @@ class WebService extends Controller {
         val rForUpdate = Recording(Some(rId), data.title, data.composer, data.year)
         repo.updateRecording(rForUpdate) map {
           case None => notFound("Recording with id " + rId + " not found.")
-          case Some(_) => Ok(Json.toJson(true))
+          case Some(r) => Ok(Json.toJson(r))
         }
       }
     )

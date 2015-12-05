@@ -14,12 +14,10 @@ GET     /webApp/recordings/:rId/details                                     musi
 GET     /webApp/recordings/:rId/edit                                        musicsvc.controllers.WebApplication.recordingEdit(rId: Long)
 POST    /webApp/recordings/:rId/update                                      musicsvc.controllers.WebApplication.recordingUpdate(rId: Long)
 GET     /webApp/recordings/:rId/delete                                      musicsvc.controllers.WebApplication.recordingDelete(rId: Long)
-GET     /webApp/recordings/deleteAll                                        musicsvc.controllers.WebApplication.recordingDeleteAll
+GET     /webApp/recordings/deleteAll                                        musicsvc.controllers.WebApplication.recordingsDeleteAll
 GET     /webApp/recordings/editNew                                          musicsvc.controllers.WebApplication.recordingEditNew
-GET     /webApp/recordings/:rId/deletePerformerFromRecording/:pId           musicsvc.controllers.WebApplication.deletePerformerFromRecording(rId: Long, pId: Long)
-GET     /webApp/recordings/:rId/deletePerformersFromRecording/:pIds         musicsvc.controllers.WebApplication.deletePerformersFromRecording(rId: Long, pIds: String)
-GET     /webApp/recordings/:rId/addPerformerToRecording/:pId                musicsvc.controllers.WebApplication.addPerformerToRecording(rId: Long, pId: Long)
-GET     /webApp/recordings/:rId/addPerformersToRecording/:pIds              musicsvc.controllers.WebApplication.addPerformersToRecording(rId: Long, pIds: String)
+GET     /webApp/recordings/:rId/deletePerformers/:pIds                      musicsvc.controllers.WebApplication.deletePerformersFromRecording(rId: Long, pIds: String)
+GET     /webApp/recordings/:rId/addPerformers/:pIds                         musicsvc.controllers.WebApplication.addPerformersToRecording(rId: Long, pIds: String)
 POST    /webApp/recordings/create                                           musicsvc.controllers.WebApplication.recordingCreate
 GET     /webApp/recordings/:rId/data                                        musicsvc.controllers.WebApplication.getRecordingData(rId: Long)
 
@@ -31,11 +29,9 @@ GET     /webApp/performers/:pId/details                                     musi
 GET     /webApp/performers/:pId/edit                                        musicsvc.controllers.WebApplication.performerEdit(pId: Long)
 POST    /webApp/performers/:pId/update                                      musicsvc.controllers.WebApplication.performerUpdate(pId: Long)
 GET     /webApp/performers/:pId/delete                                      musicsvc.controllers.WebApplication.performerDelete(pId: Long)
-GET     /webApp/performers/deleteAll                                        musicsvc.controllers.WebApplication.performerDeleteAll
-GET     /webApp/performers/:pId/deleteRecordingFromPerformer/:rId           musicsvc.controllers.WebApplication.deleteRecordingFromPerformer(pId: Long, rId: Long)
-GET     /webApp/performers/:pId/deleteRecordingsFromPerformer/:rIds         musicsvc.controllers.WebApplication.deleteRecordingsFromPerformer(pId: Long, rIds: String)
-GET     /webApp/performers/:pId/addRecordingToPerformer/:rId                musicsvc.controllers.WebApplication.addRecordingToPerformer(pId: Long, rId: Long)
-GET     /webApp/performers/:pId/addRecordingsToPerformer/:rIds              musicsvc.controllers.WebApplication.addRecordingsToPerformer(pId: Long, rIds: String)
+GET     /webApp/performers/deleteAll                                        musicsvc.controllers.WebApplication.performersDeleteAll
+GET     /webApp/performers/:pId/deleteRecordings/:rIds                      musicsvc.controllers.WebApplication.deleteRecordingsFromPerformer(pId: Long, rIds: String)
+GET     /webApp/performers/:pId/addRecordings/:rIds                         musicsvc.controllers.WebApplication.addRecordingsToPerformer(pId: Long, rIds: String)
 GET     /webApp/performers/editNew                                          musicsvc.controllers.WebApplication.performerEditNew
 POST    /webApp/performers/create                                           musicsvc.controllers.WebApplication.performerCreate
 

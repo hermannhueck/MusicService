@@ -37,11 +37,7 @@ class Repository(val db: BasicProfile#Backend#Database) {
 
 
   // ----- add & delete recordings ----------
-  def addRecordingToPerformer(pId: Long, rId: Long): Future[Option[Performer]] = repoPerformers.addRecordingToPerformer(pId, rId)
-
   def addRecordingsToPerformer(pId: Long, rIds: Seq[Long]): Future[Option[Performer]] = repoPerformers.addRecordingsToPerformer(pId, rIds)
-
-  def deleteRecordingFromPerformer(pId: Long, rId: Long): Future[Option[Performer]] = repoPerformers.deleteRecordingFromPerformer(pId, rId)
 
   def deleteRecordingsFromPerformer(pId: Long, rIds: Seq[Long]): Future[Option[Performer]] = repoPerformers.deleteRecordingsFromPerformer(pId, rIds)
 
@@ -85,11 +81,7 @@ class Repository(val db: BasicProfile#Backend#Database) {
 
 
   // ----- add & delete performers ----------
-  def addPerformerToRecording(rId: Long, pId: Long): Future[Option[Recording]] = repoRecordings.addPerformerToRecording(rId, pId)
-
   def addPerformersToRecording(rId: Long, pIds: Seq[Long]): Future[Option[Recording]] = repoRecordings.addPerformersToRecording(rId, pIds)
-
-  def deletePerformerFromRecording(rId: Long, pId: Long): Future[Option[Recording]] = repoRecordings.deletePerformerFromRecording(rId, pId)
 
   def deletePerformersFromRecording(rId: Long, pIds: Seq[Long]): Future[Option[Recording]] = repoRecordings.deletePerformersFromRecording(rId, pIds)
 

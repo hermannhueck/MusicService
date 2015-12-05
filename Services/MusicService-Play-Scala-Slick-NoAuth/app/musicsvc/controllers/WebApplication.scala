@@ -312,7 +312,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
   }
 
 
-  def performerDeleteAll = Action.async { implicit request =>
+  def performersDeleteAll = Action.async { implicit request =>
 
     l.debug("performerDeleteAll()")
 
@@ -322,7 +322,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
   }
 
 
-  def recordingDeleteAll = Action.async { implicit request =>
+  def recordingsDeleteAll = Action.async { implicit request =>
 
     l.debug("recordingDeleteAll()")
 
@@ -373,17 +373,6 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
     java.nio.file.Files.deleteIfExists(new File(file).toPath)
   }
 
-
-  def deleteRecordingFromPerformer(pId: Long, rId: Long) = Action.async { implicit request =>
-
-    l.debug("deleteRecordingFromPerformer(pId = " + pId + ", rId = " + rId + ")")
-
-    repo.deleteRecordingFromPerformer(pId, rId) flatMap {
-      case None => Future { NotFound("Performer with id " + pId + " not found") }
-      case Some(p) => showPerformerDetails(p, modeReadOnly = true)
-    }
-  }
-
   def deleteRecordingsFromPerformer(pId: Long, rids: String) = Action.async { implicit request =>
 
     l.debug("deleteRecordingsFromPerformer(pId = " + pId + ", rids = " + rids + ")")
@@ -396,16 +385,6 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
     }
   }
 
-
-  def deletePerformerFromRecording(rId: Long, pId: Long) = Action.async { implicit request =>
-
-    l.debug("deletePerformerFromRecording(rId = " + rId + ", pId = " + pId + ")")
-
-    repo.deletePerformerFromRecording(rId, pId) flatMap {
-      case None => Future { NotFound("Recording with id " + rId + " not found")}
-      case Some(r) => showRecordingDetails(r, modeReadOnly = true)
-    }
-  }
 
   def deletePerformersFromRecording(rId: Long, pids: String) = Action.async { implicit request =>
 
@@ -420,16 +399,6 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
   }
 
 
-  def addRecordingToPerformer(pId: Long, rId: Long) = Action.async { implicit request =>
-
-    l.debug("addRecordingToPerformer(pId = " + pId + ", rId = " + rId + ")")
-
-    repo.addRecordingToPerformer(pId, rId) flatMap {
-      case None => Future { NotFound("Performer with id " + pId + " not found") }
-      case Some(p) => showPerformerDetails(p, modeReadOnly = true)
-    }
-  }
-
   def addRecordingsToPerformer(pId: Long, rids: String) = Action.async { implicit request =>
 
     l.debug("addRecordingsToPerformer(rId = " + pId + ", pids = " + rids + ")")
@@ -442,16 +411,6 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
     }
   }
 
-
-  def addPerformerToRecording(rId: Long, pId: Long) = Action.async { implicit request =>
-
-    l.debug("addPerformerToRecording(rId = " + rId + ", pId = " + pId + ")")
-
-    repo.addPerformerToRecording(rId, pId) flatMap {
-      case None => Future { NotFound("Recording with id " + rId + " not found")}
-      case Some(r) => showRecordingDetails(r, modeReadOnly = true)
-    }
-  }
 
   def addPerformersToRecording(rId: Long, pids: String) = Action.async { implicit request =>
 

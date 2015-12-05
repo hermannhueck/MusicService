@@ -66,10 +66,6 @@ class RepositoryPerformers(val db: BasicProfile#Backend#Database) {
 
 
   // ----- add & delete recordings ----------
-  def addRecordingToPerformer(pId: Long, rId: Long): Future[Option[Performer]] = {
-    addRecordingsToPerformer(pId, Seq(rId))
-  }
-
   def addRecordingsToPerformer(pId: Long, rIds: Seq[Long]): Future[Option[Performer]] = {
     existAllRecordings(rIds) flatMap {
       case false =>
@@ -92,10 +88,6 @@ class RepositoryPerformers(val db: BasicProfile#Backend#Database) {
     db.run {
       TableQuery[Recordings].filter(_.id === rId).length.result
     } map { _ == 1 }
-  }
-
-  def deleteRecordingFromPerformer(pId: Long, rId: Long): Future[Option[Performer]] = {
-    deleteRecordingsFromPerformer(pId, Seq(rId))
   }
 
   def deleteRecordingsFromPerformer(pId: Long, rIds: Seq[Long]): Future[Option[Performer]] = {

@@ -120,7 +120,7 @@ object RepositoryPerformersSpec extends Specification with BeforeAfterEach {
       val pInserted = resultOf( repo.insertPerformer(psToInsert(0)) )
       checkPerformer(pInserted, psToInsert(0)) must_=== true
 
-      val optPerformerWithRecording = resultOf( repo.addRecordingToPerformer(pInserted.id.get, rIds(0)) )
+      val optPerformerWithRecording = resultOf( repo.addRecordingsToPerformer(pInserted.id.get, Seq(rIds(0))) )
       optPerformerWithRecording.isDefined must_=== true
       val p = optPerformerWithRecording.get
       checkPerformer(p, psToInsert(0)) must_=== true
@@ -129,7 +129,7 @@ object RepositoryPerformersSpec extends Specification with BeforeAfterEach {
 
       {       // adding the same recording/performer combination again violates the primary key constraint and triggers an SQLException
         try {
-          resultOf( repo.addRecordingToPerformer(pInserted.id.get, rIds(0)) )
+          resultOf( repo.addRecordingsToPerformer(pInserted.id.get, Seq(rIds(0))) )
           false
         } catch {
           case e: java.sql.SQLException =>
@@ -139,7 +139,7 @@ object RepositoryPerformersSpec extends Specification with BeforeAfterEach {
         }
       } must_=== true
 
-      val optPerformerWithoutRecording = resultOf( repo.deleteRecordingFromPerformer(pInserted.id.get, rIds(0)) )
+      val optPerformerWithoutRecording = resultOf( repo.deleteRecordingsFromPerformer(pInserted.id.get, Seq(rIds(0))) )
       optPerformerWithoutRecording.isDefined must_=== true
       val pwor = optPerformerWithoutRecording.get
       checkPerformer(pwor, psToInsert(0)) must_=== true
@@ -182,7 +182,7 @@ object RepositoryPerformersSpec extends Specification with BeforeAfterEach {
 
       {       // adding a recording with a non-existing recording.id violates the foreign key constraint and triggers an SQLException
         try {
-          val pOpt = resultOf( repo.addRecordingToPerformer(pInserted.id.get, nonExistingId) )
+          val pOpt = resultOf( repo.addRecordingsToPerformer(pInserted.id.get, Seq(nonExistingId)) )
           pOpt == None
         } catch {
           case e: java.sql.SQLException =>
@@ -194,7 +194,7 @@ object RepositoryPerformersSpec extends Specification with BeforeAfterEach {
 
       {       // adding a recording for a non-existing performer.id violates the foreign key constraint and triggers an SQLException
         try {
-          resultOf( repo.addRecordingToPerformer(nonExistingId, rsInserted(0).id.get) )
+          resultOf( repo.addRecordingsToPerformer(nonExistingId, Seq(rsInserted(0).id.get)) )
           false
         } catch {
           case e: java.sql.SQLException =>
@@ -265,14 +265,14 @@ object RepositoryPerformersSpec extends Specification with BeforeAfterEach {
       p.recordings.length must_=== 3
 
       // 'London Philharmonic Orchestra' performing in 'Beethoven’s symphony no. 5'
-      val optPerformerWithRecordings2 = resultOf( repo.addRecordingToPerformer(pIds(1), rIds(0)) )
+      val optPerformerWithRecordings2 = resultOf( repo.addRecordingsToPerformer(pIds(1), Seq(rIds(0))) )
       optPerformerWithRecordings2.isDefined must_=== true
       val p2 = optPerformerWithRecordings2.get
       checkPerformer(p2, psToInsert(1)) must_=== true
       p2.recordings.length must_=== 1
 
       // 'Herbert von Karajan' performing in 'Beethoven’s symphony no. 5'
-      val optPerformerWithRecordings3 = resultOf( repo.addRecordingToPerformer(pIds(2), rIds(0)) )
+      val optPerformerWithRecordings3 = resultOf( repo.addRecordingsToPerformer(pIds(2), Seq(rIds(0))) )
       optPerformerWithRecordings3.isDefined must_=== true
       val p3 = optPerformerWithRecordings3.get
       checkPerformer(p3, psToInsert(2)) must_=== true

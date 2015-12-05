@@ -53,9 +53,9 @@ case object Global extends GlobalSettings {
     // 'Beethoven’s symphony no. 5' performed by 'Arthur Rubinstein', 'London Philharmonic Orchestra', 'Herbert von Karajan'
     resultOf( repo.addPerformersToRecording(rIds(0), Seq(pIds(0), pIds(1), pIds(2))) )
     // 'Forellenquintett' performed by 'Arthur Rubinstein'
-    resultOf( repo.addPerformerToRecording(rIds(1), pIds(0)) )
+    resultOf( repo.addPerformersToRecording(rIds(1), Seq(pIds(0))) )
     // 'Die kleine Nachtmusik' performed by 'Arthur Rubinstein'
-    resultOf( repo.addPerformerToRecording(rIds(2), pIds(0)) )
+    resultOf( repo.addPerformersToRecording(rIds(2), Seq(pIds(0))) )
     // 'Die kleine Nachtmusik' performed by 'Arthur Rubinstein'
     resultOf( repo.addRecordingsToPerformer(pIds(3), Seq(rIds(1), rIds(2))) )
 
