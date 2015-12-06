@@ -456,14 +456,14 @@ class WebServiceSpec extends PlaySpecification with Results with BeforeAfter wit
       val rReceived1: Recording = checkAddRecordingResponse(response1, rsToAdd(1))
       val ps1 = rReceived1.performers
       ps1.length must_=== 1
-      ps1(0).id.get must_=== rIds(0)
+      ps1(0).id.get must_=== pIds(0)
 
       // 'Die kleine Nachtmusik' performed by 'Arthur Rubinstein'
       val response2: WSResponse = sendJson(PUT, recordingsUrl + "/" + rIds(2) + "/addPerformers", Json.toJson(Seq(pIds(0))))
       val rReceived2: Recording = checkAddRecordingResponse(response2, rsToAdd(2))
       val ps2 = rReceived2.performers
       ps2.length must_=== 1
-      ps2(0).id.get must_=== rIds(0)
+      ps2(0).id.get must_=== pIds(0)
 
 
       // 'Beethoven’s symphony no. 5' is performed by 'Arthur Rubinstein', 'London Philharmonic Orchestra', 'Herbert von Karajan'

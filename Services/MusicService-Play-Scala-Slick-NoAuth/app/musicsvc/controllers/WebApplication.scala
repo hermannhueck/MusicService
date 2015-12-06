@@ -462,7 +462,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
         l.debug("performerCreate(): performerFormData: name = " + performerFormData.name +            // recordingIds not provided! Why?
                                   ", performerType = " + performerFormData.performerType + ", recordingIds = " + performerFormData.recordingIds)
 
-        val rIds = request.body("recordingIds").map(_.toLong)
+        val rIds = if (!request.body.isDefinedAt("recordingIds")) Seq.empty else request.body("recordingIds").map(_.toLong)
         val p = new Performer(None, performerFormData.name, performerFormData.performerType)
 
         repo.insertPerformerWithRecordings(p, rIds) map { optRec =>

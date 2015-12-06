@@ -14,24 +14,24 @@
     <tr>
         @form(action = musicsvc.controllers.routes.WebApplication.performerUpdate(p.id.get)) {
 
-            <td>
-                @input(performerForm("name"), '_label -> "Name:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
-                    <input id="inputName" type="text" name="@name" value="@value" size="50" maxlength="200" @toHtmlArgs(args) />
-                }
+        <td>
+            @input(performerForm("name"), '_label -> "Name:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
+            <input id="inputName" type="text" name="@name" value="@value" size="50" maxlength="200" @toHtmlArgs(args) />
+            }
 
-                @select(field = performerForm("performerType"),
-                            options = options(Map(  "" -> "Select a Performer Type",
-                                                    Soloist.toString -> Soloist.toString,
-                                                    Ensemble.toString -> Ensemble.toString,
-                                                    Conductor.toString -> Conductor.toString)),
-                            'id -> "selectPerformerType",
-                            '_label -> "Performer Type:", '_showConstraints -> false, '_showErrors -> true)
-            </td>
+            @select(field = performerForm("performerType"),
+            options = options(Map(  "" -> "Select a Performer Type",
+            Soloist.toString -> Soloist.toString,
+            Ensemble.toString -> Ensemble.toString,
+            Conductor.toString -> Conductor.toString)),
+            'id -> "selectPerformerType",
+            '_label -> "Performer Type:", '_showConstraints -> false, '_showErrors -> true)
+        </td>
 
-            <td align="right" valign="bottom">
-                <input type="button" value="XXXXX" style="visibility:hidden" />
-                <input id="buttonUpdate" type="submit" value="Update"/>
-            </td>
+        <td align="right" valign="bottom">
+            <input type="button" value="XXXXX" style="visibility:hidden" />
+            <input id="buttonUpdate" type="submit" value="Update"/>
+        </td>
         }
     </tr>
 </table>
@@ -45,9 +45,9 @@
                 <td>
                     <div id="divNoRecordings">-- No Recordings yet --</div>
                     <select multiple="multiple" id="selectRecordingsToDelete" name="recordingsToDelete" size="5" style="width:350px" >
-                    @for( r <- p.recordings ) {
+                        @for( r <- p.recordings ) {
                         <option value="@r.id">@r.title, @r.composer, @r.year</option>
-                    }
+                        }
                     </select>
                 </td>
                 <td align="right" valign="bottom">
@@ -60,12 +60,13 @@
     <hr style="width:40%; text-align:left; margin-left:0" />
 
     <dt>
-        <label id="labelUnassignedRecordings">Unassigned Recordings: @if(!rs.isEmpty) { (select to add) }</label>
-        <input type="button" value="XXXXX XXXXX XXXXX XXXXX" style="visibility:hidden" />
-        <input id="buttonDelete" type="button" value="Delete" onclick='window.open("/webApp/performers/@p.id/delete", "_self");' />
-        <input id="buttonEdit" type="button" value="Edit" onclick='setReadOnly(false);' />
-        <input id="buttonCancel" type="button" value="Cancel" onclick='setReadOnly(true);' />
-        <button onclick="history.go(-1);">Go back</button>
+    <p>You cannot delete this performer as long as recordings are assigned to him. First delete the recordings of this performer. Then you can delete the performer. </p>
+    <label id="labelUnassignedRecordings">Unassigned Recordings: @if(!rs.isEmpty) { (select to add) }</label>
+    <input type="button" value="XXXXX XXXXX XXXXX XXXXX" style="visibility:hidden" />
+    <input id="buttonDelete" type="button" value="Delete" onclick='deletePerformer(this);'/>
+    <input id="buttonEdit" type="button" value="Edit" onclick='setReadOnly(false);' />
+    <input id="buttonCancel" type="button" value="Cancel" onclick='setReadOnly(true);' />
+    <button onclick="history.go(-1);">Go back</button>
     </dt>
 
     <dd>
@@ -74,7 +75,7 @@
                 <td>
                     <select multiple="multiple" id="selectRecordingsToAdd" name="recordingsToAdd" size="10" style="width:350px" >
                         @for( r <- rs ) {
-                            <option value="@r.id">@r.title, @r.composer, @r.year</option>
+                        <option value="@r.id">@r.title, @r.composer, @r.year</option>
                         }
                     </select>
                 </td>
@@ -111,7 +112,7 @@
         document.getElementById("selectRecordingsToAdd").readOnly = readOnly
         document.getElementById("buttonDeleteRecordings").disabled = readOnly
         document.getElementById("buttonDeleteRecordings").style.visibility = readOnly ? "hidden" : "visible"
-        document.getElementById("buttonDelete").disabled = !readOnly
+        document.getElementById("buttonDelete").disabled = !readOnly || @if(p.hasRecordings) {true} else {false}
         document.getElementById("buttonDelete").style.visibility = readOnly ? "visible" : "collapse"
         document.getElementById("buttonEdit").disabled = !readOnly
         document.getElementById("buttonEdit").style.visibility = readOnly ? "visible" : "collapse"
@@ -137,6 +138,16 @@
     function addRecordingsToPerformer(buttonAddRecordings) {
 
         window.open("/webApp/performers/@p.id/addRecordings/" + collectIds(selectRecordingsToAdd), "_self")
+    }
+
+    function deletePerformer(buttonDelete) {
+
+        @if(p.hasRecordings) {
+            buttonDelete.disabled = true
+            alert("You cannot delete this performer as long as recordings are assigned to him. First delete the recordings of this performer. Then you can delete the performer.")
+        } else {
+            window.open("/webApp/performers/@p.id/delete", "_self")
+        }
     }
 
     function collectIds(selectBox) {
