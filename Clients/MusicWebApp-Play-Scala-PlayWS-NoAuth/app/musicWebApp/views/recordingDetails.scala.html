@@ -1,0 +1,163 @@
+@import _root_.musicWebApp.models.{Recording, Performer}
+@import _root_.musicWebApp.controllers.RecordingData
+@import helper._
+
+
+@(r: Recording, ps: Seq[Performer], modeReadOnly: Boolean, recordingForm: Form[RecordingData])(implicit messages: Messages)
+
+@main("Classic Music Service") {
+
+
+<h3><u>Recording</u>: @{r.title} (@{r.composer})</h3>
+
+<table>
+    <tr>
+        @form(action = musicWebApp.controllers.routes.WebApplication.recordingUpdate(r.id.get), 'id -> "recordingForm") {
+        <td>
+            @input(recordingForm("title"), '_label -> "Title:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
+            <input id="inputTitle" type="text" name="@name" value="@value" size="50" maxlength="200" @toHtmlArgs(args) />
+            }
+            @input(recordingForm("composer"), '_label -> "Composer:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
+            <input id="inputComposer" type="text" name="@name" value="@value" size="50" maxlength="200" @toHtmlArgs(args) />
+            }
+            @input(recordingForm("year"), '_label -> "Recording Year:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
+            <input id="inputYear" type="number" name="@name" value="@value" size="4" maxlength="4" @toHtmlArgs(args) />
+            }
+        </td>
+        <td align="right" valign="bottom">
+            <input type="button" value="XXXXX" style="visibility:hidden" />
+            <input id="buttonUpdate" type="submit" value="Update"/>
+        </td>
+        }
+    </tr>
+</table>
+
+<dl class=" " id="performers_list">
+
+    <dt><label id="labelCurrentPerformers">Current Performers: @if(!r.performers.isEmpty) { (select to delete) }</label></dt>
+    <dd>
+        <table>
+            <tr>
+                <td>
+                    <div id="divNoPerformers">-- No Performers yet --</div>
+                    <select multiple="multiple" id="selectPerformersToDelete" name="performersToDelete" size="5" style="width:350px" >
+                        @for( p <- r.performers ) {
+                        <option value="@p.id">@p.name, @p.performerType</option>
+                        }
+                    </select>
+                </td>
+                <td align="right" valign="bottom">
+                    <input id="buttonDeletePerformers" type="button" value="Delete Performers" onclick='deletePerformersFromRecording(this);' />
+                </td>
+            </tr>
+        </table>
+    </dd>
+
+    <hr style="width:40%; text-align:left; margin-left:0" />
+
+    <dt>
+        <label id="labelUnassignedPerformers">Unassigned Performers: @if(!ps.isEmpty) { (select to add) }</label>
+        <input type="button" value="XXXXX XXXXX XXXXX XXXXX" style="visibility:hidden" />
+        <input id="buttonDelete" type="button" value="Delete" onclick='window.open("/webApp/recordings/@r.id/delete", "_self");' />
+        <input id="buttonEdit" type="button" value="Edit" onclick='setReadOnly(false);' />
+        <input id="buttonCancel" type="button" value="Cancel" onclick='setReadOnly(true);' />
+        <button onclick="history.go(-1);">Go back</button>
+    </dt>
+
+    <dd>
+        <table>
+            <tr>
+                <td>
+                    <select multiple="multiple" id="selectPerformersToAdd" name="performersToAdd" size="10" style="width:350px" >
+                        @for( p <- ps ) {
+                        <option value="@p.id">@p.name, @p.performerType</option>
+                        }
+                    </select>
+                </td>
+                <td align="right" valign="bottom">
+                    <input id="buttonAddPerformers" type="button" value="Add Performers" onclick='addPerformersToRecording(this);' />
+                </td>
+            </tr>
+        </table>
+    </dd>
+
+
+</dl>
+
+
+<script type="text/javascript">
+
+    document.getElementById("divNoPerformers").style.visibility = "@if(r.performers.isEmpty) {visible} else {hidden}"
+    document.getElementById("selectPerformersToDelete").style.visibility = "@if(r.performers.isEmpty) {hidden} else {visible}"
+
+    var text_LabelPerformers_Readonly = "Performers:"
+    var text_LabelPerformers_Editing = "Current Performers: @if(!r.performers.isEmpty) { (select to delete) }"
+
+    function setReadOnly(readOnly) {
+
+        document.getElementById("inputTitle").disabled = readOnly
+        document.getElementById("inputTitle").readOnly = readOnly
+        document.getElementById("inputComposer").disabled = readOnly
+        document.getElementById("inputComposer").readOnly = readOnly
+        document.getElementById("inputYear").disabled = readOnly
+        document.getElementById("inputYear").readOnly = readOnly
+        document.getElementById("buttonUpdate").disabled = readOnly
+        document.getElementById("buttonUpdate").style.visibility = readOnly ? "hidden" : "visible"
+        document.getElementById("labelCurrentPerformers").innerHTML = readOnly ? text_LabelPerformers_Readonly : text_LabelPerformers_Editing
+        document.getElementById("selectPerformersToDelete").disabled = readOnly
+        document.getElementById("buttonDeletePerformers").disabled = readOnly
+        document.getElementById("buttonDeletePerformers").style.visibility = readOnly ? "hidden" : "visible"
+        document.getElementById("buttonDelete").disabled = !readOnly
+        document.getElementById("buttonDelete").style.visibility = readOnly ? "visible" : "collapse"
+        document.getElementById("buttonEdit").disabled = !readOnly
+        document.getElementById("buttonEdit").style.visibility = readOnly ? "visible" : "collapse"
+        document.getElementById("buttonCancel").disabled = readOnly
+        document.getElementById("buttonCancel").style.visibility = readOnly ? "hidden" : "visible"
+        document.getElementById("labelUnassignedPerformers").style.visibility = readOnly ? "hidden" : "visible"
+        document.getElementById("selectPerformersToAdd").disabled = readOnly
+        document.getElementById("selectPerformersToAdd").style.visibility = readOnly ? "hidden" : "visible"
+        document.getElementById("buttonAddPerformers").disabled = readOnly
+        document.getElementById("buttonAddPerformers").style.visibility = readOnly ? "hidden" : "visible"
+    }
+
+    setReadOnly(@modeReadOnly)
+
+    var selectPerformersToDelete = document.getElementById("selectPerformersToDelete")
+    var selectPerformersToAdd = document.getElementById("selectPerformersToAdd")
+
+    function deletePerformersFromRecording(buttonDeletePerformers) {
+
+        window.open("/webApp/recordings/@r.id/deletePerformers/" + collectIds(selectPerformersToDelete), "_self")
+    }
+
+    function addPerformersToRecording(buttonAddPerformers) {
+
+        window.open("/webApp/recordings/@r.id/addPerformers/" + collectIds(selectPerformersToAdd), "_self")
+    }
+
+    function collectIds(selectBox) {
+
+        var selectedIds = [];
+
+        for (var i = 0; i < selectBox.length; i++) {
+            if (selectBox.options[i].selected) {
+                selectedIds.push(selectBox.options[i].value)
+            }
+        }
+
+        var selectedIdsAsCSV = "";
+
+        for (var i = 0; i < selectedIds.length; i++) {
+            if (i === 0) {
+                selectedIdsAsCSV = selectedIdsAsCSV + selectedIds[i]
+            } else {
+                selectedIdsAsCSV = selectedIdsAsCSV + "," + selectedIds[i]
+            }
+        }
+
+        return selectedIdsAsCSV
+    }
+
+</script>
+
+}

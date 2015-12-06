@@ -1,0 +1,85 @@
+@import _root_.musicWebApp.models.{Recording, Performer}
+@import _root_.musicWebApp.controllers.RecordingData
+@import helper._
+
+
+@(ps: Seq[Performer], recordingForm: Form[RecordingData])(implicit messages: Messages)
+
+@main("Classic Music Service") {
+
+<h3>Create a new Recording</h3>
+
+<table>
+    <tr>
+        @form(action = musicWebApp.controllers.routes.WebApplication.recordingCreate(), 'enctype -> "multipart/form-data") {
+            <td>
+
+                <input id="inputFile" type="file" name="MP3 File" />
+
+                @input(recordingForm("title"), '_label -> "Title:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
+                    <input id="inputTitle" type="text" name="@name" value="@value" size="50" maxlength="200" @toHtmlArgs(args) readonly />
+                }
+
+                @input(recordingForm("composer"), '_label -> "Composer:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
+                    <input id="inputComposer" type="text" name="@name" value="@value" size="50" maxlength="200" @toHtmlArgs(args) readonly />
+                }
+
+                @input(recordingForm("year"), '_label -> "Recording Year:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
+                    <input id="inputYear" type="number" name="@name" value="@value" size="4" maxlength="4" @toHtmlArgs(args) readonly />
+                }
+
+                <dt><label>Unassigned Performers: @if(!ps.isEmpty) { (select to add) }</label></dt>
+
+                <dd>
+                    <table>
+                        <tr>
+                            <td>
+                                <select multiple="multiple" id="selectPerformersToAdd" name="performerIds" size="10" style="width:350px" >
+                                    @for( p <- ps ) {
+                                        <option value="@p.id">@p.name, @p.performerType</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </dd>
+
+            </td>
+            <td align="right" valign="bottom">
+                <input id="buttonCancel" type="button" value="Cancel" onclick='window.open("/webApp/recordings/overview", "_self");' />
+                <input id="submit" type="submit" value="Create Recording" />
+            </td>
+        }
+    </tr>
+</table>
+
+<hr style="width:40%; text-align:left; margin-left:0" />
+
+<script type="text/javascript">
+
+    var inputTitle = document.getElementById("inputTitle")
+    var inputComposer = document.getElementById("inputComposer")
+    var inputYear = document.getElementById("inputYear")
+
+    document.querySelector('input[type="file"]').onchange = function(e) {
+
+				/*
+				   Pass the 1st File instance to id3.js
+				*/
+				id3(this.files[0], function(err, tags) {
+
+					console.log(err, tags)
+
+					inputTitle.readOnly = false
+					inputComposer.readOnly = false
+					inputYear.readOnly = false
+
+					inputTitle.value = tags.title
+					inputComposer.value = tags.artist
+					inputYear.value = tags.year
+				});
+			}
+
+</script>
+
+}

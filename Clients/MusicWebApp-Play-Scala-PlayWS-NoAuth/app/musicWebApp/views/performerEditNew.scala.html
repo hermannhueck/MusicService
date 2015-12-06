@@ -1,0 +1,58 @@
+@import _root_.musicWebApp.models.{Recording, Performer, Soloist, Ensemble, Conductor}
+@import _root_.musicWebApp.controllers.PerformerData
+@import helper._
+
+
+@(rs: Seq[Recording], performerForm: Form[PerformerData])(implicit messages: Messages)
+
+@main("Classic Music Service") {
+
+<h3>Create a new Performer</h3>
+
+<table>
+    <tr>
+        @form(action = musicWebApp.controllers.routes.WebApplication.performerCreate()) {
+            <td>
+
+                @input(performerForm("name"), '_label -> "Name:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
+                    <input id="inputName" type="text" name="@name" value="@value" size="50" maxlength="200" @toHtmlArgs(args) />
+                }
+
+                @select(field = performerForm("performerType"),
+                            options = options(Map(  "" -> "Select a Performer Type",
+                                                    Soloist.toString -> Soloist.toString,
+                                                    Ensemble.toString -> Ensemble.toString,
+                                                    Conductor.toString -> Conductor.toString)),
+                            '_label -> "Performer Type:", '_showConstraints -> false, '_showErrors -> true)
+
+                <dt><label>Unassigned Recordings: @if(!rs.isEmpty) { (select to add) }</label></dt>
+
+                <dd>
+                    <table>
+                        <tr>
+                            <td>
+                                <select multiple="multiple" id="selectRecordingsToAdd" name="recordingIds" size="10" style="width:350px" >
+                                    @for( r <- rs ) {
+                                        <option value="@r.id">@r.title, @r.composer, @r.year</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </dd>
+
+            </td>
+            <td align="right" valign="bottom">
+                <input id="buttonCancel" type="button" value="Cancel" onclick='window.open("/webApp/performers/overview", "_self");' />
+                <input id="submit" type="submit" value="Create Performer" />
+            </td>
+        }
+    </tr>
+</table>
+
+<hr style="width:40%; text-align:left; margin-left:0" />
+
+<script type="text/javascript">
+</script>
+
+}

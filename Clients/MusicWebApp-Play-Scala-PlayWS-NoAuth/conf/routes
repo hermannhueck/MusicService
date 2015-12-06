@@ -1,0 +1,41 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# ----- WebApplication (User Interface) ------------------------------------------------------------------------------------------
+GET     /                                                                   musicWebApp.controllers.WebApplication.index
+GET     /webApp                                                             musicWebApp.controllers.WebApplication.webApp
+
+GET     /webApp/recordings                                                  musicWebApp.controllers.WebApplication.recordings
+GET     /webApp/recordings/overview                                         musicWebApp.controllers.WebApplication.recordingsOverview
+GET     /webApp/recordings/search                                           musicWebApp.controllers.WebApplication.recordingsOverview
+POST    /webApp/recordings/search                                           musicWebApp.controllers.WebApplication.recordingsSearch
+GET     /webApp/recordings/:rId/details                                     musicWebApp.controllers.WebApplication.recordingDetails(rId: Long)
+GET     /webApp/recordings/:rId/edit                                        musicWebApp.controllers.WebApplication.recordingEdit(rId: Long)
+POST    /webApp/recordings/:rId/update                                      musicWebApp.controllers.WebApplication.recordingUpdate(rId: Long)
+GET     /webApp/recordings/:rId/delete                                      musicWebApp.controllers.WebApplication.recordingDelete(rId: Long)
+GET     /webApp/recordings/deleteAll                                        musicWebApp.controllers.WebApplication.recordingsDeleteAll
+GET     /webApp/recordings/editNew                                          musicWebApp.controllers.WebApplication.recordingEditNew
+GET     /webApp/recordings/:rId/deletePerformers/:pIds                      musicWebApp.controllers.WebApplication.deletePerformersFromRecording(rId: Long, pIds: String)
+GET     /webApp/recordings/:rId/addPerformers/:pIds                         musicWebApp.controllers.WebApplication.addPerformersToRecording(rId: Long, pIds: String)
+POST    /webApp/recordings/create                                           musicWebApp.controllers.WebApplication.recordingCreate
+GET     /webApp/recordings/:rId/data                                        musicWebApp.controllers.WebApplication.getRecordingData(rId: Long)
+
+GET     /webApp/performers                                                  musicWebApp.controllers.WebApplication.performers
+GET     /webApp/performers/overview                                         musicWebApp.controllers.WebApplication.performersOverview
+GET     /webApp/performers/search                                           musicWebApp.controllers.WebApplication.performersOverview
+POST    /webApp/performers/search                                           musicWebApp.controllers.WebApplication.performersSearch
+GET     /webApp/performers/:pId/details                                     musicWebApp.controllers.WebApplication.performerDetails(pId: Long)
+GET     /webApp/performers/:pId/edit                                        musicWebApp.controllers.WebApplication.performerEdit(pId: Long)
+POST    /webApp/performers/:pId/update                                      musicWebApp.controllers.WebApplication.performerUpdate(pId: Long)
+GET     /webApp/performers/:pId/delete                                      musicWebApp.controllers.WebApplication.performerDelete(pId: Long)
+GET     /webApp/performers/deleteAll                                        musicWebApp.controllers.WebApplication.performersDeleteAll
+GET     /webApp/performers/:pId/deleteRecordings/:rIds                      musicWebApp.controllers.WebApplication.deleteRecordingsFromPerformer(pId: Long, rIds: String)
+GET     /webApp/performers/:pId/addRecordings/:rIds                         musicWebApp.controllers.WebApplication.addRecordingsToPerformer(pId: Long, rIds: String)
+GET     /webApp/performers/editNew                                          musicWebApp.controllers.WebApplication.performerEditNew
+POST    /webApp/performers/create                                           musicWebApp.controllers.WebApplication.performerCreate
+
+
+# ----- Assets ---------------------------------------------------------------------------------------------------------
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

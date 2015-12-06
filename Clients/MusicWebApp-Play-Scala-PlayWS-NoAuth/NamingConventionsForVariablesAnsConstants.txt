@@ -1,0 +1,17 @@
+/* ========================================================
+
+  val/var Naming Conventions
+  - - - - - - - - - - - - - -
+
+  Name    Type            Description
+  ------- --------------- ---------------------------------
+  p       Performer       a Performer instance
+  ps      Seq[Performer]  a sequence of Performer instances
+  pId     Long            a Performer's id
+  pIds    Seq[Long]       a sequence of Performer ids
+  r       Recording       a Recording instance
+  rs      Seq[Recording]  a sequence of Recording instances
+  rId     Long            a Recording's id
+  rIds    Seq[Long]       a sequence of Recording ids
+
+======================================================== */
