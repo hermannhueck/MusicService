@@ -5,16 +5,17 @@ MusicService-Play-Scala-Slick-NoAuth
 Table of Contents
 -----------------
 
- 1. What is the "MusicService"?
- 2. Prerequisites to build, test and run the project
- 3. How to test and run (from the command line)
- 4. How to import the project into IntelliJ IDEA
- 5. How to import the project into (Eclipse based) ScalaIDE
- 6. MusicService Architecture
- 7. What the MusicService implementation provides
- 8. What the implementation does not yet provide - Intended next implementation steps
- 9. Why Play Framework?
-10. Why Scala?
+01. What is the "MusicService"?
+02. Prerequisites to build, test and run the project
+03. How to test and run (from the command line)
+04. How to import the project into IntelliJ IDEA
+05. How to import the project into (Eclipse based) ScalaIDE
+06. MusicService Architecture
+07. What the MusicService implementation provides
+08. What the implementation does not yet provide - Intended next implementation steps
+09. Why Slick?
+10. Why Play Framework?
+11. Why Scala?
 
 
 01. What is the "MusicService"?
@@ -24,7 +25,7 @@ This simple App is a "Music Service", it is
 - a web service application providing a data interface with a restful JSON API
 - a web application running in the browser
 
-The Music Service manages music performers recordings.
+The Music Service manages music performers and recordings.
 
 One entity is a "Performer" with the following attributes:
 - name:             the performer's name
@@ -249,7 +250,7 @@ Play itself is written in Scala, but it has a Scala and a Java API. Thus you can
 write your Play web app in Scala or in Java.
 
 
-10. Why Scala?
+11. Why Scala?
 --------------
 
 Functional Programming (FP) and Object-Oriented Programming (OOP) are no contradiction.
