@@ -73,7 +73,12 @@ This command should show up the usage of the java compiler with a list of option
 03. How to test and run (from the command line)
 -----------------------------------------------
 
-Go to the project directory and lauch the following commands:
+In order to run the tests or the web application MusicService must already be running.
+The MusicWebApp tests expect the MusicService running on port 9000. (This is at present
+not configurable.)
+
+After having lauched MusicService go to the MusicWebApp project directory and lauch
+the following commands:
 
 [unix/osx] $  ./activator test                    # runs the tests
 [windows ] >  .\activator.bat test                # runs the tests
