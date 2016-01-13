@@ -153,8 +153,8 @@ class RepositoryRecordings(val db: BasicProfile#Backend#Database) {
 
     val titlePredicate: (Recordings) => Rep[Boolean] = { _.title.toLowerCase like matchExpression(optTitle.get) }
     val composerPredicate: (Recordings) => Rep[Boolean] = { _.composer.toLowerCase like matchExpression(optComposer.get) }
-    val yearMinPredicate: (Recordings) => Rep[Boolean] = { _.yearRecorded >= optYearMin.get }
-    val yearMaxPredicate: (Recordings) => Rep[Boolean] = { _.yearRecorded <= optYearMax.get }
+    val yearMinPredicate: (Recordings) => Rep[Boolean] = { _.year >= optYearMin.get }
+    val yearMaxPredicate: (Recordings) => Rep[Boolean] = { _.year <= optYearMax.get }
 
     val criteriaMap: Map[Option[Any], (Recordings) => H2Driver.api.Rep[Boolean]] =
       Map(optTitle -> titlePredicate,

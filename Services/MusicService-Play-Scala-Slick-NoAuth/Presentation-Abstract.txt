@@ -1,0 +1,18 @@
+Implementing a many-to-many relationship with Slick
+===================================================
+
+After a short introduction to Slick as a reactive interface for relational databases
+I will present an example showing the implementation of a many-to-many relationship
+with Slick in Scala.
+
+The talk comprises the following sub topics:
+
+- Short Intro to Slick
+- Why is it reactive?
+- What is FRM (functional relational mapping)?
+- Many-to-many table definitions with Slick in Scala
+- Ensuring referential integrity
+- Adding and deleting relationships
+- Using case class mapping for the tables
+- Traversing the many-to-many relationship in queries
+

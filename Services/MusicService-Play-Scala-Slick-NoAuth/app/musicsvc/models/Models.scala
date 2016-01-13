@@ -132,9 +132,9 @@ class Recordings(tag: Tag) extends Table[Recording](tag, "RECORDINGS") {
   def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.AutoInc)
   def title: Rep[String] = column[String]("TITLE")
   def composer: Rep[String] = column[String]("COMPOSER")
-  def yearRecorded: Rep[Int] = column[Int]("YEAR")
+  def year: Rep[Int] = column[Int]("YEAR")
 
-  def * = (id?, title, composer, yearRecorded) <> (mapRow, unmapRow)
+  def * = (id?, title, composer, year) <> (mapRow, unmapRow)
 
   def mapRow: ((Option[Long], String, String, Int)) => Recording = {
     // originally: Recording.tupled
@@ -160,7 +160,8 @@ object RecordingsQueries {
 // Table 'RecordingsPerformers' mapped to case class 'RecordingPerformer' as join table to map
 // the many-to-many relationship between Performers and Recordings
 //
-class RecordingsPerformers(tag: Tag) extends Table[RecordingPerformer](tag, "RECORDINGS_PERFORMERS") {
+class RecordingsPerformers(tag: Tag)
+      extends Table[RecordingPerformer](tag, "RECORDINGS_PERFORMERS") {
 
   def recId: Rep[Long] = column[Long]("REC_ID")
   def perId: Rep[Long] = column[Long]("PER_ID")
@@ -168,8 +169,12 @@ class RecordingsPerformers(tag: Tag) extends Table[RecordingPerformer](tag, "REC
   def * = (recId, perId) <> (RecordingPerformer.tupled, RecordingPerformer.unapply)
   def pk = primaryKey("primaryKey", (recId, perId))
 
-  def recFK = foreignKey("FK_RECORDINGS", recId, TableQuery[Recordings])(recording => recording.id, onDelete=ForeignKeyAction.Cascade)
-  def perFK = foreignKey("FK_PERFORMERS", perId, TableQuery[Performers])(performer => performer.id)
+  def recFK = foreignKey("FK_RECORDINGS", recId, TableQuery[Recordings])(recording =>
+    recording.id, onDelete=ForeignKeyAction.Cascade)
+
+  def perFK = foreignKey("FK_PERFORMERS", perId, TableQuery[Performers])(performer =>
+    performer.id)
+
   // onUpdate=ForeignKeyAction.Restrict is omitted as this is the default
 }
 

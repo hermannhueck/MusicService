@@ -25,7 +25,10 @@ This simple App is a "Music Service", it is
 - a web service application providing a data interface with a restful JSON API
 - a web application running in the browser
 
-The Music Service manages music performers and recordings.
+The Music Service manages music performers and recordings. Management implies
+CRUD operations on performers and recordings, up- and download of music data
+(mp3 files) as well as assigning performers to recordings or recordings to
+performers and the removal of these assignments.
 
 One entity is a "Performer" with the following attributes:
 - name:             the performer's name
