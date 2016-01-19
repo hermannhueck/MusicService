@@ -2,31 +2,65 @@
 @import _root_.musicWebApp.controllers.OptionalRecordingData
 @import helper._
 
-
 @(rs: Seq[Recording], ps: Seq[Performer], searchForm: Form[OptionalRecordingData])(implicit messages: Messages)
+
+@implicitField = @{ FieldConstructor(myFieldConstructorTemplate.f) }
 
 @main("Classic Music Service") {
 
-<h3>Search for Recordings</h3>
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/recordings" class="active">Recordings</a></li>
+        </ul>
+    </div>
+</div>
 
-@form(action = musicWebApp.controllers.routes.WebApplication.recordingsSearch()) {
-<table>
-    <tr>
-        <td>
-        @input(searchForm("title"), '_label -> "Title:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
-            <input id="inputTitle" type="text" name="@name" value="@value" size="50" maxlength="200" @toHtmlArgs(args) />
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <h2>Search for Recordings &nbsp; &nbsp;
+            <a class="btn btn-default btn-sm" data-toggle="collapse" href="#collapsableRecordingsSearchForm"
+                            role="button" aria-expanded="false" aria-controls="collapsableRecordingsSearchForm">
+                <small><span class="caret"></span></small>
+            </a>
+        </h2>
+    </div>
+</div>
+
+<div class="collapse" id="collapsableRecordingsSearchForm">
+    <p style="padding:10px;"></p>
+@form(action = musicWebApp.controllers.routes.WebApplication.recordingsSearch(), 'class -> "form-horizontal", 'role -> "form") {
+
+    <div class="form-group">
+        @input(searchForm("title"), '_label -> "Title", '_showConstraints -> false, '_showErrors -> true,
+                'placeHolder -> "Title", 'labelColSm -> 2, 'inputColSm -> 9) { (id, name, value, args) =>
+            <input id="inputTitle" type="text" name="@name" value="@value" size="50" maxlength="200" class="form-control" @toHtmlArgs(args) />
         }
-        @input(searchForm("composer"), '_label -> "Composer:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
-            <input id="inputComposer" type="text" name="@name" value="@value" size="50" maxlength="200" @toHtmlArgs(args) />
+    </div>
+
+    <div class="form-group">
+        @input(searchForm("composer"), '_label -> "Composer", '_showConstraints -> false, '_showErrors -> true,
+                'placeHolder -> "Composer", 'labelColSm -> 2, 'inputColSm -> 9) { (id, name, value, args) =>
+            <input id="inputComposer" type="text" name="@name" value="@value" size="50" maxlength="200" class="form-control" @toHtmlArgs(args) />
         }
-        @input(searchForm("yearMin"), '_label -> "Minimum Recording Year:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
-            <input id="inputYearMin" type="number" name="@name" value="@value" size="4" maxlength="4" @toHtmlArgs(args) />
+    </div>
+
+    <div class="form-group">
+        @input(searchForm("yearMin"), '_label -> "Min. Recording Year", '_showConstraints -> false, '_showErrors -> true,
+                'placeHolder -> "Min. Year", 'labelColSm -> 2, 'inputColSm -> 3) { (id, name, value, args) =>
+            <input id="inputYearMin" type="number" name="@name" value="@value" size="4" maxlength="4" class="form-control" @toHtmlArgs(args) />
         }
-        @input(searchForm("yearMax"), '_label -> "Maximum Recording Year:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
-            <input id="inputYearMax" type="number" name="@name" value="@value" size="4" maxlength="4" @toHtmlArgs(args) />
+        @input(searchForm("yearMax"), '_label -> "Max. Recording Year", '_showConstraints -> false, '_showErrors -> true,
+                'placeHolder -> "Max. Year", 'labelColSm -> 2, 'inputColSm -> 3) { (id, name, value, args) =>
+            <input id="inputYearMax" type="number" name="@name" value="@value" size="4" maxlength="4" class="form-control" @toHtmlArgs(args) />
         }
-        @input(searchForm("performedBy"), '_label -> "Performed by:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
-            <select id="selectPerformedBy" name="@name" @toHtmlArgs(args) >
+    </div>
+
+    <div class="form-group">
+        @input(searchForm("performedBy"), '_label -> "Performed by", '_showConstraints -> false, '_showErrors -> true,
+                'labelColSm -> 2, 'inputColSm -> 3) { (id, name, value, args) =>
+            <select id="selectPerformedBy" name="@name" class="form-control" @toHtmlArgs(args) >
                 <option value="">Select a Performer</option>
                 @for( p <- ps ) {
                     @if( value != None && value.get == p.id.get.toString ) {
@@ -37,54 +71,111 @@
                 }
             </select>
         }
-        </td>
-        <td align="right" valign="bottom"> <input id="buttonSearch" type="submit" value="Search" /> </td>
-    </tr>
-</table>
+        <div class="col-xs-12 col-sm-2">
+            <label for="buttonSearch"></label>
+        </div>
+        <div class="col-xs-6 col-sm-2">
+            <input id="buttonSearch" type="submit" value="Search" class="form-control btn btn-primary"
+                   data-toggle="tooltip" data-placement="bottom" title="Search for Recordings with the specified criteria">
+        </div>
+        <div class="col-xs-6 col-sm-2">
+            <input id="buttonReset" type="reset" value="Reset" class="form-control btn btn-primary"
+                   data-toggle="tooltip" data-placement="bottom" title="Reset the Search Form">
+        </div>
+    </div>
+}
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <h2>List of Recordings</h2>
+    </div>
+</div>
+
+@if( rs.isEmpty ) {
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <p>--- No Recordings ---</p>
+        </div>
+    </div>
 }
 
-<hr style="width:40%; text-align:left; margin-left:0" />
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            @for(r <- rs) {
+                <div class="panel panel-default">
 
-<h3>List of Recordings</h3>
+                    <div class="panel-heading" role="tab" id="headingRecording_@r.id">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#recording_@r.id" aria-expanded="true" aria-controls="recording_@r.id">
+                                @r.title &nbsp; <small>composed by <strong>@r.composer</strong> recorded in <strong>@r.year</strong></small>
+                            </a>
+                        </h4>
+                    </div>  <!-- panel-heading -->
 
-<table>
-    <tr>
-        <th>Composer</th>
-        <th>Title</th>
-        <th>Recording Year</th>
-    </tr>
-    @for(r <- rs) {
-    <tr>
-        <td>@r.title</td>
-        <td>@r.composer</td>
-        <td>@r.year</td>
-        <td>
-            <input id="buttonDetails" type="button" value="Details" onclick='window.open("/webApp/recordings/@r.id/details", "_self");' />
-        </td>
-        <td>
-            <input id="buttonEdit" type="button" value="Edit" onclick='window.open("/webApp/recordings/@r.id/edit", "_self");' />
-        </td>
-        <td>
-            <input id="buttonDelete" type="button" value="Delete" onclick='window.open("/webApp/recordings/@r.id/delete", "_self");' />
-        </td>
-        <td>
-            <audio controls>
-                <source src="/webApp/recordings/@r.id/data" type="audio/mpeg">
-                Your browser does not support the audio tag.
-            </audio>
-        </td>
-    </tr>
+                    <div role="tabpanel" class="panel-collapse collapse" id="recording_@r.id" aria-labelledby="headingRecording_@r.id">
+                        <div class="panel-body">
+                            <dl class="dl-horizontal">
+                                <dt>Performed by</dt>
+                                <dd>
+                                    <ul class="list-unstyled">
+                                        @if( !r.hasPerformers ) {
+                                            <li>--- No Performers assigned to this Recording ---</li>
+                                        }
+                                        @for( p <- r.performers ) {
+                                            <li>@p.name, @p.performerType</li>
+                                        }
+                                    </ul>
+                                </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Actions</dt>
+                                <dd>
+                                    <ul class="list-inline">
+                                        <li><input id="buttonEdit" type="button" class="btn btn-xs" value="Edit" onclick='editRecording(this, @r.id);' /></li>
+                                        <li><input id="buttonDelete" type="button" class="btn btn-xs" value="Delete" onclick='deleteRecording(this, @r.id);' /></li>
+                                    </ul>
+                                </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Play</dt>
+                                <dd>
+                                    <ul class="list-inline">
+                                        <li>
+                                            <audio controls class="btn btn-xs">
+                                                <source src="/recordings/@r.id/data" type="audio/mpeg">
+                                                Your browser does not support the audio tag.
+                                            </audio>
+                                        </li>
+                                    </ul>
+                                </dd>
+                            </dl>
+                        </div>  <!-- panel-body -->
+                    </div>  <!-- panel-collapse -->
+
+                </div>  <!-- panel -->
+            }
+        </div>  <!-- panel-group -->
+    </div>  <!-- col-xs-12 -->
+</div>  <!-- row -->
+
+<div class="row row-dense-content">
+    <div class="col-xs-6 col-sm-3">
+        <button id="buttonNew" class="btn btn-default btn-sm btn-block" onclick='window.open("/recordings/new", "_self");'
+                data-toggle="tooltip" data-placement="bottom" title="Create a new Recording">
+            New Recording
+        </button>
+    </div>
+    @if( !rs.isEmpty ) {
+        <div class="col-xs-6 col-sm-3">
+            <button id="buttonDeleteAll" class="btn btn-default btn-sm btn-block" onclick='window.open("/recordings/deleteAll", "_self");'
+                    data-toggle="tooltip" data-placement="bottom" title="Delete All Recordings">
+                Delete All Recordings
+            </button>
+        </div>
     }
-</table>
-
-<hr style="width:40%; text-align:left; margin-left:0" />
-
-<table>
-    <tr>
-        <td><input id="buttonNew" type="button" value="New Recording" onclick='window.open("/webApp/recordings/editNew", "_self");' /></td>
-        <td><input id="buttonDeleteAll" type="button" value="Delete All Recordings" onclick='window.open("/webApp/recordings/deleteAll", "_self");' /></td>
-    </tr>
-</table>
+</div>
 
 <script type="text/javascript">
 </script>

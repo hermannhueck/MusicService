@@ -1,0 +1,52 @@
+@import helper._
+
+@**
+* Default field constructor.
+*
+* It generates field as following:
+* {{{
+* <dl class="error">
+    *   <dt><label for="name">Your name:</label></dt>
+    *   <dd><input type="text" id="name" name="name"></dd>
+    *   <dd class="error">This field is required</dd>
+    *   <dd class="info">Required</dd>
+    * </dl>
+    *
+    * <div class="form-group">
+    *    <div class="col-xs-12 col-sm-2 control-label">
+    *        <label for="inputTitle">Title</label>
+    *    </div>
+    *    <div class="col-xs-12 col-sm-9">
+    *        <input id="inputTitle" type="text" name="name" value="value" size="50" maxlength="200" class="form-control" placeholder="Title" toHtmlArgs(args) />
+    *    </div>
+    * </div>
+* }}}
+*
+* @param el The field informations.
+*@
+
+@(elements: FieldElements)
+
+<div class="@elements.args.get('_class) @if(elements.hasErrors) {error}" id="@elements.args.get('_id).getOrElse(elements.id + "_field")">
+    @if(elements.hasName) {
+        <div>@elements.name</div>
+    } else {
+        <div class="col-xs-12 col-sm-@elements.args.get('labelColSm) control-label">
+            <label for="@elements.id">@elements.label</label>
+        </div>
+    }
+    <div class="col-xs-12 col-sm-@elements.args.get('inputColSm)">
+        @elements.input
+    </div>
+    @elements.errors.map { error =>
+        <div class="col-xs-12 col-sm-@elements.args.get('inputColSm)" class="error">
+            @error
+        </div>
+    }
+    @elements.infos.map { info =>
+        <div class="col-xs-12 col-sm-@elements.args.get('inputColSm)" class="info">
+            @info
+        </div>
+    }
+</div>
+

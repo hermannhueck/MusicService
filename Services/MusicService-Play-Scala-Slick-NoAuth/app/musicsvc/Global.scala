@@ -29,7 +29,7 @@ case object Global extends GlobalSettings {
     val repo = new Repository(db)
 
     val rsToInsert = Seq(
-      Recording(title = "Beethoven’s symphony no. 5", composer = "Ludwig van Beethoven", year = 2005),
+      Recording(title = "Symphony no. 5", composer = "Ludwig van Beethoven", year = 2005),
       Recording(title = "Forellenquintett", composer = "Franz Schubert", year = 2006),
       Recording(title = "Eine kleine Nachtmusik", composer = "Wolfgang Amadeus Mozart", year = 2005),
       Recording(title = "Entführung aus dem Serail", composer = "Wolfgang Amadeus Mozart", year = 2008)

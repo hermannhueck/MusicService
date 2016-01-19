@@ -1,0 +1,202 @@
+@import _root_.musicWebApp.models.{Recording, Performer, Soloist, Ensemble, Conductor}
+@import _root_.musicWebApp.controllers.PerformerData
+@import helper._
+
+
+@(pOpt: Option[Performer], rs: Seq[Recording], performerForm: Form[PerformerData])(implicit messages: Messages)
+
+@implicitField = @{ FieldConstructor(myFieldConstructorTemplate.f) }
+
+@pId = @{ if( pOpt.isDefined ) pOpt.get.id.get else -1L }
+@pName = @{ if( pOpt.isDefined ) pOpt.get.name else "" }
+@pPerformerType = @{ if( pOpt.isDefined ) pOpt.get.performerType.toString else "" }
+@pRecordings = @{ if( pOpt.isDefined ) pOpt.get.recordings else Seq.empty }
+@pHasRecordings = @{ pOpt.isDefined && pOpt.get.hasRecordings }
+
+
+@main("Classic Music Service") {
+
+<div class="col-xs-12">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/performers">Performers</a></li>
+        @if( pOpt.isDefined ) {
+            <li><a href="#" class="active">Edit Performer (id = @pId)</a></li>
+        } else {
+            <li><a href="#" class="active">New Performer</a></li>
+        }
+    </ul>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        @if( pOpt.isDefined ) {
+            <h2>Performer: &nbsp; @{pName} &nbsp; (@{pPerformerType})</h2>
+        } else {
+            <h2>New Performer</h2>
+        }
+    </div>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <p style="padding:5px"></p>
+    </div>
+</div>
+
+@form(action = musicWebApp.controllers.routes.WebApplication.performerCreateOrUpdate(pId), 'class -> "form-horizontal", 'role -> "form") {
+
+    <div class="form-group">
+        @input(performerForm("name"), '_label -> "Name:", '_showConstraints -> false, '_showErrors -> true,
+                'placeHolder -> "Name", 'labelColSm -> 2, 'inputColSm -> 3) { (id, name, value, args) =>
+            <input id="inputName" type="text" name="@name" value="@value" size="50" class="form-control" maxlength="200" required @toHtmlArgs(args) />
+        }
+
+        @select(field = performerForm("performerType"),
+            options = options(Map(  "" -> "Select a Performer Type",
+                                    Soloist.toString -> Soloist.toString,
+                                    Ensemble.toString -> Ensemble.toString,
+                                    Conductor.toString -> Conductor.toString)),
+            'id -> "selectPerformerType",
+            '_label -> "Performer Type:", '_showConstraints -> false, '_showErrors -> true,
+            'placeHolder -> "Performer Type", 'labelColSm -> 2, 'inputColSm -> 3, 'class -> "form-control")
+    </div>
+
+    <div class="form-group">
+        <div class="hidden-xs col-sm-2">
+            <label for="buttonUpdate"></label>
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            <input id="buttonUpdate" type="submit" value="@if( pOpt.isDefined ) {Update} else {Create}" class="form-control btn btn-primary"
+                   data-toggle="tooltip" data-placement="bottom" title="@if( pOpt.isDefined ) {Update this Performer} else {Create new Performer}">
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            <input id="buttonDelete" type="button" value="Delete" class="form-control btn btn-primary" @if( pOpt.isEmpty || pHasRecordings ) {disabled}
+                   data-toggle="tooltip" data-placement="bottom" title="Delete this Performer" onclick='deletePerformer(this, @pHasRecordings, @pId);'>
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            <a type="button" class="form-control btn btn-default" href="/performers"
+                   data-toggle="tooltip" data-placement="bottom" title="@if( pOpt.isDefined ) {Cancel editing this Performer} else {Cancel creating new Performer}">
+                Cancel
+            </a>
+        </div>
+    </div>
+}
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        @if( pHasRecordings ) {
+            <div class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p>You cannot delete this Performer as long as Recordings are assigned to him. First delete the recordings of this performer. Then you can delete the performer.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <p style="padding:5px"></p>
+    </div>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <label for="selectRecordingsToDelete">Recordings assigned to this Performer</label>
+    </div>
+    <div class="col-xs-12 col-sm-8">
+        @if( pHasRecordings ) {
+            <select multiple="multiple" id="selectRecordingsToDelete" name="recordingsToDelete" size="5" class="form-control" >
+                @for( r <- pRecordings ) {
+                    <option value="@r.id">@r.title, @r.composer, @r.year</option>
+                }
+            </select>
+        } else {
+            <div>--- No Recordings assigned to this Performer ---</div>
+        }
+    </div>
+    <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+        <button id="buttonDeleteRecordings" onclick='deleteRecordingsFromPerformer(this, @pId);' @if( !pHasRecordings ) {disabled}
+                data-toggle="tooltip" data-placement="bottom" title="Delete selected Recordings of this Performer"
+                class="btn btn-primary btn-block">
+            Delete selected Recordings
+        </button>
+    </div>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <p style="padding:5px"></p>
+    </div>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <label for="selectRecordingsToAdd">Recordings <u>not</u> assigned to this Performer</label>
+    </div>
+    <div class="col-xs-12 col-sm-8">
+        @if( !rs.isEmpty ) {
+            <select multiple="multiple" id="selectRecordingsToAdd" name="recordingsToAdd" size="5" class="form-control" >
+                @for( r <- rs ) {
+                    <option value="@r.id">@r.title, @r.composer, @r.year</option>
+                }
+            </select>
+        } else {
+            <div>--- No Recordings left to be assigned to this Performer ---</div>
+        }
+    </div>
+    <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+        <button id="buttonAddRecordings" onclick='addRecordingsToPerformer(this, @pId);' @if( rs.isEmpty ) {disabled}
+                data-toggle="tooltip" data-placement="bottom" title="Add selected Recordings of this Performer"
+                class="btn btn-primary btn-block">
+            Add selected Recordings
+        </button>
+    </div>
+</div>
+
+<div class="row row-dense-content">
+    <p style="padding:5px"></p>
+</div>
+
+
+<script type="text/javascript">
+
+    var selectRecordingsToDelete = document.getElementById("selectRecordingsToDelete");
+    var selectRecordingsToAdd = document.getElementById("selectRecordingsToAdd");
+
+    function deleteRecordingsFromPerformer(buttonDeleteRecordings, pId) {
+        window.open("/performers/" + pId + "/deleteRecordings/" + collectIds(selectRecordingsToDelete), "_self");
+    }
+
+    function addRecordingsToPerformer(buttonAddRecordings, pId) {
+        window.open("/performers/" + pId + "/addRecordings/" + collectIds(selectRecordingsToAdd), "_self");
+    }
+
+    function collectIds(selectBox) {
+
+        var selectedIds = [];
+
+        for (var i = 0; i < selectBox.length; i++) {
+            if (selectBox.options[i].selected) {
+                selectedIds.push(selectBox.options[i].value);
+            }
+        }
+
+        var selectedIdsAsCSV = "";
+
+        for (var i = 0; i < selectedIds.length; i++) {
+            if (i === 0) {
+                selectedIdsAsCSV = selectedIdsAsCSV + selectedIds[i];
+            } else {
+                selectedIdsAsCSV = selectedIdsAsCSV + "," + selectedIds[i];
+            }
+        }
+
+        return selectedIdsAsCSV;
+    }
+
+</script>
+
+}

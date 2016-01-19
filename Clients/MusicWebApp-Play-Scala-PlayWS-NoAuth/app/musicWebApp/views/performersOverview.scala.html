@@ -5,91 +5,169 @@
 
 @(ps: Seq[Performer], rs: Seq[Recording], searchForm: Form[OptionalPerformerData])(implicit messages: Messages)
 
+@implicitField = @{ FieldConstructor(myFieldConstructorTemplate.f) }
+
 @main("Classic Music Service") {
 
-<h3>Search for Performers</h3>
+<div class="col-xs-12">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/performers" class="active">Performers</a></li>
+    </ul>
+</div>
 
-@form(action = musicWebApp.controllers.routes.WebApplication.performersSearch()) {
-<table>
-    <tr>
-        <td>
-            @input(searchForm("name"), '_label -> "Name:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
-                <input id="inputName" type="text" name="@name" value="@value" size="50" maxlength="200" @toHtmlArgs(args) />
-            }
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <h2>Search for Performers &nbsp; &nbsp;
+            <a class="btn btn-default btn-sm" data-toggle="collapse" href="#collapsablePerformersSearchForm"
+               role="button" aria-expanded="false" aria-controls="collapsablePerformersSearchForm">
+                <small><span class="caret"></span></small>
+            </a>
+        </h2>
+    </div>
+</div>
 
-            @select(field = searchForm("performerType"),
-                                options = options(Map(  "" -> "Select a Performer Type",
-                                                        Soloist.toString -> Soloist.toString,
-                                                        Ensemble.toString -> Ensemble.toString,
-                                                        Conductor.toString -> Conductor.toString)),
-                                '_label -> "Performer Type:", '_showConstraints -> false, '_showErrors -> true)
+<div class="collapse" id="collapsablePerformersSearchForm">
+    <p style="padding:10px;"></p>
+@form(action = musicWebApp.controllers.routes.WebApplication.performersSearch(), 'class -> "form-horizontal", 'role -> "form") {
 
-            @input(searchForm("performingIn"), '_label -> "Performing in:", '_showConstraints -> false, '_showErrors -> true) { (id, name, value, args) =>
-                <select id="selectPerformingIn" name="@name" @toHtmlArgs(args) >
-                    <option value="">Select a Recording</option>
-                    @for( r <- rs ) {
-                        @if( value != None && value.get == r.id.get.toString ) {
-                            <option value="@r.id" selected>@r.title, @r.composer, @r.year</option>
-                        } else {
-                            <option value="@r.id">@r.title, @r.composer, @r.year</option>
-                        }
+    <div class="form-group">
+        @input(searchForm("name"), '_label -> "Name:", '_showConstraints -> false, '_showErrors -> true,
+                'placeHolder -> "Name", 'labelColSm -> 2, 'inputColSm -> 3) { (id, name, value, args) =>
+            <input id="inputName" type="text" name="@name" value="@value" class="btn-block" maxlength="200" @toHtmlArgs(args) />
+        }
+
+        @select(field = searchForm("performerType"),
+                            options = options(Map(  "" -> "Select a Performer Type",
+                                                    Soloist.toString -> Soloist.toString,
+                                                    Ensemble.toString -> Ensemble.toString,
+                                                    Conductor.toString -> Conductor.toString)),
+                            '_label -> "Performer Type:", '_showConstraints -> false, '_showErrors -> true,
+                            'placeHolder -> "Performer Type", 'labelColSm -> 2, 'inputColSm -> 3, 'class -> "form-control")
+    </div>
+
+    <div class="form-group">
+        @input(searchForm("performingIn"), '_label -> "Performing in:", '_showConstraints -> false, '_showErrors -> true,
+                'labelColSm -> 2, 'inputColSm -> 3) { (id, name, value, args) =>
+            <select id="selectPerformingIn" name="@name" class="form-control" @toHtmlArgs(args) >
+                <option value="">Select a Recording</option>
+                @for( r <- rs ) {
+                    @if( value != None && value.get == r.id.get.toString ) {
+                        <option value="@r.id" selected>@r.title, @r.composer, @r.year</option>
+                    } else {
+                        <option value="@r.id">@r.title, @r.composer, @r.year</option>
                     }
-                </select>
-            }
-        </td>
-        <td align="right" valign="bottom"> <input id="buttonSearch" type="submit" value="Search" /> </td>
-    </tr>
-</table>
+                }
+            </select>
+        }
+        <div class="col-xs-12 col-sm-2">
+            <label for="buttonSearch"></label>
+        </div>
+        <div class="col-xs-6 col-sm-2">
+            <input id="buttonSearch" type="submit" value="Search" class="form-control btn btn-primary"
+                   data-toggle="tooltip" data-placement="bottom" title="Search for Performers with the specified criteria">
+        </div>
+        <div class="col-xs-6 col-sm-2">
+            <input id="buttonReset" type="reset" value="Reset" class="form-control btn btn-primary"
+                   data-toggle="tooltip" data-placement="bottom" title="Reset the Search Form">
+        </div>
+    </div>
+}
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <h2>List of Performers</h2>
+    </div>
+</div>
+
+@if( ps.isEmpty ) {
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <p>--- No Performers ---</p>
+        </div>
+    </div>
 }
 
-<hr style="width:40%; text-align:left; margin-left:0" />
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            @for(p <- ps) {
+                <div class="panel panel-default">
 
-<h3>List of Performers</h3>
+                    <div class="panel-heading" role="tab" id="headingPerformer_@p.id">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#performer_@p.id" aria-expanded="true" aria-controls="performer_@p.id">
+                                @p.name &nbsp; <small> - <strong>&nbsp; @p.performerType.toString</strong></small>
+                            </a>
+                        </h4>
+                    </div>  <!-- panel-heading -->
 
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Performer Type</th>
-    </tr>
-    @for(p <- ps) {
-    <tr>
-        <td>@p.name</td>
-        <td>@p.performerType.toString</td>
-        <td>
-            <input id="buttonDetails" type="button" value="Details" onclick='window.open("/webApp/performers/@p.id/details", "_self");' />
-        </td>
-        <td>
-            <input id="buttonEdit" type="button" value="Edit" onclick='window.open("/webApp/performers/@p.id/edit", "_self");' />
-        </td>
-        <td>
-            <input id="buttonDelete" type="button" value="Delete" onclick='deletePerformer(this, @p.hasRecordings, @p.id);' @if(p.hasRecordings) {disabled} />
-        </td>
-    </tr>
+                    <div role="tabpanel" class="panel-collapse collapse" id="performer_@p.id" aria-labelledby="headingPerformer_@p.id">
+                        <div class="panel-body">
+                            <dl class="dl-horizontal">
+                                <dt>Performing in</dt>
+                                <dd>
+                                    <ul class="list-unstyled">
+                                        @if( !p.hasRecordings ) {
+                                            <li>--- No Recordings assigned to this Performer ---</li>
+                                        }
+                                        @for( r <- p.recordings ) {
+                                            <li>@r.title, @r.composer, @r.year</li>
+                                        }
+                                    </ul>
+                                </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Actions</dt>
+                                <dd>
+                                    <ul class="list-inline">
+                                        <li><input type="button" id="buttonEdit" value="Edit" class="btn btn-xs" onclick='editPerformer(this, @p.id);' /></li>
+                                        <li><input type="button" id="buttonDelete" value="Delete" class="btn btn-xs" onclick='deletePerformer(this, @p.hasRecordings, @p.id);' @if(p.hasRecordings) {disabled} /></li>
+                                    </ul>
+                                </dd>
+                            </dl>
+                        </div>  <!-- panel-body -->
+                    </div>  <!-- panel-collapse -->
+
+                </div>  <!-- panel -->
+            }
+        </div>  <!-- panel-group -->
+    </div>  <!-- col-xs-12 -->
+</div>  <!-- row -->
+
+<div class="row row-dense-content">
+    <div class="col-xs-6 col-sm-3">
+        <button id="buttonNew" class="btn btn-default btn-sm btn-block" onclick='window.open("/performers/new", "_self");'
+                data-toggle="tooltip" data-placement="bottom" title="Create a new Performer">
+            New Performer
+        </button>
+    </div>
+    @if( !ps.isEmpty ) {
+        <div class="col-xs-6 col-sm-3">
+            <button id="buttonDeleteAll" class="btn btn-default btn-sm btn-block" onclick='window.open("/performers/deleteAll", "_self");'
+                    data-toggle="tooltip" data-placement="bottom" title="Delete All Performers that don't have Recordings assigned">
+                Delete All Performers
+            </button>
+        </div>
     }
-</table>
+</div>
 
-<hr style="width:40%; text-align:left; margin-left:0" />
-<p>You cannot delete a performer as long as recordings are assigned to him. First delete the recordings of the performer. Then you can delete the performer.</p>
+@if( !ps.isEmpty ) {
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <div class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p>You cannot delete a Performer as long as Recordings are assigned to him. First delete the Recordings of the Performer. Then you can delete the Performer.</p>
+            </div>
+        </div>
+    </div>
+}
 
-<table>
-    <tr>
-        <td><input id="buttonNew" type="button" value="New Performer" onclick='window.open("/webApp/performers/editNew", "_self");' /></td>
-        <td><input id="buttonDeleteAll" type="button" value="Delete All Performers" onclick='window.open("/webApp/performers/deleteAll", "_self");' /></td>
-    </tr>
-</table>
 
 <script type="text/javascript">
-
-    function deletePerformer(buttonDelete, pHasRecordings, pId) {
-
-        if(pHasRecordings) {
-            buttonDelete.disabled = true
-            alert("You cannot delete this performer as long as recordings are assigned to him. First delete the recordings of this performer. Then you can delete this performer.")
-        } else {
-            window.open("/webApp/performers/" + pId + "/delete", "_self")
-        }
-    }
-
 </script>
 
 }

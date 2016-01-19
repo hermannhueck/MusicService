@@ -1,0 +1,231 @@
+@import _root_.musicWebApp.models.{Recording, Performer}
+@import _root_.musicWebApp.controllers.RecordingData
+@import helper._
+
+
+@(rOpt: Option[Recording], ps: Seq[Performer], recordingForm: Form[RecordingData])(implicit messages: Messages)
+
+@implicitField = @{ FieldConstructor(myFieldConstructorTemplate.f) }
+
+@rId = @{ if( rOpt.isDefined ) rOpt.get.id.get else -1L }
+@rTitle = @{ if( rOpt.isDefined ) rOpt.get.title else "" }
+@rComposer = @{ if( rOpt.isDefined ) rOpt.get.composer else "" }
+@rYear = @{ if( rOpt.isDefined ) rOpt.get.year else 0 }
+@rPerformers = @{ if( rOpt.isDefined ) rOpt.get.performers else Seq.empty }
+@rHasPerformers = @{ rOpt.isDefined && rOpt.get.hasPerformers }
+
+
+@main("Classic Music Service") {
+
+<div class="col-xs-12">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/recordings">Recordings</a></li>
+        @if( rOpt.isDefined ) {
+            <li><a href="#" class="active">Edit Recording (id = @rId)</a></li>
+        } else {
+            <li><a href="#" class="active">New Recording</a></li>
+        }
+    </ul>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        @if( rOpt.isDefined ) {
+            <h2>Recording: &nbsp; @{rTitle} <small>&nbsp; composed by &nbsp;</small> @{rComposer}</h2>
+        } else {
+            <h2>New Recording</h2>
+        }
+    </div>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <p style="padding:5px"></p>
+    </div>
+</div>
+
+@form(action = musicWebApp.controllers.routes.WebApplication.recordingCreateOrUpdate(rId), 'enctype -> "multipart/form-data", 'class -> "form-horizontal", 'role -> "form") {
+
+    @if( rOpt.isEmpty ) {
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-2 control-label">
+                <label for="inputFile">MP3 File</label>
+            </div>
+            <div class="col-xs-12 col-sm-9">
+                <input id="inputFile" type="file" name="mp3file" class="form-control" required>
+            </div>
+        </div>
+    }
+
+    <div class="form-group">
+        @input(recordingForm("title"), '_label -> "Title:", '_showConstraints -> false, '_showErrors -> true,
+                'placeHolder -> "Title", 'labelColSm -> 2, 'inputColSm -> 9) { (id, name, value, args) =>
+            <input id="inputTitle" type="text" name="@name" value="@value" size="50" class="form-control" maxlength="200" required @toHtmlArgs(args)>
+        }
+    </div>
+
+    <div class="form-group">
+        @input(recordingForm("composer"), '_label -> "Composer:", '_showConstraints -> false, '_showErrors -> true,
+                'placeHolder -> "Composer", 'labelColSm -> 2, 'inputColSm -> 3) { (id, name, value, args) =>
+            <input id="inputComposer" type="text" name="@name" value="@value" size="50" class="form-control" maxlength="200" required @toHtmlArgs(args)>
+        }
+
+        @input(recordingForm("year"), '_label -> "Recording Year:", '_showConstraints -> false, '_showErrors -> true,
+                'placeHolder -> "Year", 'labelColSm -> 2, 'inputColSm -> 3, 'class -> "form-control") { (id, name, value, args) =>
+            <input id="inputYear" type="number" name="@name" value="@value" size="4" maxlength="4" required @toHtmlArgs(args)>
+        }
+    </div>
+
+    <div class="form-group">
+        <div class="hidden-xs col-sm-2">
+            <label for="buttonUpdate"></label>
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            <input id="buttonUpdate" type="submit" value="@if( rOpt.isDefined ) {Update} else {Create}" class="form-control btn btn-primary"
+                   data-toggle="tooltip" data-placement="bottom" title="@if( rOpt.isDefined ) {Update this Recording} else {Create new Recording}">
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            <input id="buttonDelete" type="button" value="Delete" class="form-control btn btn-primary" @if( rOpt.isEmpty ) {disabled}
+                   data-toggle="tooltip" data-placement="bottom" title="Delete this Recording" onclick='deleteRecording(this, @rId);'>
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            <a type="button" class="form-control btn btn-default" href="/recordings"
+                   data-toggle="tooltip" data-placement="bottom" title="@if( rOpt.isDefined ) {Cancel editing this Recording} else {Cancel creating new Recording}">
+                Cancel
+            </a>
+        </div>
+    </div>
+}
+
+@if( rOpt.isDefined ) {
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <p style="padding:5px"></p>
+    </div>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <label for="selectPerformersToDelete">Performers assigned to this Recording</label>
+    </div>
+    <div class="col-xs-12 col-sm-8">
+        @if( rHasPerformers ) {
+        <select multiple="multiple" id="selectPerformersToDelete" name="performersToDelete" size="5" class="form-control" >
+            @for( p <- rPerformers ) {
+                <option value="@p.id">@p.name, @p.performerType</option>
+            }
+        </select>
+        } else {
+            <div>--- No Performers assigned to this Recording ---</div>
+        }
+    </div>
+    <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+        <button id="buttonDeletePerformers" onclick='deletePerformersFromRecording(this, @rId);' @if( !rHasPerformers ) {disabled}
+                data-toggle="tooltip" data-placement="bottom" title="Delete selected Performers of this Recording"
+                class="btn btn-primary btn-block">
+            Delete selected Performers
+        </button>
+    </div>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <p style="padding:5px"></p>
+    </div>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <label for="selectPerformersToAdd">Performers <u>not</u> assigned to this Recording</label>
+    </div>
+    <div class="col-xs-12 col-sm-8">
+        @if( !ps.isEmpty ) {
+            <select multiple="multiple" id="selectPerformersToAdd" name="performerToAdd" size="5" class="form-control" >
+                @for( p <- ps ) {
+                    <option value="@p.id">@p.name, @p.performerType</option>
+                }
+            </select>
+        } else {
+            <div>--- No Performers left to be assigned to this Recording ---</div>
+        }
+    </div>
+    <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+        <button id="buttonAddPerformers" onclick='addPerformersToRecording(this, @rId);' @if( ps.isEmpty ) {disabled}
+                data-toggle="tooltip" data-placement="bottom" title="Add selected Performers of this Recording"
+                class="btn btn-primary btn-block">
+            Add selected Performers
+        </button>
+    </div>
+</div>
+
+}   <!-- if( rOpt.isDefined ) -->
+
+<div class="row row-dense-content">
+    <p style="padding:5px"></p>
+</div>
+
+
+<script type="text/javascript">
+
+    var selectPerformersToDelete = document.getElementById("selectPerformersToDelete");
+    var selectPerformersToAdd = document.getElementById("selectPerformersToAdd");
+
+    function deletePerformersFromRecording(buttonDeletePerformers, rId) {
+        window.open("/recordings/" + rId + "/deletePerformers/" + collectIds(selectPerformersToDelete), "_self");
+    }
+
+    function addPerformersToRecording(buttonAddPerformers, rId) {
+        window.open("/recordings/" + rId + "/addPerformers/" + collectIds(selectPerformersToAdd), "_self");
+    }
+
+    function collectIds(selectBox) {
+
+        var selectedIds = [];
+
+        for (var i = 0; i < selectBox.length; i++) {
+            if (selectBox.options[i].selected) {
+                selectedIds.push(selectBox.options[i].value);
+            }
+        }
+
+        var selectedIdsAsCSV = "";
+
+        for (var i = 0; i < selectedIds.length; i++) {
+            if (i === 0) {
+                selectedIdsAsCSV = selectedIdsAsCSV + selectedIds[i];
+            } else {
+                selectedIdsAsCSV = selectedIdsAsCSV + "," + selectedIds[i];
+            }
+        }
+
+        return selectedIdsAsCSV;
+    }
+
+    var inputTitle = document.getElementById("inputTitle")
+    var inputComposer = document.getElementById("inputComposer")
+    var inputYear = document.getElementById("inputYear")
+
+    document.querySelector('input[type="file"]').onchange = function(e) {
+
+				/*
+				   Pass the 1st File instance to id3.js
+				*/
+				id3(this.files[0], function(err, tags) {
+
+					console.log(err, tags)
+
+					inputTitle.readOnly = false
+					inputComposer.readOnly = false
+					inputYear.readOnly = false
+
+					inputTitle.value = tags.title
+					inputComposer.value = tags.artist
+					inputYear.value = tags.year
+				});
+			}
+
+</script>
+
+}

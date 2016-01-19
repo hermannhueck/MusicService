@@ -86,15 +86,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi, val ws: WSClient) e
 
     l.debug("index()")
 
-    Redirect(routes.WebApplication.webApp())
-  }
-
-
-  def webApp = Action {
-
-    l.debug("webApp()")
-
-    Redirect(routes.WebApplication.recordings())
+    Ok(musicWebApp.views.html.index())
   }
 
 
@@ -201,45 +193,34 @@ class WebApplication @Inject()(val messagesApi: MessagesApi, val ws: WSClient) e
   }
 
 
-  def performerDetails(pId: Long) = Action.async {
-
-    l.debug("performerDetails(pId = " + pId + ")")
-
-    wsApi.findPerformerById(pId) flatMap {
-      case None => Future { NotFound("Performer with id " + pId + " not found") }
-      case Some(p) => showPerformerDetails(p, modeReadOnly = true)
-    }
-  }
-
-
   def performerEdit(pId: Long) = Action.async { implicit request =>
 
     l.debug("performerEdit(pId = " + pId + ")")
 
     wsApi.findPerformerById(pId) flatMap {
       case None => Future { NotFound("Performer with id " + pId + " not found") }
-      case Some(p) => showPerformerDetails(p, modeReadOnly = false)
+      case Some(p) => showPerformerEdit(p)
     }
   }
 
-  private def showPerformerDetails(p: Performer, modeReadOnly: Boolean): Future[Result] = {
+  def performerNew() = Action.async {
+
+    l.debug("performerNew()")
+
+    wsApi.findAllRecordings map { unassignedRecordings =>
+      Ok(musicWebApp.views.html.performerEdit(None, unassignedRecordings, performerForm))
+    }
+  }
+
+  private def showPerformerEdit(p: Performer): Future[Result] = {
 
     val performerData = PerformerData(p.name, p.performerType.toString, p.recordings.map(_.id.get))
     val rIds = p.recordings map { _.id}
-    val fRecordings = wsApi.findAllRecordings.map { _.filterNot(rIds contains _.id) }
-    fRecordings map { rs => Ok(musicWebApp.views.html.performerDetails(p, rs, modeReadOnly, performerForm.fill(performerData).discardingErrors)) }
+    val fUnassignedRecordings = wsApi.findAllRecordings.map { _.filterNot(rIds contains _.id) }
+    fUnassignedRecordings map { unassignedRecordings =>
+      Ok(musicWebApp.views.html.performerEdit(Some(p), unassignedRecordings, performerForm.fill(performerData).discardingErrors)) }
   }
 
-
-  def recordingDetails(rId: Long) = Action.async {
-
-    l.debug("recordingDetails(rId = " + rId + ")")
-
-    wsApi.findRecordingById(rId) flatMap {
-      case None => Future { NotFound("Recording with id " + rId + " not found")}
-      case Some(r) => showRecordingDetails(r, modeReadOnly = true)
-    }
-  }
 
   def recordingEdit(rId: Long) = Action.async { implicit request =>
 
@@ -247,21 +228,68 @@ class WebApplication @Inject()(val messagesApi: MessagesApi, val ws: WSClient) e
 
     wsApi.findRecordingById(rId) flatMap {
       case None => Future { NotFound("Recording with id " + rId + " not found")}
-      case Some(r) => showRecordingDetails(r, modeReadOnly = false)
+      case Some(r) => showRecordingEdit(r)
     }
   }
 
-  private def showRecordingDetails(r: Recording, modeReadOnly: Boolean): Future[Result] = {
+  def recordingNew() = Action.async {
+
+    l.debug("recordingNew()")
+
+    wsApi.findAllPerformers map { unassignedPerformers =>
+      Ok(musicWebApp.views.html.recordingEdit(None, unassignedPerformers, recordingForm))
+    }
+  }
+
+  private def showRecordingEdit(r: Recording): Future[Result] = {
 
     val recordingData = RecordingData(r.title, r.composer, r.year, r.performers.map(_.id.get))
     val pIds = r.performers map { _.id }
-    val fPerformers = wsApi.findAllPerformers.map { _.filterNot(pIds contains _.id) }
-    fPerformers map { ps =>
-      Ok(musicWebApp.views.html.recordingDetails(r, ps, modeReadOnly, recordingForm.fill(recordingData).discardingErrors))
+    val fUnassignedPerformers = wsApi.findAllPerformers.map { _.filterNot(pIds contains _.id) }
+    fUnassignedPerformers map { unassignedPerformers =>
+      Ok(musicWebApp.views.html.recordingEdit(Some(r), unassignedPerformers, recordingForm.fill(recordingData).discardingErrors))
     }
   }
 
-  def performerUpdate(pId: Long) = Action.async(BodyParsers.parse.urlFormEncoded) { implicit request =>
+
+  def performerCreateOrUpdate(pId: Long = -1L) = {
+
+    l.debug("performerCreateOrUpdate(pId = " + pId + ")")
+
+    if (pId < 0)
+      performerCreate()
+    else
+      performerUpdate(pId)
+  }
+
+  private def performerCreate() = Action.async(BodyParsers.parse.urlFormEncoded) { implicit request =>
+
+    l.info("performerCreate(): request.body = " + request.body.toString)
+
+    performerForm.bindFromRequest.fold(
+
+      performerFormWithErrors => {
+        wsApi.findAllRecordings map { rs =>
+          Ok(musicWebApp.views.html.performerEdit(None, rs, performerFormWithErrors))
+        }
+      },
+
+      performerFormData => {
+
+        l.debug("performerCreate(): performerFormData: name = " + performerFormData.name +            // recordingIds not provided! Why?
+          ", performerType = " + performerFormData.performerType + ", recordingIds = " + performerFormData.recordingIds)
+
+        val rIds = if (!request.body.isDefinedAt("recordingIds")) Seq.empty else request.body("recordingIds").map(_.toLong)
+        val p = new Performer(None, performerFormData.name, performerFormData.performerType)
+
+        wsApi.addPerformer(p, rIds) map { optRec =>
+          Redirect(routes.WebApplication.performerEdit(optRec.get.id.get))
+        }
+      }
+    )
+  }
+
+  private def performerUpdate(pId: Long) = Action.async(BodyParsers.parse.urlFormEncoded) { implicit request =>
 
     l.debug("performerUpdate(pId = " + pId + ")")
 
@@ -269,21 +297,31 @@ class WebApplication @Inject()(val messagesApi: MessagesApi, val ws: WSClient) e
       performerFormWithErrors => {
         wsApi.findPerformerById(pId).map {
           case None => NotFound("Performer with id " + pId + " not found")
-          case Some(p) => Ok(musicWebApp.views.html.performerDetails(p, Seq.empty, modeReadOnly = false, performerFormWithErrors))
+          case Some(p) => Ok(musicWebApp.views.html.performerEdit(Some(p), Seq.empty, performerFormWithErrors))
         }
       },
       updateData => {
         wsApi.updatePerformer(Performer(Some(pId), updateData.name, Helper.typeOf(updateData.performerType)))
           .map {
             case None => NotFound("Performer with id " + pId + " not found")
-            case Some(p) => Redirect(routes.WebApplication.performerDetails(p.id.get))
+            case Some(p) => Redirect(routes.WebApplication.performerEdit(p.id.get))
           }
       }
     )
   }
 
 
-  def recordingUpdate(rId: Long) = Action.async(BodyParsers.parse.urlFormEncoded) { implicit request =>
+  def recordingCreateOrUpdate(rId: Long = -1L) = {
+
+    l.debug("recordingCreateOrUpdate(rId = " + rId + ")")
+
+    if (rId < 0)
+      recordingCreate()
+    else
+      recordingUpdate(rId)
+  }
+
+  private def recordingUpdate(rId: Long) = Action.async(BodyParsers.parse.multipartFormData) { implicit request =>
 
     l.debug("recordingUpdate(rId = " + rId + ")")
 
@@ -291,15 +329,61 @@ class WebApplication @Inject()(val messagesApi: MessagesApi, val ws: WSClient) e
       recordingFormWithErrors => {
         wsApi.findRecordingById(rId).map {
           case None => NotFound("Recording with id " + rId + " not found")
-          case Some(r) => Ok(musicWebApp.views.html.recordingDetails(r, Seq.empty, modeReadOnly = false, recordingFormWithErrors))
+          case Some(r) => Ok(musicWebApp.views.html.recordingEdit(Some(r), Seq.empty, recordingFormWithErrors))
         }
       },
       updateData => {
           wsApi.updateRecording(Recording(Some(rId), updateData.title, updateData.composer, updateData.year))
             .map {
               case None => NotFound("Recording with id " + rId + " not found")
-              case Some(r) => Redirect(routes.WebApplication.recordingDetails(r.id.get))
+              case Some(r) => Redirect(routes.WebApplication.recordingEdit(r.id.get))
             }
+      }
+    )
+  }
+
+  private def recordingCreate() = Action.async(BodyParsers.parse.multipartFormData) { implicit request =>
+
+    l.debug("recordingCreate()")
+
+    recordingForm.bindFromRequest.fold(
+
+      recordingFormWithErrors => {
+        wsApi.findAllPerformers map { ps =>
+          Ok(musicWebApp.views.html.recordingEdit(None, ps, recordingFormWithErrors))
+        }
+      },
+
+      recordingFormData => {
+
+        val dataParts: Map[String, Seq[String]] = request.body.dataParts
+        val fileParts: Seq[MultipartFormData.FilePart[Files.TemporaryFile]] = request.body.files
+        l.debug("recordingCreate(): dataParts = " + dataParts)
+        l.debug("recordingCreate(): fileParts = " + fileParts)
+
+        if (fileParts.isEmpty) {
+          Future {
+            BadRequest("No MP3 file received in request")
+          }
+        } else {
+          val filePart = fileParts.head
+          val contentType: String = filePart.contentType.get
+          val filename: String = filePart.filename
+          val ref: Files.TemporaryFile = filePart.ref
+
+          l.debug("recordingCreate(): File data has content-type: " + contentType)
+          l.debug("recordingCreate(): File name transmitted: " + filename)
+          l.debug("recordingCreate(): File data saved to temp file: " + ref.file.getAbsolutePath)
+          l.debug("recordingCreate(): recordingFormData: title = " + recordingFormData.title +             // performerIds not provided! Why?
+            ", composer = " + recordingFormData.composer + ", year = " + recordingFormData.year + ", performerIds = " + recordingFormData.performerIds)
+
+          val performerIds = Seq.empty  // dataParts("performerIds") map { _.toLong }
+          val r = Recording(title = recordingFormData.title, composer = recordingFormData.composer, year = recordingFormData.year)
+
+          wsApi.addRecording(r, performerIds, ref.file.getAbsolutePath) map { rOpt =>
+            Redirect(routes.WebApplication.recordingEdit(rOpt.get.id.get))
+          }
+        }
       }
     )
   }
@@ -361,7 +445,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi, val ws: WSClient) e
 
     wsApi.deleteRecordingsFromPerformer(pId, rIds) flatMap {
       case None => Future { NotFound("Performer with id " + pId + " not found") }
-      case Some(p) => showPerformerDetails(p, modeReadOnly = true)
+      case Some(p) => showPerformerEdit(p)
     }
   }
 
@@ -374,7 +458,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi, val ws: WSClient) e
 
     wsApi.deletePerformersFromRecording(rId, pIds) flatMap {
       case None => Future { NotFound("Recording with id " + rId + " not found")}
-      case Some(r) => showRecordingDetails(r, modeReadOnly = true)
+      case Some(r) => showRecordingEdit(r)
     }
   }
 
@@ -387,7 +471,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi, val ws: WSClient) e
 
     wsApi.addRecordingsToPerformer(pId, rIds) flatMap {
       case None => Future { NotFound("Performer with id " + pId + " not found") }
-      case Some(p) => showPerformerDetails(p, modeReadOnly = true)
+      case Some(p) => showPerformerEdit(p)
     }
   }
 
@@ -400,102 +484,8 @@ class WebApplication @Inject()(val messagesApi: MessagesApi, val ws: WSClient) e
 
     wsApi.addPerformersToRecording(rId, pIds) flatMap {
       case None => Future { NotFound("Recording with id " + rId + " not found")}
-      case Some(r) => showRecordingDetails(r, modeReadOnly = true)
+      case Some(r) => showRecordingEdit(r)
     }
-  }
-
-
-  def performerEditNew() = Action.async {
-
-    l.debug("performerEditNew()")
-
-    wsApi.findAllRecordings map { rs =>
-      Ok(musicWebApp.views.html.performerEditNew(rs, performerForm))
-    }
-  }
-
-
-  def recordingEditNew() = Action.async {
-
-    l.debug("recordingEditNew()")
-
-    wsApi.findAllPerformers map { ps =>
-      Ok(musicWebApp.views.html.recordingEditNew(ps, recordingForm))
-    }
-  }
-
-
-  def performerCreate() = Action.async(BodyParsers.parse.urlFormEncoded) { implicit request =>
-
-    l.info("performerCreate(): request.body = " + request.body.toString)
-
-    performerForm.bindFromRequest.fold(
-
-      performerFormWithErrors => {
-        wsApi.findAllRecordings map { rs =>
-          Ok(musicWebApp.views.html.performerEditNew(rs, performerFormWithErrors))
-        }
-      },
-
-      performerFormData => {
-
-        l.debug("performerCreate(): performerFormData: name = " + performerFormData.name +            // recordingIds not provided! Why?
-                                  ", performerType = " + performerFormData.performerType + ", recordingIds = " + performerFormData.recordingIds)
-
-        val rIds = if (!request.body.isDefinedAt("recordingIds")) Seq.empty else request.body("recordingIds").map(_.toLong)
-        val p = new Performer(None, performerFormData.name, performerFormData.performerType)
-
-        wsApi.addPerformer(p, rIds) map { optRec =>
-          Redirect(routes.WebApplication.performerDetails(optRec.get.id.get))
-        }
-      }
-    )
-  }
-
-  def recordingCreate() = Action.async(BodyParsers.parse.multipartFormData) { implicit request =>
-
-    l.debug("recordingCreate()")
-
-    recordingForm.bindFromRequest.fold(
-
-      recordingFormWithErrors => {
-        wsApi.findAllPerformers map { ps =>
-          Ok(musicWebApp.views.html.recordingEditNew(ps, recordingFormWithErrors))
-        }
-      },
-
-      recordingFormData => {
-
-        val dataParts: Map[String, Seq[String]] = request.body.dataParts
-        val fileParts: Seq[MultipartFormData.FilePart[Files.TemporaryFile]] = request.body.files
-        l.debug("recordingCreate(): dataParts = " + dataParts)
-        l.debug("recordingCreate(): fileParts = " + fileParts)
-
-        if (fileParts.isEmpty) {
-          Future {
-            BadRequest("No MP3 file received in request")
-          }
-        } else {
-          val filePart = fileParts.head
-          val contentType: String = filePart.contentType.get
-          val filename: String = filePart.filename
-          val ref: Files.TemporaryFile = filePart.ref
-
-          l.debug("recordingCreate(): File data has content-type: " + contentType)
-          l.debug("recordingCreate(): File name transmitted: " + filename)
-          l.debug("recordingCreate(): File data saved to temp file: " + ref.file.getAbsolutePath)
-          l.debug("recordingCreate(): recordingFormData: title = " + recordingFormData.title +             // performerIds not provided! Why?
-                                  ", composer = " + recordingFormData.composer + ", year = " + recordingFormData.year + ", performerIds = " + recordingFormData.performerIds)
-
-          val performerIds = dataParts("performerIds") map { _.toLong }
-          val r = Recording(title = recordingFormData.title, composer = recordingFormData.composer, year = recordingFormData.year)
-
-          wsApi.addRecording(r, performerIds, ref.file.getAbsolutePath) map { rOpt =>
-            Redirect(routes.WebApplication.recordingDetails(rOpt.get.id.get))
-          }
-        }
-      }
-    )
   }
 
 
