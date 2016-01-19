@@ -5,18 +5,75 @@
 
 @main("Classic Music Service") {
 
-<div class="col-xs-12">
-    <ul class="breadcrumb">
-        <li><a href="/">Home</a></li>
-    </ul>
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+        </ul>
+    </div>
 </div>
 
-<h1>Description of the Web App</h1>
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <h2>Description of the Music Web Application</h2>
+    </div>
+</div>
 
-<p>Lorem ipsum ...</p>
-<p>Lorem ipsum ...</p>
-<p>Lorem ipsum ...</p>
-<p style="padding:50px"></p>
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <p>
+            This simple App is a "Music Web Application", it is
+            <ul>
+                <li>a web application running in the browser</li>
+                <li>with web pages being rendered on the Play server.</li>
+            </ul>
+        </p>
+
+        <p>
+            The MusicWebApp manages music Performers and Recordings. It is a RESTful
+            web service client to the web service MusicService.
+            The MusicWebApp cannot do any work without MusicService being started.
+        </p>
+
+        <p>
+            With MusicWebApp the user can perform the following operations in the browser:
+
+            <ul>
+                <li>Add, change, delete and query Performers and Recordings</li>
+                <li>listen to Recordings</li>
+            </ul>
+        </p>
+
+        <p>
+            The App is a small case study using ...
+
+            <ul>
+                <li>The Play Framework as containerless Web framework</li>
+                <li>Scala as implementation language</li>
+                <li>The Play web service library to access the MusicService</li>
+                <li>Bootstrap CSS to enhance the look of the web pages</li>
+                <li>Currently no client authentication to access performers or recordings</li>
+                <li>Currently no client roles with different access priviledges</li>
+            </ul>
+        </p>
+
+        <p>
+            In the current stage the App doesn't implement any security features.
+            It offers its interface via HTTP (no HTTPS) and does not require
+            the user to log in before accessing recordings on the server.
+        </p>
+
+        <p>
+            The project build is based on SBT (Scala Build Tool).
+        </p>
+    </div>
+</div>
+
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <p style="padding:30px"></p>
+    </div>
+</div>
 
 <script type="text/javascript">
 </script>

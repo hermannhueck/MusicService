@@ -26,7 +26,7 @@ This simple App is a "Music Service", it is
 - a web application running in the browser
 
 The Music Service manages music performers and recordings. Management implies
-CRUD operations on performers and recordings, up- and download of music data
+CRUD operations on Performers and Recordings, up- and download of music data
 (mp3 files) as well as assigning performers to recordings or recordings to
 performers and the removal of these assignments.
 
@@ -45,6 +45,7 @@ The Music Service allows a client (web service client or web client) to perform
 the following operations:
 
 - to add, change, delete and query Performers and Recordings
+- download or stream music data to the client
 
 The App is a small case study using ...
 

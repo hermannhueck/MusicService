@@ -16,16 +16,18 @@
 
 @main("Classic Music Service") {
 
-<div class="col-xs-12">
-    <ul class="breadcrumb">
-        <li><a href="/">Home</a></li>
-        <li><a href="/performers">Performers</a></li>
-        @if( pOpt.isDefined ) {
-            <li><a href="#" class="active">Edit Performer (id = @pId)</a></li>
-        } else {
-            <li><a href="#" class="active">New Performer</a></li>
-        }
-    </ul>
+<div class="row row-dense-content">
+    <div class="col-xs-12">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/performers">Performers</a></li>
+            @if( pOpt.isDefined ) {
+                <li><a href="#" class="active">Edit Performer (id = @pId)</a></li>
+            } else {
+                <li><a href="#" class="active">New Performer</a></li>
+            }
+        </ul>
+    </div>
 </div>
 
 <div class="row row-dense-content">

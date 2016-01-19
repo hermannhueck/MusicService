@@ -32,13 +32,27 @@ case object Global extends GlobalSettings {
       Recording(title = "Symphony no. 5", composer = "Ludwig van Beethoven", year = 2005),
       Recording(title = "Forellenquintett", composer = "Franz Schubert", year = 2006),
       Recording(title = "Eine kleine Nachtmusik", composer = "Wolfgang Amadeus Mozart", year = 2005),
-      Recording(title = "Entführung aus dem Serail", composer = "Wolfgang Amadeus Mozart", year = 2008)
+      Recording(title = "Entführung aus dem Serail", composer = "Wolfgang Amadeus Mozart", year = 2008),
+      Recording(title = "Die Moldau", composer = "Friedrich Smetana", year = 2011),
+      Recording(title = "Poetische Polkas", composer = "Friedrich Smetana", year = 2012),
+      Recording(title = "Sonate g-Moll", composer = "Friedrich Smetana", year = 2013),
+      Recording(title = "Nocturnes", composer = "Frédéric Chopin", year = 2014),
+      Recording(title = "Regentropfen-Prélude", composer = "Frédéric Chopin", year = 2015),
+      Recording(title = "Tarantelle As-Dur", composer = "Frédéric Chopin", year = 2001),
+      Recording(title = "Polonaise As-Dur („Héroïque“)", composer = "Frédéric Chopin", year = 2002),
+      Recording(title = "Scherzo Nr. 3 cis-Moll", composer = "Frédéric Chopin", year = 2003)
     )
     val psToInsert = Seq(
       Performer(name = "Arthur Rubinstein", performerType = Soloist),
       Performer(name = "London Philharmonic Orchestra", performerType = Ensemble),
       Performer(name = "Herbert von Karajan", performerType = Conductor),
-      Performer(name = "Christopher Park", performerType = Soloist)
+      Performer(name = "Christopher Park", performerType = Soloist),
+      Performer(name = "Kotaro Fukuma", performerType = Soloist),
+      Performer(name = "Berliner Philharmoniker", performerType = Ensemble),
+      Performer(name = "Anne Sophie Mutter", performerType = Soloist),
+      Performer(name = "Claudio Abado", performerType = Conductor),
+      Performer(name = "Simon Rattle", performerType = Conductor),
+      Performer(name = "Daniel Barenboim", performerType = Conductor)
     )
 
     Await.result(db.run(
@@ -58,6 +72,8 @@ case object Global extends GlobalSettings {
     resultOf( repo.addPerformersToRecording(rIds(2), Seq(pIds(0))) )
     // 'Die kleine Nachtmusik' performed by 'Arthur Rubinstein'
     resultOf( repo.addRecordingsToPerformer(pIds(3), Seq(rIds(1), rIds(2))) )
+    // 'Die Moldau' performed by 'Kotaro Fukuma'
+    resultOf( repo.addPerformersToRecording(rIds(4), Seq(pIds(4))) )
 
     val testFileDir = "testRecordings"
     val dataDir = "recordings"
@@ -66,6 +82,14 @@ case object Global extends GlobalSettings {
     copyFromTo(randomDataFile(testFileDir), dataPath(2L, dataDir))
     copyFromTo(randomDataFile(testFileDir), dataPath(3L, dataDir))
     copyFromTo(randomDataFile(testFileDir), dataPath(4L, dataDir))
+    copyFromTo(randomDataFile(testFileDir), dataPath(5L, dataDir))
+    copyFromTo(randomDataFile(testFileDir), dataPath(6L, dataDir))
+    copyFromTo(randomDataFile(testFileDir), dataPath(7L, dataDir))
+    copyFromTo(randomDataFile(testFileDir), dataPath(8L, dataDir))
+    copyFromTo(randomDataFile(testFileDir), dataPath(9L, dataDir))
+    copyFromTo(randomDataFile(testFileDir), dataPath(10L, dataDir))
+    copyFromTo(randomDataFile(testFileDir), dataPath(11L, dataDir))
+    copyFromTo(randomDataFile(testFileDir), dataPath(12L, dataDir))
 
     l.debug("===> Database Schema created")
   }

@@ -21,20 +21,23 @@ Table of Contents
 
 This simple App is a "Music Web Application", it is
 - a web application running in the browser
+- with web pages being rendered on the Play server.
 
-The MusicWebApp manages music performers and recordings. It is a RESTful
+The MusicWebApp manages music Performers and Recordings. It is a RESTful
 web service client to the web service MusicService.
-The MusicWebApp cannot do any work without MusicWebApp being started.
+The MusicWebApp cannot do any work without MusicService being started.
 
-With MusicWebApp the user can perform the following operations in the browser
+With MusicWebApp the user can perform the following operations in the browser:
 
-- to add, change, delete and query Performers and Recordings
+- add, change, delete and query Performers and Recordings
+- listen to Recordings
 
 The App is a small case study using ...
 
-- the Play Framework as containerless Web framework
+- The Play Framework as containerless Web framework
 - Scala as implementation language
-- Thre Play web service library to access the MusicService
+- The Play web service library to access the MusicService
+- Bootstrap CSS to enhance the look of the web pages
 - Currently no client authentication to access performers or recordings
 - Currently no client roles with different access priviledges
 
