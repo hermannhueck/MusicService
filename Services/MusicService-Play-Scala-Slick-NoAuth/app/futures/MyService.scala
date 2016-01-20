@@ -47,5 +47,5 @@ object MyService {
     a.length
   }
 
-  def operationBAsync(someInput: String = ""): Future[B] = Future { operationB(someInput) }
+  def operationBAsync(a: A = ""): Future[B] = Future { operationB(a) }
 }
