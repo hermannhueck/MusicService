@@ -61,19 +61,19 @@
     }
 
     <div class="form-group">
-        @input(recordingForm("title"), '_label -> "Title:", '_showConstraints -> false, '_showErrors -> true,
+        @input(recordingForm("title"), '_label -> "Title", '_showConstraints -> false, '_showErrors -> true,
                 'placeHolder -> "Title", 'labelColSm -> 2, 'inputColSm -> 9) { (id, name, value, args) =>
             <input id="inputTitle" type="text" name="@name" value="@value" size="50" class="form-control" maxlength="200" required @toHtmlArgs(args)>
         }
     </div>
 
     <div class="form-group">
-        @input(recordingForm("composer"), '_label -> "Composer:", '_showConstraints -> false, '_showErrors -> true,
+        @input(recordingForm("composer"), '_label -> "Composer", '_showConstraints -> false, '_showErrors -> true,
                 'placeHolder -> "Composer", 'labelColSm -> 2, 'inputColSm -> 3) { (id, name, value, args) =>
             <input id="inputComposer" type="text" name="@name" value="@value" size="50" class="form-control" maxlength="200" required @toHtmlArgs(args)>
         }
 
-        @input(recordingForm("year"), '_label -> "Recording Year:", '_showConstraints -> false, '_showErrors -> true,
+        @input(recordingForm("year"), '_label -> "Recording Year", '_showConstraints -> false, '_showErrors -> true,
                 'placeHolder -> "Year", 'labelColSm -> 2, 'inputColSm -> 3, 'class -> "form-control") { (id, name, value, args) =>
             <input id="inputYear" type="number" name="@name" value="@value" size="4" maxlength="4" required @toHtmlArgs(args)>
         }

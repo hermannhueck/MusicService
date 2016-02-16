@@ -54,7 +54,7 @@ object Implicits {
       (JsPath \ "id").write[Option[Long]] and
       (JsPath \ "title").write[String] and
       (JsPath \ "composer").write[String] and
-      (JsPath \ "yearRecorded").write[Int] and
+      (JsPath \ "year").write[Int] and
       (JsPath \ "performers").lazyWrite[Seq[Performer]](Writes.seq[Performer](performerWrites))
     )(unlift(fromRecording))
 
@@ -66,7 +66,7 @@ object Implicits {
       (JsPath \ "id").readNullable[Long] and
       (JsPath \ "title").read[String] and
       (JsPath \ "composer").read[String] and
-      ((JsPath \ "yearRecorded").read[Int] orElse Reads.pure(1900)) and
+      ((JsPath \ "year").read[Int] orElse Reads.pure(1900)) and
       (JsPath \ "performers").lazyRead[Seq[Performer]](Reads.seq[Performer](performerReads))
     )(toRecording)
 

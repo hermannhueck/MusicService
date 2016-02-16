@@ -49,7 +49,7 @@
 @form(action = musicWebApp.controllers.routes.WebApplication.performerCreateOrUpdate(pId), 'class -> "form-horizontal", 'role -> "form") {
 
     <div class="form-group">
-        @input(performerForm("name"), '_label -> "Name:", '_showConstraints -> false, '_showErrors -> true,
+        @input(performerForm("name"), '_label -> "Name", '_showConstraints -> false, '_showErrors -> true,
                 'placeHolder -> "Name", 'labelColSm -> 2, 'inputColSm -> 3) { (id, name, value, args) =>
             <input id="inputName" type="text" name="@name" value="@value" size="50" class="form-control" maxlength="200" required @toHtmlArgs(args) />
         }
@@ -60,7 +60,7 @@
                                     Ensemble.toString -> Ensemble.toString,
                                     Conductor.toString -> Conductor.toString)),
             'id -> "selectPerformerType",
-            '_label -> "Performer Type:", '_showConstraints -> false, '_showErrors -> true,
+            '_label -> "Performer Type", '_showConstraints -> false, '_showErrors -> true,
             'placeHolder -> "Performer Type", 'labelColSm -> 2, 'inputColSm -> 3, 'class -> "form-control")
     </div>
 

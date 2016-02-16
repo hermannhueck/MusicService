@@ -47,37 +47,11 @@ class WebApplicationSpec extends PlaySpecification {
     }
 
 
-    "(in Test 03) redirect /recordings to /recordings/overview" in new WithApplication {
-
-      l.debug("redirect /recordings to /recordings/overview")
-
-      val fResult = route(FakeRequest(GET, "/recordings")).get
-
-      l.debug("headers = [[" + await(fResult).toString() + "]]")
-      // l.debug("contentAsString = [[" + contentAsString(fResult) + "]]")
-
-      status(fResult) must equalTo(SEE_OTHER)
-    }
-
-
-    "(in Test 04) redirect /performers to /performers/overview" in new WithApplication {
-
-      l.debug("redirect /performers to /performers/overview")
-
-      val fResult = route(FakeRequest(GET, "/recordings")).get
-
-      l.debug("headers = [[" + await(fResult).toString() + "]]")
-      // l.debug("contentAsString = [[" + contentAsString(fResult) + "]]")
-
-      status(fResult) must equalTo(SEE_OTHER)
-    }
-
-
-    "(in Test 05) render the Music Service Recordings page" in new WithApplication {
+    "(in Test 03) render the Music Service Recordings page" in new WithApplication {
 
       l.debug("render the Music Service Recordings page")
 
-      val fResult = route(FakeRequest(GET, "/recordings/overview")).get
+      val fResult = route(FakeRequest(GET, "/recordings")).get
 
       l.debug("headers = [[" + await(fResult).toString() + "]]")
       // l.debug("contentAsString = [[" + contentAsString(fResult) + "]]")
@@ -90,11 +64,11 @@ class WebApplicationSpec extends PlaySpecification {
     }
 
 
-    "(in Test 06) render the Music Service Performers page" in new WithApplication {
+    "(in Test 04) render the Music Service Performers page" in new WithApplication {
 
       l.debug("render the Music Service Performers page")
 
-      val fResult = route(FakeRequest(GET, "/performers/overview")).get
+      val fResult = route(FakeRequest(GET, "/performers")).get
 
       l.debug("headers = [[" + await(fResult).toString() + "]]")
       // l.debug("contentAsString = [[" + contentAsString(fResult) + "]]")

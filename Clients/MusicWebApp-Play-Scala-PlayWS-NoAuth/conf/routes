@@ -3,14 +3,11 @@
 # ~~~~
 
 # ----- WebApplication (User Interface) ------------------------------------------------------------------------------------------
-GET     /                                                                   musicWebApp.controllers.WebApplication.index
+GET     /                                                            musicWebApp.controllers.WebApplication.index
 
-GET     /recordings                                                  musicWebApp.controllers.WebApplication.recordings
-GET     /recordings/overview                                         musicWebApp.controllers.WebApplication.recordingsOverview
-GET     /recordings/search                                           musicWebApp.controllers.WebApplication.recordingsOverview
-POST    /recordings/search                                           musicWebApp.controllers.WebApplication.recordingsSearch
-GET     /recordings/:rId/edit                                        musicWebApp.controllers.WebApplication.recordingEdit(rId: Long)
+GET     /recordings                                                  musicWebApp.controllers.WebApplication.recordings(title: Option[String] ?=None, composer: Option[String] ?=None, yearMin: Option[String] ?=None, yearMax: Option[String] ?=None, performedBy: Option[String] ?=None)
 GET     /recordings/new                                              musicWebApp.controllers.WebApplication.recordingNew
+GET     /recordings/:rId/edit                                        musicWebApp.controllers.WebApplication.recordingEdit(rId: Long)
 POST    /recordings/:rId/createOrUpdate                              musicWebApp.controllers.WebApplication.recordingCreateOrUpdate(rId: Long)
 GET     /recordings/:rId/delete                                      musicWebApp.controllers.WebApplication.recordingDelete(rId: Long)
 GET     /recordings/deleteAll                                        musicWebApp.controllers.WebApplication.recordingsDeleteAll
@@ -18,12 +15,9 @@ GET     /recordings/:rId/deletePerformers/:pIds                      musicWebApp
 GET     /recordings/:rId/addPerformers/:pIds                         musicWebApp.controllers.WebApplication.addPerformersToRecording(rId: Long, pIds: String)
 GET     /recordings/:rId/data                                        musicWebApp.controllers.WebApplication.getRecordingData(rId: Long)
 
-GET     /performers                                                  musicWebApp.controllers.WebApplication.performers
-GET     /performers/overview                                         musicWebApp.controllers.WebApplication.performersOverview
-GET     /performers/search                                           musicWebApp.controllers.WebApplication.performersOverview
-POST    /performers/search                                           musicWebApp.controllers.WebApplication.performersSearch
-GET     /performers/:pId/edit                                        musicWebApp.controllers.WebApplication.performerEdit(pId: Long)
+GET     /performers                                                  musicWebApp.controllers.WebApplication.performers(name: Option[String] ?=None, performerType: Option[String] ?=None, performingIn: Option[String] ?=None)
 GET     /performers/new                                              musicWebApp.controllers.WebApplication.performerNew
+GET     /performers/:pId/edit                                        musicWebApp.controllers.WebApplication.performerEdit(pId: Long)
 POST    /performers/:pId/createOrUpdate                              musicWebApp.controllers.WebApplication.performerCreateOrUpdate(pId: Long)
 GET     /performers/:pId/delete                                      musicWebApp.controllers.WebApplication.performerDelete(pId: Long)
 GET     /performers/deleteAll                                        musicWebApp.controllers.WebApplication.performersDeleteAll

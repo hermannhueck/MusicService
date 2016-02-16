@@ -31,12 +31,12 @@
 
 <div class="collapse" id="collapsablePerformersSearchForm">
     <p style="padding:10px;"></p>
-@form(action = musicWebApp.controllers.routes.WebApplication.performersSearch(), 'class -> "form-horizontal", 'role -> "form") {
+@form(action = musicWebApp.controllers.routes.WebApplication.performers(), 'class -> "form-horizontal", 'role -> "form") {
 
     <div class="form-group">
         @input(searchForm("name"), '_label -> "Name:", '_showConstraints -> false, '_showErrors -> true,
                 'placeHolder -> "Name", 'labelColSm -> 2, 'inputColSm -> 3) { (id, name, value, args) =>
-            <input id="inputName" type="text" name="@name" value="@value" class="btn-block" maxlength="200" @toHtmlArgs(args) />
+            <input id="inputName" type="text" name="@name" value="@value" class="form-control" maxlength="200" @toHtmlArgs(args) />
         }
 
         @select(field = searchForm("performerType"),
@@ -55,9 +55,9 @@
                 <option value="">Select a Recording</option>
                 @for( r <- rs ) {
                     @if( value != None && value.get == r.id.get.toString ) {
-                        <option value="@r.id" selected>@r.title, @r.composer, @r.year</option>
+                        <option value="@r.id" selected>@r.title (@r.composer, @r.year)</option>
                     } else {
-                        <option value="@r.id">@r.title, @r.composer, @r.year</option>
+                        <option value="@r.id">@r.title, (@r.composer, @r.year)</option>
                     }
                 }
             </select>

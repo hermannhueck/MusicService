@@ -2,7 +2,6 @@ package musicWebApp.ws
 
 import java.io.File
 import java.nio.charset.StandardCharsets
-import java.util.NoSuchElementException
 
 import musicWebApp.json.Implicits._
 import musicWebApp.models._
@@ -356,7 +355,7 @@ class WsApi(val servicePort: Int) {
 
   private def toQueryUrl(url: String, seqOfPairs: Seq[(String, Option[Any])]): String = {
     val queryString = toQueryString(seqOfPairs)
-    if (queryString.isEmpty) url else url + "/search?" + queryString
+    if (queryString.isEmpty) url else url + "?" + queryString
   }
 
   private def toQueryString(seqOfPairs: Seq[(String, Option[Any])]): String = {

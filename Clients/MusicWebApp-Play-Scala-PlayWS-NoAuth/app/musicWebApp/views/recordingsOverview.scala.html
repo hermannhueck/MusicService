@@ -30,7 +30,7 @@
 
 <div class="collapse" id="collapsableRecordingsSearchForm">
     <p style="padding:10px;"></p>
-@form(action = musicWebApp.controllers.routes.WebApplication.recordingsSearch(), 'class -> "form-horizontal", 'role -> "form") {
+@form(action = musicWebApp.controllers.routes.WebApplication.recordings(), 'class -> "form-horizontal", 'role -> "form") {
 
     <div class="form-group">
         @input(searchForm("title"), '_label -> "Title", '_showConstraints -> false, '_showErrors -> true,
@@ -64,9 +64,9 @@
                 <option value="">Select a Performer</option>
                 @for( p <- ps ) {
                     @if( value != None && value.get == p.id.get.toString ) {
-                        <option value="@p.id" selected>@p.name, @p.performerType</option>
+                        <option value="@p.id" selected>@p.name (@p.performerType)</option>
                     } else {
-                        <option value="@p.id">@p.name, @p.performerType</option>
+                        <option value="@p.id">@p.name, (@p.performerType)</option>
                     }
                 }
             </select>
