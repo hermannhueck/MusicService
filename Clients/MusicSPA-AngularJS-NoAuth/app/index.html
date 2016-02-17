@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="musicSPA">
+
+<head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    
+    <title>Classic Music Service</title>
+    <link rel="shortcut icon" href="images/violinclef.jpg" type="image/jpeg">
+
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles/bootstrap-social.css">
+    <link rel="stylesheet" href="styles/mystyles.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    
+</head>
+
+<body ng-controller="IndexController">
+    
+    
+
+    <div ui-view="header"></div>
+
+    <spinner name="loadingSpinner">
+        <div style="position: fixed; left: 50%; top: 50%; background: rgba(0, 0, 0, 0.0)">
+            <div style="position: relative; left: -50%; top: -50%; background: rgba(0, 0, 0, 0.0)">
+                <p>&nbsp;
+                <i class="fa fa-spinner fa-pulse fa-5x" stype="opacity: 0.4"></i>
+                <p>&nbsp;</p>
+                <h4>Loading ...</h4>
+                </p>
+            </div>
+        </div>
+    </spinner>
+
+    <div ui-view="content"></div>
+    
+    <div ui-view="footer"></div>    
+
+    
+    
+    <!-- build:js scripts/main.js -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="../bower_components/angular-spinners/dist/angular-spinners.min.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers.js"></script>
+    <script src="scripts/services.js"></script>
+    <script src="scripts/id3.min.js"></script>
+    <!-- endbuild -->
+
+</body>
+
+</html>

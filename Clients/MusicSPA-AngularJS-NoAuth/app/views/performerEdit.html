@@ -1,0 +1,150 @@
+<div class="container">
+        
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <ul class="breadcrumb">
+                <li><a ui-sref="app">Home</a></li>
+                <li><a ui-sref="app.performers">Performers</a></li>
+                <li ng-if="isEdit"><a ui-sref="app.performerEdit" class="active">Edit Performer (id = {{pId}})</a></li>
+                <li ng-if="isNew"><a ui-sref="app.performerEdit" class="active">New Performer</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <h2 ng-if="isEdit">Performer: &nbsp; {{performer.name}} &nbsp; ({{performer.performerType}}) </h2>
+            <h2 ng-if="isNew">New Performer</h2>
+        </div>
+    </div>
+
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <p style="padding:5px"></p>
+        </div>
+    </div>
+
+    <form name="performerForm" ng-submit="submitPerformer()" class="form-horizontal" novalidate>
+
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-2 control-label">
+                <label for="inputName">Name</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input id="inputName" type="text" name="name" maxlength="200" class="form-control"
+                       ng-model="performer.name" placeHolder="Name" required>
+            </div>
+            <div class="col-xs-12 col-sm-2 control-label">
+                <label for="performerType">Performer Type</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <select id="performerType" class="form-control" ng-model="performer.performerType"
+                        ng-options='o.value as o.label for o in optionsPerformerType' required>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="hidden-xs col-sm-2">
+                <label for="buttonUpdate"></label>
+            </div>
+            <div class="col-xs-6 col-sm-2">
+                <input id="buttonUpdate" type="submit" value="{{buttonUpdateLabel}}" class="form-control btn btn-primary"
+                       data-toggle="tooltip" data-placement="bottom" title="{{buttonUpdateTooltip}}">
+            </div>
+            <div class="col-xs-6 col-sm-2">
+                <input id="buttonDelete" type="button" value="Delete" class="form-control btn btn-primary"
+                       data-toggle="tooltip" data-placement="bottom" title="Delete this Performer" ng-click="deletePerformer()"
+                       ng-disabled="isNew || performer.recordings.length > 0">
+            </div>
+            <div class="col-xs-6 col-sm-2">
+                <a type="button" class="form-control btn btn-default" ui-sref="app.performers"
+                       data-toggle="tooltip" data-placement="bottom" title="{{buttonCancelTooltip}}">
+                    Cancel
+                </a>
+            </div>
+            <div class="col-xs-6 col-sm-2" ng-if="isEdit">
+                <a type="button" class="form-control btn btn-default" href='{{baseURL+"performers/"+performer.id}}'
+                       data-toggle="tooltip" data-placement="bottom" title="Show Performer as JSON">
+                    JSON
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <div ng-if="isEdit">    <!-- allow assignment and deletion of recordings only if in edit mode -->
+
+        <div class="row row-dense-content">
+            <div class="col-xs-12">
+                <div class="alert alert-warning alert-dismissible" role="alert" ng-if="performer.recordings.length > 0">
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                    <p>{{messageCannotDeletePerformer}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-dense-content">
+            <div class="col-xs-12">
+                <p style="padding:5px"></p>
+            </div>
+        </div>
+
+        <div class="row row-dense-content">
+            <div class="col-xs-12">
+                <label for="selectRecordingsToDelete">Recordings assigned to this Performer</label>
+            </div>
+            <div class="col-xs-12 col-sm-8">
+                <!-- No recordings assigned yet to current performer -->
+                <div ng-if="performer.recordings.length === 0">
+                    --- No Recordings assigned to this Performer ---
+                </div>
+                <select multiple ng-multiple="true" id="selectRecordingsToDelete" name="recordingsToDelete" size="5"
+                        class="form-control" ng-if="performer.recordings.length > 0" ng-model="recordingsToDelete.ids"
+                        ng-options='r.id as (r.title + ", " + r.composer + ", " + r.year) for r in performer.recordings'>
+                </select>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+                <button id="buttonDeleteRecordings" ng-click='deleteRecordingsFromPerformer()'
+                        data-toggle="tooltip" data-placement="bottom" title="Delete selected Recordings of this Performer"
+                        class="btn btn-primary btn-block" ng-disabled="performer.recordings.length === 0">
+                    Delete selected Recordings
+                </button>
+            </div>
+        </div>
+
+        <div class="row row-dense-content">
+            <div class="col-xs-12">
+                <p style="padding:5px"></p>
+            </div>
+        </div>
+
+        <div class="row row-dense-content">
+            <div class="col-xs-12">
+                <label for="selectRecordingsToAdd">Recordings <u>not</u> assigned to this Performer</label>
+            </div>
+            <div class="col-xs-12 col-sm-8">
+                <!-- All recordings have been assigned to current performer -->
+                <div ng-if="performer.recordings.length === recordings.length">
+                    --- No Recordings left to be assigned to this Performer ---
+                </div>
+                <select multiple ng-multiple="true" id="selectRecordingsToAdd" name="recordingsToAdd" size="10"
+                        class="form-control" ng-if="performer.recordings.length < recordings.length" ng-model="recordingsToAdd.ids"
+                        ng-options='r.id as (r.title + ", " + r.composer + ", " + r.year) for r in recordings | filterRecordingsNotAssignedToCurrentPerformer:performer'>
+                </select>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+                <button id="buttonAddRecordings" ng-click='addRecordingsToPerformer()'
+                        data-toggle="tooltip" data-placement="bottom" title="Add selected Recordings of this Performer"
+                        class="btn btn-primary btn-block" ng-disabled="performer.recordings.length === recordings.length">
+                    Add selected Recordings
+                </button>
+            </div>
+        </div>
+
+    </div>  <!-- isEdit -->
+
+    <div class="row row-dense-content">
+        <p style="padding:5px"></p>
+    </div>
+
+</div>  <!-- container -->

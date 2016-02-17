@@ -1,0 +1,162 @@
+<div class="container">
+        
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <ul class="breadcrumb">
+                <li><a ui-sref="app">Home</a></li>
+                <li><a ui-sref="app.recordings">Recordings</a></li>
+                <li ng-if="isEdit"><a ui-sref="app.recordingEdit" class="active">Edit Recording (id = {{rId}})</a></li>
+                <li ng-if="isNew"><a ui-sref="app.recordingEdit" class="active">New Recording</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <h2 ng-if="isEdit">Recording: &nbsp; {{recording.title}} <small>&nbsp; composed by &nbsp;</small> {{recording.composer}} </h2>
+            <h2 ng-if="isNew">New Recording</h2>
+        </div>
+    </div>
+
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <p style="padding:5px"></p>
+        </div>
+    </div>
+
+    <form name="recordingForm" ng-submit="submitRecording()" enctype="multipart/form-data" class="form-horizontal" novalidate>
+
+        <div class="form-group" ng-if="isNew">
+            <div class="col-xs-12 col-sm-2 control-label">
+                <label for="inputFile">MP3 File</label>
+            </div>
+            <div class="col-xs-12 col-sm-9">
+                <!-- Angular ngModel doesn't support input type="file" -->
+                <input id="inputFile" type="file" name="mp3file" class="form-control"
+                       onchange="angular.element(this).scope().fileChanged(this)">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-2 control-label">
+                <label for="inputTitle">Title</label>
+            </div>
+            <div class="col-xs-12 col-sm-9">
+                <input id="inputTitle" type="text" name="title" maxlength="200" class="form-control"
+                       ng-model="recording.title" placeHolder="Title" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-2 control-label">
+                <label for="inputComposer">Composer</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input id="inputComposer" type="text" name="composer" maxlength="200" class="form-control"
+                       ng-model="recording.composer" placeHolder="Composer" required>
+            </div>
+            <div class="col-xs-12 col-sm-2 control-label">
+                <label for="inputYear">Recording Year</label>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <input id="inputYear" type="number" name="year" size="4" maxlength="4" min="1900" max="2020" class="form-control"
+                       ng-model="recording.year" placeHolder="Recording Year" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="hidden-xs col-sm-2">
+                <label for="buttonUpdate"></label>
+            </div>
+            <div class="col-xs-6 col-sm-2">
+                <input id="buttonUpdate" type="submit" value="{{buttonUpdateLabel}}" class="form-control btn btn-primary"
+                       data-toggle="tooltip" data-placement="bottom" title="{{buttonUpdateTooltip}}">
+            </div>
+            <div class="col-xs-6 col-sm-2">
+                <input id="buttonDelete" type="button" value="Delete" class="form-control btn btn-primary"
+                       data-toggle="tooltip" data-placement="bottom" title="Delete this Recording" ng-click="deleteRecording()"
+                       ng-disabled="isNew || recording.performers.length > 0">
+            </div>
+            <div class="col-xs-6 col-sm-2">
+                <a type="button" class="form-control btn btn-default" ui-sref="app.recordings"
+                       data-toggle="tooltip" data-placement="bottom" title="{{buttonCancelTooltip}}">
+                    Cancel
+                </a>
+            </div>
+            <div class="col-xs-6 col-sm-2" ng-if="isEdit">
+                <a type="button" class="form-control btn btn-default" href='{{baseURL+"recordings/"+recording.id}}'
+                       data-toggle="tooltip" data-placement="bottom" title="Show Recording as JSON">
+                    JSON
+                </a>
+            </div>
+        </div>
+        
+    </form>
+
+    <div ng-if="isEdit">    <!-- allow assignment and deletion of performers only if in edit mode -->
+
+        <div class="row row-dense-content">
+            <div class="col-xs-12">
+                <p style="padding:5px"></p>
+            </div>
+        </div>
+
+        <div class="row row-dense-content">
+            <div class="col-xs-12">
+                <label for="selectPerformersToDelete">Performers assigned to this Recording</label>
+            </div>
+            <div class="col-xs-12 col-sm-8">
+                <!-- No performers assigned yet to current recording -->
+                <div ng-if="recording.performers.length === 0">
+                    --- No Performers assigned to this Recording ---
+                </div>
+                <select multiple ng-multiple="true" id="selectPerformersToDelete" name="performersToDelete" size="5"
+                        class="form-control" ng-if="recording.performers.length > 0" ng-model="performersToDelete.ids"
+                        ng-options='p.id as (p.name + ", " + p.performerType) for p in recording.performers'>
+                </select>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+                <button id="buttonDeletePerformers" ng-click='deletePerformersFromRecording()'
+                        data-toggle="tooltip" data-placement="bottom" title="Delete selected Performers of this Recording"
+                        class="btn btn-primary btn-block" ng-disabled="recording.performers.length === 0">
+                    Delete selected Performers
+                </button>
+            </div>
+        </div>
+
+        <div class="row row-dense-content">
+            <div class="col-xs-12">
+                <p style="padding:5px"></p>
+            </div>
+        </div>
+
+        <div class="row row-dense-content">
+            <div class="col-xs-12">
+                <label for="selectPerformersToAdd">Performers <u>not</u> assigned to this Recording</label>
+            </div>
+            <div class="col-xs-12 col-sm-8">
+                <!-- All performers have been assigned to current recording -->
+                <div ng-if="recording.performers.length === performers.length">
+                    --- No Performers left to be assigned to this Recording ---
+                </div>
+                <select multiple ng-multiple="true" id="selectPerformersToAdd" name="performersToAdd" size="10"
+                        class="form-control" ng-if="recording.performers.length < performers.length" ng-model="performersToAdd.ids"
+                        ng-options='p.id as (p.name + ", " + p.performerType) for p in performers | filterPerformersNotAssignedToCurrentRecording:recording'>
+                </select>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-sm-offset-1">
+                <button id="buttonAddPerformers" ng-click='addPerformersToRecording()'
+                        data-toggle="tooltip" data-placement="bottom" title="Add selected Performers of this Recording"
+                        class="btn btn-primary btn-block" ng-disabled="recording.performers.length === performers.length">
+                    Add selected Performers
+                </button>
+            </div>
+        </div>
+
+    </div>  <!-- isEdit -->
+
+    <div class="row row-dense-content">
+        <p style="padding:5px"></p>
+    </div>
+
+</div>
