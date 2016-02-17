@@ -6,10 +6,7 @@
 GET     /                                                                   musicsvc.controllers.WebApplication.index
 GET     /webApp                                                             musicsvc.controllers.WebApplication.webApp
 
-GET     /webApp/recordings                                                  musicsvc.controllers.WebApplication.recordings
-GET     /webApp/recordings/overview                                         musicsvc.controllers.WebApplication.recordingsOverview
-GET     /webApp/recordings/search                                           musicsvc.controllers.WebApplication.recordingsOverview
-POST    /webApp/recordings/search                                           musicsvc.controllers.WebApplication.recordingsSearch
+GET     /webApp/recordings                                                  musicsvc.controllers.WebApplication.recordings(title: Option[String] ?=None, composer: Option[String] ?=None, yearMin: Option[String] ?=None, yearMax: Option[String] ?=None, performedBy: Option[String] ?=None)
 GET     /webApp/recordings/:rId/details                                     musicsvc.controllers.WebApplication.recordingDetails(rId: Long)
 GET     /webApp/recordings/:rId/edit                                        musicsvc.controllers.WebApplication.recordingEdit(rId: Long)
 POST    /webApp/recordings/:rId/update                                      musicsvc.controllers.WebApplication.recordingUpdate(rId: Long)
@@ -21,10 +18,7 @@ GET     /webApp/recordings/:rId/addPerformers/:pIds                         musi
 POST    /webApp/recordings/create                                           musicsvc.controllers.WebApplication.recordingCreate
 GET     /webApp/recordings/:rId/data                                        musicsvc.controllers.WebApplication.getRecordingData(rId: Long)
 
-GET     /webApp/performers                                                  musicsvc.controllers.WebApplication.performers
-GET     /webApp/performers/overview                                         musicsvc.controllers.WebApplication.performersOverview
-GET     /webApp/performers/search                                           musicsvc.controllers.WebApplication.performersOverview
-POST    /webApp/performers/search                                           musicsvc.controllers.WebApplication.performersSearch
+GET     /webApp/performers                                                  musicsvc.controllers.WebApplication.performers(name: Option[String] ?=None, performerType: Option[String] ?=None, performingIn: Option[String] ?=None)
 GET     /webApp/performers/:pId/details                                     musicsvc.controllers.WebApplication.performerDetails(pId: Long)
 GET     /webApp/performers/:pId/edit                                        musicsvc.controllers.WebApplication.performerEdit(pId: Long)
 POST    /webApp/performers/:pId/update                                      musicsvc.controllers.WebApplication.performerUpdate(pId: Long)
@@ -37,11 +31,19 @@ POST    /webApp/performers/create                                           musi
 
 
 # ----- WebService (Data Interface) ------------------------------------------------------------------------------------------
+OPTIONS /performers                                                         musicsvc.controllers.WebService.optionsPerformers
+OPTIONS /recordings                                                         musicsvc.controllers.WebService.optionsRecordings
+OPTIONS /performers/:pId                                                    musicsvc.controllers.WebService.optionsPerformersId(pId: Long)
+OPTIONS /recordings/:rId                                                    musicsvc.controllers.WebService.optionsRecordingsId(rId: Long)
+OPTIONS /performers/:pId/deleteRecordings                                   musicsvc.controllers.WebService.optionsDeleteRecordingsFromPerformer(pId: Long)
+OPTIONS /performers/:pId/addRecordings                                      musicsvc.controllers.WebService.optionsAddRecordingsToPerformer(pId: Long)
+OPTIONS /recordings/:rId/deletePerformers                                   musicsvc.controllers.WebService.optionsDeletePerformersFromRecording(rId: Long)
+OPTIONS /recordings/:rId/addPerformers                                      musicsvc.controllers.WebService.optionsAddPerformersToRecording(rId: Long)
+
 GET     /ping                                                               musicsvc.controllers.WebService.ping
 
 POST    /performers                                                         musicsvc.controllers.WebService.addPerformer
-GET     /performers                                                         musicsvc.controllers.WebService.findAllPerformers
-GET     /performers/search                                                  musicsvc.controllers.WebService.findPerformersByCriteria(name: Option[String], performerType: Option[String], performingIn: Option[Long])
+GET     /performers                                                         musicsvc.controllers.WebService.findPerformersByCriteria(name: Option[String], performerType: Option[String], performingIn: Option[Long])
 GET     /performers/:pId                                                    musicsvc.controllers.WebService.findPerformerById(pId: Long)
 DELETE  /performers/:pId                                                    musicsvc.controllers.WebService.deletePerformerById(pId: Long)
 DELETE  /performers                                                         musicsvc.controllers.WebService.deleteAllPerformers
@@ -51,8 +53,7 @@ PUT     /performers/:pId/addRecordings                                      musi
 
 POST    /recordings                                                         musicsvc.controllers.WebService.addRecording
 GET     /recordings/:rId/data                                               musicsvc.controllers.WebService.getRecordingData(rId: Long)
-GET     /recordings                                                         musicsvc.controllers.WebService.findAllRecordings
-GET     /recordings/search                                                  musicsvc.controllers.WebService.findRecordingsByCriteria(title: Option[String], composer: Option[String], yearMin: Option[Int], yearMax: Option[Int], performedBy: Option[Long])
+GET     /recordings                                                         musicsvc.controllers.WebService.findRecordingsByCriteria(title: Option[String], composer: Option[String], yearMin: Option[Int], yearMax: Option[Int], performedBy: Option[Long])
 GET     /recordings/:rId                                                    musicsvc.controllers.WebService.findRecordingById(rId: Long)
 DELETE  /recordings/:rId                                                    musicsvc.controllers.WebService.deleteRecordingById(rId: Long)
 DELETE  /recordings                                                         musicsvc.controllers.WebService.deleteAllRecordings

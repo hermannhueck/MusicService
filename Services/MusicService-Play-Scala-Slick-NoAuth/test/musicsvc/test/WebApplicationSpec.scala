@@ -47,37 +47,11 @@ class WebApplicationSpec extends PlaySpecification {
     }
 
 
-    "(in Test 03) redirect to /webApp/recordings" in new WithApplication {
+    "(in Test 03) render the Music Service Home page" in new WithApplication {
 
-      l.debug("redirect to /webApp/recordings")
+      l.debug("render the Music Service Home page")
 
       val fResult = route(FakeRequest(GET, "/webApp")).get
-
-      l.debug("headers = [[" + await(fResult).toString() + "]]")
-      // l.debug("contentAsString = [[" + contentAsString(fResult) + "]]")
-
-      status(fResult) must equalTo(SEE_OTHER)
-    }
-
-
-    "(in Test 04) redirect to /webApp/recordings/overview" in new WithApplication {
-
-      l.debug("redirect to /webApp/recordings/overview")
-
-      val fResult = route(FakeRequest(GET, "/webApp/recordings")).get
-
-      l.debug("headers = [[" + await(fResult).toString() + "]]")
-      // l.debug("contentAsString = [[" + contentAsString(fResult) + "]]")
-
-      status(fResult) must equalTo(SEE_OTHER)
-    }
-
-
-    "(in Test 05) render the Music Service main page" in new WithApplication {
-
-      l.debug("render the Music Service main page")
-
-      val fResult = route(FakeRequest(GET, "/webApp/recordings/overview")).get
 
       l.debug("headers = [[" + await(fResult).toString() + "]]")
       // l.debug("contentAsString = [[" + contentAsString(fResult) + "]]")
@@ -86,6 +60,43 @@ class WebApplicationSpec extends PlaySpecification {
       contentType(fResult) must beSome.which(_ == "text/html")
       charset(fResult) must beSome.which(_ == "utf-8")
       contentAsString(fResult) must contain ("Classic Music Service")
+      contentAsString(fResult) must contain ("Description")
+    }
+
+
+    "(in Test 04) render the Music Service Recordings page" in new WithApplication {
+
+      l.debug("render the Music Service Recordings page")
+
+      val fResult = route(FakeRequest(GET, "/webApp/recordings")).get
+
+      l.debug("headers = [[" + await(fResult).toString() + "]]")
+      // l.debug("contentAsString = [[" + contentAsString(fResult) + "]]")
+
+      status(fResult) must equalTo(OK)
+      contentType(fResult) must beSome.which(_ == "text/html")
+      charset(fResult) must beSome.which(_ == "utf-8")
+      contentAsString(fResult) must contain ("Classic Music Service")
+      contentAsString(fResult) must contain ("Search for Recordings")
+      contentAsString(fResult) must contain ("List of Recordings")
+    }
+
+
+    "(in Test 05) render the Music Service Performers page" in new WithApplication {
+
+      l.debug("render the Music Service Performers page")
+
+      val fResult = route(FakeRequest(GET, "/webApp/performers")).get
+
+      l.debug("headers = [[" + await(fResult).toString() + "]]")
+      // l.debug("contentAsString = [[" + contentAsString(fResult) + "]]")
+
+      status(fResult) must equalTo(OK)
+      contentType(fResult) must beSome.which(_ == "text/html")
+      charset(fResult) must beSome.which(_ == "utf-8")
+      contentAsString(fResult) must contain ("Classic Music Service")
+      contentAsString(fResult) must contain ("Search for Performers")
+      contentAsString(fResult) must contain ("List of Performers")
     }
 
 

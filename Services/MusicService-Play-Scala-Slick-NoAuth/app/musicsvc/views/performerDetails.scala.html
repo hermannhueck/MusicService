@@ -36,7 +36,7 @@
     </tr>
 </table>
 
-<dl class=" " id="recordingss_list">
+<dl class=" " id="recordings_list">
 
     <dt><label id="labelCurrentRecordings">Current Recordings: @if(!p.recordings.isEmpty) { (select to delete) }</label></dt>
     <dd>
@@ -67,6 +67,7 @@
     <input id="buttonEdit" type="button" value="Edit" onclick='setReadOnly(false);' />
     <input id="buttonCancel" type="button" value="Cancel" onclick='setReadOnly(true);' />
     <button onclick="history.go(-1);">Go back</button>
+    <input id="buttonJSON" type="button" value="JSON" onclick='window.open("/performers/@p.id", "_self");' />
     </dt>
 
     <dd>

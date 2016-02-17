@@ -9,7 +9,7 @@
 
 <h3>Search for Recordings</h3>
 
-@form(action = musicsvc.controllers.routes.WebApplication.recordingsSearch()) {
+@form(action = musicsvc.controllers.routes.WebApplication.recordings()) {
 <table>
     <tr>
         <td>
@@ -72,6 +72,9 @@
                 <source src="/webApp/recordings/@r.id/data" type="audio/mpeg">
                 Your browser does not support the audio tag.
             </audio>
+        </td>
+        <td>
+            <input id="buttonJSON" type="button" value="JSON" onclick='window.open("/recordings/@r.id", "_self");' />
         </td>
     </tr>
     }

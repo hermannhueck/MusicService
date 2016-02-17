@@ -21,25 +21,25 @@ Table of Contents
 01. What is the "MusicService"?
 -------------------------------
 
-This simple App is a "Music Service", it is 
+This App is a "Music Service", it is
 - a web service application providing a data interface with a restful JSON API
 - a web application running in the browser
 
-The Music Service manages music performers and recordings. Management implies
+The Music Service manages Performers and Recordings. Management implies
 CRUD operations on Performers and Recordings, up- and download of music data
-(mp3 files) as well as assigning performers to recordings or recordings to
-performers and the removal of these assignments.
+(mp3 files) as well as assigning Performers to Recordings or Recordings to
+Performers and the removal of these assignments.
 
 One entity is a "Performer" with the following attributes:
-- name:             the performer's name
-- performerType:    which can be one of "Soloist", "Ensemble", "Conductor"
-- recordings:       the recordings this performer is performing in
+- name:             the Performer's name
+- performerType:    one of "Soloist", "Ensemble", "Conductor"
+- recordings:       the Recordings this Performer is performing in
 
-The other entity is a "Recording" with the following attributes:
-- title:            the recording's title
+The other entity is a "Recording" with these attributes:
+- title:            the Recording's title
 - composer:         the composer of the music contained in the recording
 - year:             the year in which the music has bin recorded
-- performers:       the performers by whom the recording was performed
+- performers:       the Performers by whom the Recording was performed
 
 The Music Service allows a client (web service client or web client) to perform
 the following operations:
@@ -52,7 +52,8 @@ The App is a small case study using ...
 - the Play Framework as containerless Web framework
 - Scala as implementation language
 - Slick as persistence layer
-- Currently no client authentication to access performers or recordings
+- an H2 database to persist the entities
+- Currently no client authentication to access Performers and Recordings
 - Currently no client roles with different access priviledges
 
 In the current stage the App doesn't implement any security features.

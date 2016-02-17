@@ -30,6 +30,31 @@ class WebService extends Controller {
 
 
 
+  ////////////  route:   OPTIONS     /*
+  // Necessary to support CORS preflight requests (Cross Origin Resource Sharing)
+  def optionsPerformers = Action { request => handleOptionsRequest(request) }
+  def optionsRecordings = Action { request => handleOptionsRequest(request) }
+
+  def optionsPerformersId(pId: Long) = Action { request => handleOptionsRequest(request) }
+  def optionsRecordingsId(rId: Long) = Action { request => handleOptionsRequest(request) }
+
+  def optionsDeleteRecordingsFromPerformer(pId: Long) = Action { request => handleOptionsRequest(request) }
+  def optionsAddRecordingsToPerformer(pId: Long) = Action { request => handleOptionsRequest(request) }
+
+  def optionsDeletePerformersFromRecording(rId: Long) = Action { request => handleOptionsRequest(request) }
+  def optionsAddPerformersToRecording(rId: Long) = Action { request => handleOptionsRequest(request) }
+
+  private def handleOptionsRequest(request: Request[AnyContent]): Result = {
+
+    l.debug("options(): request.method = " + request.method + ", request.path = " + request.path)
+
+    Ok(Json.toJson(true)).withHeaders(
+      "Access-Control-Allow-Origin" -> "*",
+      "Access-Control-Allow-Methods" -> "GET, POST, DELETE, PUT, OPTIONS",
+      "Access-Control-Allow-Headers" -> "X-PINGOTHER, X-Requested-With, Content-Type"
+    )
+  }
+
   ////////////  route:   GET     /ping
   def ping = Action {
 
@@ -303,7 +328,7 @@ class WebService extends Controller {
   ////////////  route:   PUT     /performers/:id
   def updatePerformerById(pId: Long) = Action.async(BodyParsers.parse.json) { request =>
 
-    l.debug("updatePerformerById(pId = " + pId + ")")
+    l.debug("updatePerformerById(pId = " + pId + "), body = " + request.body.toString())
 
     val validationResult: JsResult[Performer] = request.body.validate[Performer]
 
@@ -325,7 +350,7 @@ class WebService extends Controller {
   ////////////  route:   PUT     /recordings/:id
   def updateRecordingById(rId: Long) = Action.async(BodyParsers.parse.json) { request =>
 
-    l.debug("updateRecordingById(rId = " + rId + ")")
+    l.debug("updateRecordingById(rId = " + rId + "), body = " + request.body.toString())
 
     val jsResult: JsResult[Recording] = request.body.validate[Recording]
 
@@ -347,7 +372,7 @@ class WebService extends Controller {
   ////////////  route:   PUT     /performers/:id/deleteRecordings
   def deleteRecordingsFromPerformer(pId: Long) = Action.async(BodyParsers.parse.json) { request =>
 
-    l.debug("deleteRecordingsFromPerformer()")
+    l.debug("deleteRecordingsFromPerformer(" + pId + "), body = " + request.body.toString())
 
     val jsResult: JsResult[Seq[Long]] = request.body.validate[Seq[Long]]
 
@@ -368,7 +393,7 @@ class WebService extends Controller {
   ////////////  route:   PUT     /recordings/:id/deletePerformers
   def deletePerformersFromRecording(rId: Long) = Action.async(BodyParsers.parse.json) { request =>
 
-    l.debug("deletePerformersFromRecording()")
+    l.debug("deletePerformersFromRecording(" + rId + "), body = " + request.body.toString())
 
     val jsResult: JsResult[Seq[Long]] = request.body.validate[Seq[Long]]
 
@@ -389,7 +414,7 @@ class WebService extends Controller {
   ////////////  route:   PUT     /performers/:id/addRecordings
   def addRecordingsToPerformer(pId: Long) = Action.async(BodyParsers.parse.json) { request =>
 
-    l.debug("addRecordingsToPerformer()")
+    l.debug("addRecordingsToPerformer(" + pId + "), body = " + request.body.toString())
 
     val jsResult: JsResult[Seq[Long]] = request.body.validate[Seq[Long]]
 
@@ -410,7 +435,7 @@ class WebService extends Controller {
   ////////////  route:   PUT     /recordings/:id/addPerformers
   def addPerformersToRecording(rId: Long) = Action.async(BodyParsers.parse.json) { request =>
 
-    l.debug("addPerformersToRecording()")
+    l.debug("addPerformersToRecording(" + rId + "), body = " + request.body.toString())
 
     val jsResult: JsResult[Seq[Long]] = request.body.validate[Seq[Long]]
 

@@ -4,12 +4,14 @@ import musicsvc.persistence.Repository
 import musicsvc.util.FileUtils._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.{Logger, Play, Application, GlobalSettings}
-import play.api.mvc.{Handler, Result, RequestHeader}
+import play.api.mvc.{EssentialAction, Handler, Result, RequestHeader}
 import musicsvc.models._
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 import slick.driver.JdbcProfile
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 case object Global extends GlobalSettings {
 
@@ -114,6 +116,21 @@ case object Global extends GlobalSettings {
   override def onError(request: RequestHeader, ex: Throwable): Future[Result] = {
     l.debug("onError(): request = " + request + ", ex = " + ex)
     super.onError(request, ex)
+  }
+
+  override def doFilter(action: EssentialAction): EssentialAction = EssentialAction { request =>
+    // if (request.method == "OPTIONS") {}
+    action.apply(request) map { result =>
+        result.withHeaders(
+        "Access-Control-Allow-Origin" -> "*",
+        "Access-Control-Allow-Methods" -> "GET, POST, DELETE, PUT, OPTIONS",
+        "Access-Control-Allow-Headers" -> "X-PINGOTHER, X-Requested-With, Content-Type"
+      )
+    }
+//    map { result =>
+//      if (request.method == "OPTIONS")
+//        result.st
+//    }
   }
 
   private def resultOf[T](future: Future[T]): T = Await.result(future, Duration.Inf)

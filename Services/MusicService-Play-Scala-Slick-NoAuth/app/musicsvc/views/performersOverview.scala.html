@@ -9,7 +9,7 @@
 
 <h3>Search for Performers</h3>
 
-@form(action = musicsvc.controllers.routes.WebApplication.performersSearch()) {
+@form(action = musicsvc.controllers.routes.WebApplication.performers()) {
 <table>
     <tr>
         <td>
@@ -63,6 +63,9 @@
         </td>
         <td>
             <input id="buttonDelete" type="button" value="Delete" onclick='deletePerformer(this, @p.hasRecordings, @p.id);' @if(p.hasRecordings) {disabled} />
+        </td>
+        <td>
+            <input id="buttonJSON" type="button" value="JSON" onclick='window.open("/performers/@p.id", "_self");' />
         </td>
     </tr>
     }

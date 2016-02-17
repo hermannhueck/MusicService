@@ -30,13 +30,13 @@ case class RecordingData(title: String,
 
 case class OptionalPerformerData(optName: Option[String],
                                  optPerformerType: Option[String],
-                                 optPerformingInId: Option[Long])
+                                 optPerformingIn: Option[Long])
 
 case class OptionalRecordingData(optTitle: Option[String],
                                  optComposer: Option[String],
                                  optYearMin: Option[Int],
                                  optYearMax: Option[Int],
-                                 optPerformedById: Option[Long])
+                                 optPerformedBy: Option[Long])
 
 class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
@@ -101,51 +101,15 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
 
     l.debug("webApp()")
 
-    Redirect(routes.WebApplication.recordings())
+    Ok(musicsvc.views.html.home())
   }
 
 
-  def performers = Action {
+  def performers(optName: Option[String] = None,
+                 optPerformerType: Option[String] = None,
+                 optPerformingIn: Option[String] = None) = Action.async { implicit request =>
 
-    l.debug("performers()")
-
-    Redirect(routes.WebApplication.performersOverview())
-  }
-
-
-  def recordings = Action {
-
-    l.debug("recordings()")
-
-    Redirect(routes.WebApplication.recordingsOverview())
-  }
-
-
-  def performersOverview = Action.async {
-
-    l.debug("performersOverview()")
-
-    for {
-      ps <- repo.findAllPerformers
-      rs <- repo.findAllRecordings
-    } yield Ok(musicsvc.views.html.performersOverview(ps, rs, searchPerformersForm))
-  }
-
-
-  def recordingsOverview = Action.async {
-
-    l.debug("recordingsOverview()")
-
-    for {
-      rs <- repo.findAllRecordings
-      ps <- repo.findAllPerformers
-    } yield Ok(musicsvc.views.html.recordingsOverview(rs, ps, searchRecordingsForm))
-  }
-
-
-  def performersSearch = Action.async(BodyParsers.parse.urlFormEncoded) { implicit request =>
-
-    l.debug("performersSearch()")
+    l.debug("performers(optName = " + optName + ", optPerformerType = " + optPerformerType + ", optPerformingIn = " + optPerformingIn + ")")
 
     searchPerformersForm.bindFromRequest.fold(
 
@@ -160,13 +124,13 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
 
         l.debug("optName = " + searchData.optName)
         l.debug("optPerformerType = " + searchData.optPerformerType)
-        l.debug("optPerformingInId = " + searchData.optPerformingInId)
+        l.debug("optPerformingIn = " + searchData.optPerformingIn)
 
         for {
           ps <- repo.findPerformersByCriteria(
             searchData.optName,
             searchData.optPerformerType,
-            searchData.optPerformingInId)
+            searchData.optPerformingIn)
           rs <- repo.findAllRecordings
         } yield Ok(musicsvc.views.html.performersOverview(ps, rs, searchPerformersForm.fill(searchData).discardingErrors))
       }
@@ -174,9 +138,14 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
   }
 
 
-  def recordingsSearch = Action.async(BodyParsers.parse.urlFormEncoded) { implicit request =>
+  def recordings(optTitle: Option[String] = None,
+                 optComposer: Option[String] = None,
+                 optYearMin: Option[String] = None,
+                 optYearMax: Option[String] = None,
+                 optPerformedBy: Option[String] = None) = Action.async { implicit request =>
 
-    l.debug("recordingsSearch()")
+    l.debug("recordings(optTitle = " + optTitle + ", optComposer = " + optComposer + ", optYearMin = " + optYearMin +
+                        ", optYearMax = " + optYearMax + ", optPerformedBy = " + optPerformedBy + ")")
 
     searchRecordingsForm.bindFromRequest.fold(
 
@@ -193,14 +162,14 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
         l.debug("optComposer = " + searchData.optComposer)
         l.debug("optYearMin = " + searchData.optYearMin)
         l.debug("optYearMax = " + searchData.optYearMax)
-        l.debug("optPerformedById = " + searchData.optPerformedById)
+        l.debug("optPerformedById = " + searchData.optPerformedBy)
 
         for {
           rs <- repo.findRecordingsByCriteria(searchData.optTitle,
                                               searchData.optComposer,
                                               searchData.optYearMin,
                                               searchData.optYearMax,
-                                              searchData.optPerformedById)
+                                              searchData.optPerformedBy)
           ps <- repo.findAllPerformers
         } yield Ok(musicsvc.views.html.recordingsOverview(rs, ps, searchRecordingsForm.fill(searchData).discardingErrors))
       }
@@ -317,7 +286,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
     l.debug("performerDeleteAll()")
 
     repo.deleteAllPerformers().map { nRowsAffected =>
-      Redirect(routes.WebApplication.performersOverview())
+      Redirect(routes.WebApplication.performers())
     }
   }
 
@@ -334,7 +303,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
           r.id
       }
     }.map { rIds =>
-      Redirect(routes.WebApplication.recordingsOverview())
+      Redirect(routes.WebApplication.recordings())
     }
   }
 
@@ -347,7 +316,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
       if (nRows < 1) {
         NotFound("Performer with id " + pId + " not found.")
       } else {
-        Redirect(routes.WebApplication.performersOverview())
+        Redirect(routes.WebApplication.performers())
       }
     }
   }
@@ -362,7 +331,7 @@ class WebApplication @Inject()(val messagesApi: MessagesApi) extends Controller 
         NotFound("Recording with id " + rId + " not found.")
       } else {
         deleteFileIfExists(dataPath(rId))
-        Redirect(routes.WebApplication.recordingsOverview())
+        Redirect(routes.WebApplication.recordings())
       }
     }
   }

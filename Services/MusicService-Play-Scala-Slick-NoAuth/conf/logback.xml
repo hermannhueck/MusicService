@@ -15,7 +15,7 @@
   -->
   <logger name="play" level="INFO" />
   <logger name="application" level="INFO" />
-  <logger name="musicsvc.Global" level="INFO" />
+  <logger name="musicsvc.Global" level="DEBUG" />
 
   <logger name="musicsvc.controllers.WebService" level="INFO" />
   <logger name="musicsvc.controllers.WebApplication" level="INFO" />

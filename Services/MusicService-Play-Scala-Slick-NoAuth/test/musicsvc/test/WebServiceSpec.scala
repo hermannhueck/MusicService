@@ -744,7 +744,7 @@ class WebServiceSpec extends PlaySpecification with Results with BeforeAfter wit
 
     import play.api.Play.current
 
-    val url = performersUrl + "/search?" + criteria
+    val url = performersUrl + "?" + criteria
     // l.info("url = " + url)
     val findByCriteriaResponse: WSResponse = await( WS.url(url).execute(GET) )
     findByCriteriaResponse.status must equalTo(OK)
@@ -821,7 +821,7 @@ class WebServiceSpec extends PlaySpecification with Results with BeforeAfter wit
 
     import play.api.Play.current
 
-    val findByCriteriaResponse: WSResponse = await(WS.url(recordingsUrl + "/search?" + criteria).execute(GET))
+    val findByCriteriaResponse: WSResponse = await(WS.url(recordingsUrl + "?" + criteria).execute(GET))
     findByCriteriaResponse.status must equalTo(OK)
     findByCriteriaResponse.header(CONTENT_TYPE) must beSome.which(_.startsWith("application/json"))
 
