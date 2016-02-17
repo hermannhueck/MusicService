@@ -2,34 +2,6 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# ----- WebApplication (User Interface) ------------------------------------------------------------------------------------------
-GET     /                                                                   musicsvc.controllers.WebApplication.index
-GET     /webApp                                                             musicsvc.controllers.WebApplication.webApp
-
-GET     /webApp/recordings                                                  musicsvc.controllers.WebApplication.recordings(title: Option[String] ?=None, composer: Option[String] ?=None, yearMin: Option[String] ?=None, yearMax: Option[String] ?=None, performedBy: Option[String] ?=None)
-GET     /webApp/recordings/:rId/details                                     musicsvc.controllers.WebApplication.recordingDetails(rId: Long)
-GET     /webApp/recordings/:rId/edit                                        musicsvc.controllers.WebApplication.recordingEdit(rId: Long)
-POST    /webApp/recordings/:rId/update                                      musicsvc.controllers.WebApplication.recordingUpdate(rId: Long)
-GET     /webApp/recordings/:rId/delete                                      musicsvc.controllers.WebApplication.recordingDelete(rId: Long)
-GET     /webApp/recordings/deleteAll                                        musicsvc.controllers.WebApplication.recordingsDeleteAll
-GET     /webApp/recordings/editNew                                          musicsvc.controllers.WebApplication.recordingEditNew
-GET     /webApp/recordings/:rId/deletePerformers/:pIds                      musicsvc.controllers.WebApplication.deletePerformersFromRecording(rId: Long, pIds: String)
-GET     /webApp/recordings/:rId/addPerformers/:pIds                         musicsvc.controllers.WebApplication.addPerformersToRecording(rId: Long, pIds: String)
-POST    /webApp/recordings/create                                           musicsvc.controllers.WebApplication.recordingCreate
-GET     /webApp/recordings/:rId/data                                        musicsvc.controllers.WebApplication.getRecordingData(rId: Long)
-
-GET     /webApp/performers                                                  musicsvc.controllers.WebApplication.performers(name: Option[String] ?=None, performerType: Option[String] ?=None, performingIn: Option[String] ?=None)
-GET     /webApp/performers/:pId/details                                     musicsvc.controllers.WebApplication.performerDetails(pId: Long)
-GET     /webApp/performers/:pId/edit                                        musicsvc.controllers.WebApplication.performerEdit(pId: Long)
-POST    /webApp/performers/:pId/update                                      musicsvc.controllers.WebApplication.performerUpdate(pId: Long)
-GET     /webApp/performers/:pId/delete                                      musicsvc.controllers.WebApplication.performerDelete(pId: Long)
-GET     /webApp/performers/deleteAll                                        musicsvc.controllers.WebApplication.performersDeleteAll
-GET     /webApp/performers/:pId/deleteRecordings/:rIds                      musicsvc.controllers.WebApplication.deleteRecordingsFromPerformer(pId: Long, rIds: String)
-GET     /webApp/performers/:pId/addRecordings/:rIds                         musicsvc.controllers.WebApplication.addRecordingsToPerformer(pId: Long, rIds: String)
-GET     /webApp/performers/editNew                                          musicsvc.controllers.WebApplication.performerEditNew
-POST    /webApp/performers/create                                           musicsvc.controllers.WebApplication.performerCreate
-
-
 # ----- WebService (Data Interface) ------------------------------------------------------------------------------------------
 OPTIONS /performers                                                         musicsvc.controllers.WebService.optionsPerformers
 OPTIONS /recordings                                                         musicsvc.controllers.WebService.optionsRecordings
@@ -60,6 +32,34 @@ DELETE  /recordings                                                         musi
 PUT     /recordings/:rId                                                    musicsvc.controllers.WebService.updateRecordingById(rId: Long)
 PUT     /recordings/:rId/deletePerformers                                   musicsvc.controllers.WebService.deletePerformersFromRecording(rId: Long)
 PUT     /recordings/:rId/addPerformers                                      musicsvc.controllers.WebService.addPerformersToRecording(rId: Long)
+
+
+# ----- WebApplication (User Interface) ------------------------------------------------------------------------------------------
+GET     /                                                                   musicsvc.controllers.WebApplication.index
+GET     /webApp                                                             musicsvc.controllers.WebApplication.webApp
+
+GET     /webApp/recordings                                                  musicsvc.controllers.WebApplication.recordings(title: Option[String] ?=None, composer: Option[String] ?=None, yearMin: Option[String] ?=None, yearMax: Option[String] ?=None, performedBy: Option[String] ?=None)
+GET     /webApp/recordings/:rId/details                                     musicsvc.controllers.WebApplication.recordingDetails(rId: Long)
+GET     /webApp/recordings/:rId/edit                                        musicsvc.controllers.WebApplication.recordingEdit(rId: Long)
+POST    /webApp/recordings/:rId/update                                      musicsvc.controllers.WebApplication.recordingUpdate(rId: Long)
+GET     /webApp/recordings/:rId/delete                                      musicsvc.controllers.WebApplication.recordingDelete(rId: Long)
+GET     /webApp/recordings/deleteAll                                        musicsvc.controllers.WebApplication.recordingsDeleteAll
+GET     /webApp/recordings/editNew                                          musicsvc.controllers.WebApplication.recordingEditNew
+GET     /webApp/recordings/:rId/deletePerformers/:pIds                      musicsvc.controllers.WebApplication.deletePerformersFromRecording(rId: Long, pIds: String)
+GET     /webApp/recordings/:rId/addPerformers/:pIds                         musicsvc.controllers.WebApplication.addPerformersToRecording(rId: Long, pIds: String)
+POST    /webApp/recordings/create                                           musicsvc.controllers.WebApplication.recordingCreate
+GET     /webApp/recordings/:rId/data                                        musicsvc.controllers.WebApplication.getRecordingData(rId: Long)
+
+GET     /webApp/performers                                                  musicsvc.controllers.WebApplication.performers(name: Option[String] ?=None, performerType: Option[String] ?=None, performingIn: Option[String] ?=None)
+GET     /webApp/performers/:pId/details                                     musicsvc.controllers.WebApplication.performerDetails(pId: Long)
+GET     /webApp/performers/:pId/edit                                        musicsvc.controllers.WebApplication.performerEdit(pId: Long)
+POST    /webApp/performers/:pId/update                                      musicsvc.controllers.WebApplication.performerUpdate(pId: Long)
+GET     /webApp/performers/:pId/delete                                      musicsvc.controllers.WebApplication.performerDelete(pId: Long)
+GET     /webApp/performers/deleteAll                                        musicsvc.controllers.WebApplication.performersDeleteAll
+GET     /webApp/performers/:pId/deleteRecordings/:rIds                      musicsvc.controllers.WebApplication.deleteRecordingsFromPerformer(pId: Long, rIds: String)
+GET     /webApp/performers/:pId/addRecordings/:rIds                         musicsvc.controllers.WebApplication.addRecordingsToPerformer(pId: Long, rIds: String)
+GET     /webApp/performers/editNew                                          musicsvc.controllers.WebApplication.performerEditNew
+POST    /webApp/performers/create                                           musicsvc.controllers.WebApplication.performerCreate
 
 
 # ----- Assets ---------------------------------------------------------------------------------------------------------
