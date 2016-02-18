@@ -3,7 +3,7 @@
 angular.module('musicSPA.services', [])
 
 
-    .constant("baseURL", "http://192.168.192.22:9000/")
+    .constant("baseURL", "http://localhost:9000/")
 
 
     .service('dataService', function($resource, baseURL, $state, $http) {
