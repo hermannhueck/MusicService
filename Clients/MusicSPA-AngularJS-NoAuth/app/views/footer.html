@@ -3,6 +3,23 @@
     <div class="container">
         <div class="row row-footer">
 
+            <!-- display (error) message if any -->
+            <div class="col-xs-12 col-sm-10" ng-if="hasMessage() && isErrorMessage()">
+                <p style="background:red">{{message}}</p>
+            </div>
+            <div class="col-xs-12 col-sm-10" ng-if="hasMessage() && !isErrorMessage()">
+                <p>{{message}}</p>
+            </div>
+            <div class="col-xs-12 col-sm-2" ng-if="hasMessage()">
+                <button ype="button" class="form-control btn btn-primary btn-xs" ng-click="clearMessage()"
+                       data-toggle="tooltip" data-placement="bottom" title="Clear Message Box">
+                    Clear Message
+                </button>
+            </div>
+            <div class="col-xs-12" ng-if="hasMessage()">
+                <hr>
+            </div>
+
             <div class="col-xs-5 col-xs-offset-1 col-sm-2 col-sm-offset-1">
                 <h5>Links</h5>
                 <ul class="list-unstyled">
@@ -20,7 +37,7 @@
                     GERMANY<br>
                     <i class="fa fa-phone"></i>: +49 30 77777-0<br>
                     <i class="fa fa-fax"></i>: +49 30 77777-77<br>
-                    <i class="fa fa-envelope"></i>: <a href="mailto:cms@@classic.music">cms@@classic.music</a>
+                    <i class="fa fa-envelope"></i>: <a href="mailto:cms@classic.music">cms@classic.music</a>
                 </address>
             </div>
 
@@ -31,7 +48,7 @@
                     <a class="btn btn-social-icon btn-linkedin" href="http://www.linkedin.com/in/"><i class="fa fa-linkedin"></i></a>
                     <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i class="fa fa-twitter"></i></a>
                     <a class="btn btn-social-icon btn-youtube" href="http://youtube.com/"><i class="fa fa-youtube"></i></a>
-                    <a class="btn btn-social-icon" href="mailto:cms@@classic.music"><i class="fa fa-envelope-o"></i></a>
+                    <a class="btn btn-social-icon" href="mailto:cms@classic.music"><i class="fa fa-envelope-o"></i></a>
                 </div>
             </div>
 
@@ -39,6 +56,7 @@
                 <p style="padding:10px;"></p>
                 <p align=center>© Copyright 2016 CMS Classic Music Service Ltd.</p>
             </div>
+
         </div>
     </div>
 </footer>

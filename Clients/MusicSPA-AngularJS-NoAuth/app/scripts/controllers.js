@@ -3,12 +3,38 @@
 angular.module('musicSPA.controllers', [])
 
 
-    .controller('IndexController', function($scope, dataService, baseURL) {
+    .controller('IndexController', function($scope, dataService, defaultURL) {
 
         console.log("==> IndexController");
 
 
-        $scope.baseURL = baseURL;
+        $scope.defaultURL = defaultURL;
+
+        $scope.setServiceURL = function(url) {
+            $scope.serviceURL = url;
+            dataService.setServiceURL(url);
+        };
+        $scope.setServiceURL(defaultURL);
+
+        $scope.pingService = function(url) {
+            dataService.pingService($scope, url);
+        };
+
+
+        $scope.hasMessage = function() {
+            // console.log("!!!!! " + $scope.message)
+            return typeof $scope.message !== 'undefined' && $scope.message !== null && $scope.message.length > 0;
+        };
+
+        $scope.isErrorMessage = function() {
+            // console.log("!!!!! " + $scope.message)
+            return $scope.message.trim().startsWith("Error");
+        };
+
+        $scope.clearMessage = function() {
+            $scope.message = "";
+        }
+
     
         $scope.performers = [];
         $scope.recordings = [];
@@ -29,6 +55,7 @@ angular.module('musicSPA.controllers', [])
             $scope.homeIsActive = "";
             $scope.performersIsActive = "";
             $scope.recordingsIsActive = "";
+            $scope.settingsIsActive = "";
             
             if (controller === 'HomeController') {
                 $scope.homeIsActive = "active";
@@ -36,6 +63,8 @@ angular.module('musicSPA.controllers', [])
                 $scope.performersIsActive = "active";
             } else if (controller === 'RecordingsController') {
                 $scope.recordingsIsActive = "active";
+            } else if (controller === 'SettingsController') {
+                $scope.settingsIsActive = "active";
             }
         };
 
@@ -65,6 +94,9 @@ angular.module('musicSPA.controllers', [])
             dataService.deleteAllRecordings($scope, requery);
         };
 
+
+        $scope.currentYear = new Date().getFullYear();
+
         $scope.optionsPerformerType = [
             { value: "Soloist", label: "Soloist" },
             { value: "Ensemble", label: "Ensemble" },
@@ -74,6 +106,17 @@ angular.module('musicSPA.controllers', [])
         $scope.messageCannotDeletePerformer =
             "You cannot delete a Performer as long as Recordings are assigned to him. " +
             "First delete the recordings of the performer. Then you can delete the performer.";
+
+
+        $scope.setPerformersChanged = function(trueOrFalse) {
+            $scope.performersChanged = trueOrFalse;
+        }
+        $scope.setRecordingsChanged = function(trueOrFalse) {
+            $scope.recordingsChanged = trueOrFalse;
+        }
+        
+        $scope.setPerformersChanged(false);
+        $scope.setRecordingsChanged(false);
                                         
     })
 
@@ -86,6 +129,31 @@ angular.module('musicSPA.controllers', [])
     })
 
 
+    .controller('SettingsController', function($scope) {
+
+        $scope.setActiveController('SettingsController');
+
+        console.log("==> SettingsController");
+
+
+        $scope.url = { value: $scope.serviceURL };
+
+        $scope.changeServiceURL = function() {
+            $scope.setServiceURL($scope.url.value);
+        };
+
+        $scope.setDefaultServiceURL = function() {
+            $scope.url = { value: $scope.defaultURL };
+            $scope.setServiceURL($scope.url.value);
+        };
+
+        $scope.ping = function() {
+            $scope.pingService($scope.url.value);
+        };
+
+    })
+
+
     .controller('PerformersController', function($scope) {
 
         $scope.setActiveController('PerformersController');
@@ -93,10 +161,10 @@ angular.module('musicSPA.controllers', [])
         console.log("==> PerformersController");
 
         $scope.showPerformersAsJSON = function() {
-            window.open($scope.baseURL + "performers", "_self");
+            window.open($scope.serviceURL + "performers", "_self");
         };
         $scope.showPerformerAsJSON = function(pId) {
-            window.open($scope.baseURL + "performers/" + pId, "_self");
+            window.open($scope.serviceURL + "performers/" + pId, "_self");
         };
     
         $scope.displaySearch = false;
@@ -111,12 +179,6 @@ angular.module('musicSPA.controllers', [])
         };
         $scope.isCollapsed = function(pId) {
             return pId !== $scope.pIdSelected;
-        };
-
-
-        $scope.hasErrorMessage = function() {
-            // console.log("!!!!! " + $scope.message)
-            return typeof $scope.message !== 'undefined' && $scope.message !== null && $scope.message.length > 0;
         };
 
 
@@ -153,6 +215,17 @@ angular.module('musicSPA.controllers', [])
             return true;
         };
 
+
+        // watch variable performersChanged (defined in AppController)
+        $scope.$watch(function(scope) {
+            return scope.performersChanged;
+        }, function(performersChangedNewValue, performersChangedOldValue) {
+            console.log("performersChanged: " + performersChangedOldValue + " --> " + performersChangedNewValue)
+            if (performersChangedNewValue === true) {
+                $scope.queryPerformers();
+            }
+        });
+
     })
 
 
@@ -161,10 +234,10 @@ angular.module('musicSPA.controllers', [])
         $scope.setActiveController('RecordingsController');
 
         $scope.showRecordingsAsJSON = function() {
-            window.open($scope.baseURL + "recordings", "_self");
+            window.open($scope.serviceURL + "recordings", "_self");
         };
         $scope.showRecordingAsJSON = function(rId) {
-            window.open($scope.baseURL + "recordings/" + rId, "_self");
+            window.open($scope.serviceURL + "recordings/" + rId, "_self");
         };
 
         console.log("==> RecordingsController");
@@ -185,14 +258,8 @@ angular.module('musicSPA.controllers', [])
 
 
         $scope.getAudioUrl = function(rId) {
-            var audioUrl = "http://localhost:9000/recordings/" + rId + "/data";
+            var audioUrl = $scope.serviceURL + "recordings/" + rId + "/data";
             return $sce.trustAsResourceUrl(audioUrl);
-        };
-
-
-        $scope.hasErrorMessage = function() {
-            // console.log("!!!!! " + $scope.message)
-            return typeof $scope.message !== 'undefined' && $scope.message !== null && $scope.message.length > 0;
         };
 
 
@@ -213,7 +280,7 @@ angular.module('musicSPA.controllers', [])
                 return false;
             }
             var y = parseInt(year.toString, 10);
-            return y >= 1900 && y <= 2016;
+            return y >= 1900 && y <= $scope.currentYear;
         };
                                         
         $scope.submitSearchCriteria = function() {
@@ -222,7 +289,7 @@ angular.module('musicSPA.controllers', [])
             
             if (!$scope.isValidYear($scope.criteria.yearMin) || !$scope.isValidYear($scope.criteria.yearMax)) {
                 $scope.invalidSearchInput = true;
-                $scope.message = "Min. Year or Max. Year is not between 1900 and 2016.";
+                $scope.searchInputMessage = "Error: Min. Year or Max. Year is not between 1900 and " + $scope.currentYear + ".";
             } else {
                 $scope.invalidSearchInput = false;
                 $scope.queryRecordings($scope.criteria);
@@ -230,6 +297,17 @@ angular.module('musicSPA.controllers', [])
                 // $scope.resetSearch();
             }
         };
+
+
+        // watch variable performersChanged (defined in AppController)
+        $scope.$watch(function(scope) {
+            return scope.recordingsChanged;
+        }, function(recordingsChangedNewValue, recordingsChangedOldValue) {
+            console.log("recordingsChanged: " + recordingsChangedOldValue + " --> " + recordingsChangedNewValue)
+            if (recordingsChangedNewValue === true) {
+                $scope.queryRecordings();
+            }
+        });
 
     })
 
@@ -253,8 +331,8 @@ angular.module('musicSPA.controllers', [])
         $scope.recordingsToAdd = { ids: [] };
 
 
-        $scope.getPerformer = function(rId) {
-            dataService.getPerformer($scope, rId);
+        $scope.getPerformer = function(pId) {
+            dataService.getPerformer($scope, pId);
         };
 
         $scope.deleteRecordingsFromPerformer = function() {

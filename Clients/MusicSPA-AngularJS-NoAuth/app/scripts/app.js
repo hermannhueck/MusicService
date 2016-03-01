@@ -8,12 +8,12 @@ angular.module('musicSPA', ['ui.router', 'ngResource', 'angularSpinners', 'music
         
         $rootScope.$on('loading:show', function () {
             console.log("On loading:show ...");
-            spinnerService.show('loadingSpinner');
+            //spinnerService.show('loadingSpinner');
         });
 
         $rootScope.$on('loading:hide', function () {
             console.log("On loading:hide");
-            spinnerService.hide('loadingSpinner');
+            //spinnerService.hide('loadingSpinner');
         });
 
         // show Loading when a state change begins
@@ -100,7 +100,19 @@ angular.module('musicSPA', ['ui.router', 'ngResource', 'angularSpinners', 'music
                         controller  : 'RecordingEditController'
                    }
                 }
-            });
+            })
+
+            .state('app.settings', {
+                url:'settings',
+                views: {
+                    'content@': {
+                        templateUrl : 'views/settings.html',
+                        controller  : 'SettingsController'
+                     }
+                }
+            })
+
+            ;
             
             // default route
             $urlRouterProvider.otherwise('/');

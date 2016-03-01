@@ -3,16 +3,52 @@
 angular.module('musicSPA.services', [])
 
 
-    .constant("baseURL", "http://localhost:9000/")
+    .constant("defaultURL", "http://localhost:9000/")
 
 
-    .service('dataService', function($resource, baseURL, $state, $http) {
+    .service('dataService', function($resource, $state, $http) {
+
+
+        function setErrorMessage(scope, response) {
+            if (!response.data && response.status < 200) {
+                scope.message = "Error: Connection probably refused. Check URL in Settings!";
+            } else {
+                scope.message = "Error: " + response.status + ", " + response.statusText;
+            }
+            // console.log(scope.message);
+            console.log(response);
+        }
+
+
+        // ===== Service URL + ping ========
+
+        this.setServiceURL = function(url) {
+            this.serviceURL = url;
+        };
+
+        this.getServiceURL = function() {
+            return this.serviceURL = url;
+        };
+
+        this.pingService = function(scope, url) {
+
+            scope.message = "";
+            
+            $resource(url + "ping").get({},
+                function(response) {
+                    console.log("MusicService pinged, result = " + JSON.stringify(response));
+                    scope.message = JSON.stringify(response);
+                },
+                function(response) {
+                    setErrorMessage(scope, response);
+                });
+        };
 
 
         // ===== Performers ========
 
         this.performers = function() {
-            return $resource(baseURL + "performers/:id", {},  {
+            return $resource(this.serviceURL + "performers/:id", {},  {
                 'update': {
                     method: 'PUT'
                 }
@@ -20,7 +56,7 @@ angular.module('musicSPA.services', [])
         };
 
         this.performerAddRecordings = function() {
-            return $resource(baseURL + "performers/:id/addRecordings", {},  {
+            return $resource(this.serviceURL + "performers/:id/addRecordings", {},  {
                 'update': {
                     method: 'PUT'
                 }
@@ -28,7 +64,7 @@ angular.module('musicSPA.services', [])
         };
 
         this.performerDeleteRecordings = function() {
-            return $resource(baseURL + "performers/:id/deleteRecordings", {},  {
+            return $resource(this.serviceURL + "performers/:id/deleteRecordings", {},  {
                 'update': {
                     method: 'PUT'
                 }
@@ -44,11 +80,11 @@ angular.module('musicSPA.services', [])
             this.performers().query(criteria,
                 function(response) {
                     scope.performers = response;
+                    scope.setPerformersChanged(false);
                     console.log("Performers retrieved successfully!");
                 },
                 function(response) {
-                    scope.message = "Error: "+response.status + " " + response.statusText;
-                    console.log(scope.message);
+                    setErrorMessage(scope, response);
                 });
         };
 
@@ -70,12 +106,11 @@ angular.module('musicSPA.services', [])
                         console.log("Successfully retrieved Performer with id: " + id + ", response: " + JSON.stringify(response));
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
-        this.deletePerformer = function(scope, id, requery) {
+        this.deletePerformer = function(scope, id) {
 
             console.log("  --> deletePerformer(): id = " + id);
             scope.message = "";
@@ -84,17 +119,14 @@ angular.module('musicSPA.services', [])
                 .$promise.then(
                     function(response) {
                         console.log("Successfully deleted Performer with id: " + id + ", response: " + JSON.stringify(response));
-                        if (requery) {
-                            scope.queryPerformers();
-                        }
+                        scope.setPerformersChanged(true);
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
-        this.deleteAllPerformers = function(scope, requery) {
+        this.deleteAllPerformers = function(scope) {
 
             console.log("  --> deleteAllPerformers()");
             scope.message = "";
@@ -103,13 +135,10 @@ angular.module('musicSPA.services', [])
                 .$promise.then(
                     function(response) {
                         console.log("Successfully deleted all Performers, response: " + JSON.stringify(response));
-                        if (requery) {
-                            scope.queryPerformers();
-                        }
+                        scope.setPerformersChanged(true);
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
@@ -125,11 +154,11 @@ angular.module('musicSPA.services', [])
                         scope.performer = response;     // create returns the new Performer
                         console.log("Successfully created new Performer with id: " + scope.performer.id +
                                     ", response: " + JSON.stringify(response));
+                        scope.setPerformersChanged(true);
                         $state.go('app.performerEdit', {id: scope.performer.id}, {inherit: false});
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
@@ -144,10 +173,10 @@ angular.module('musicSPA.services', [])
                     function(response) {
                         scope.performer = response;     // update returns the updated Performer
                         console.log("Successfully updated Performer with id: " + id + ", response: " + JSON.stringify(response));
+                        scope.setPerformersChanged(true);
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
@@ -164,8 +193,7 @@ angular.module('musicSPA.services', [])
                         console.log("Successfully added Recordings to Performer with id: " + pId + ", response: " + JSON.stringify(response));
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
@@ -182,8 +210,7 @@ angular.module('musicSPA.services', [])
                         console.log("Successfully deleted Recordings from Performer with id: " + pId + ", response: " + JSON.stringify(response));
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
@@ -191,7 +218,7 @@ angular.module('musicSPA.services', [])
         // ===== Recordings ========
 
         this.recordings = function() {
-            return $resource(baseURL + "recordings/:id", {},  {
+            return $resource(this.serviceURL + "recordings/:id", {},  {
                 'update': {
                     method: 'PUT'
                 }
@@ -199,7 +226,7 @@ angular.module('musicSPA.services', [])
         };
 
         this.recordingAddPerformers = function() {
-            return $resource(baseURL + "recordings/:id/addPerformers", {},  {
+            return $resource(this.serviceURL + "recordings/:id/addPerformers", {},  {
                 'update': {
                     method: 'PUT'
                 }
@@ -207,7 +234,7 @@ angular.module('musicSPA.services', [])
         };
 
         this.recordingDeletePerformers = function() {
-            return $resource(baseURL + "recordings/:id/deletePerformers", {},  {
+            return $resource(this.serviceURL + "recordings/:id/deletePerformers", {},  {
                 'update': {
                     method: 'PUT'
                 }
@@ -224,11 +251,11 @@ angular.module('musicSPA.services', [])
             this.recordings().query(criteria,
                 function(response) {
                     scope.recordings = response;
+                    scope.setRecordingsChanged(false);
                     console.log("Recordings retrieved successfully!");
                 },
                 function(response) {
-                    scope.message = "Error: " + response.status + " " + response.statusText;
-                    console.log(scope.message);
+                    setErrorMessage(scope, response);
                 });
         };
 
@@ -237,6 +264,10 @@ angular.module('musicSPA.services', [])
             console.log("  --> getRecording(): id = " + id);
             scope.message = "";
             scope.recording = {};
+            
+            if (id < 1) {
+                return;
+            }
 
             this.recordings().get({id: id})
                 .$promise.then(
@@ -245,12 +276,11 @@ angular.module('musicSPA.services', [])
                         console.log("Successfully retrieved Recording with id: " + id + ", response: " + JSON.stringify(response));
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
-        this.deleteRecording = function(scope, id, requery) {
+        this.deleteRecording = function(scope, id) {
 
             console.log("  --> deleteRecording(): id = " + id);
             scope.message = "";
@@ -259,17 +289,14 @@ angular.module('musicSPA.services', [])
                 .$promise.then(
                     function(response) {
                         console.log("Successfully deleted Recording with id: " + id + ", response: " + JSON.stringify(response));
-                        if (requery) {
-                            scope.queryRecordings();
-                        }
+                        scope.setRecordingsChanged(true);
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
-        this.deleteAllRecordings = function(scope, requery) {
+        this.deleteAllRecordings = function(scope) {
 
             console.log("  --> deleteAllRecordings()");
             scope.message = "";
@@ -278,13 +305,10 @@ angular.module('musicSPA.services', [])
                 .$promise.then(
                     function(response) {
                         console.log("Successfully deleted all Recordings, response: " + JSON.stringify(response));
-                        if (requery) {
-                            scope.queryRecordings();
-                        }
+                        scope.setRecordingsChanged(true);
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
@@ -299,7 +323,7 @@ angular.module('musicSPA.services', [])
 
             $http({
                     method: 'POST',
-                    url: baseURL + 'recordings',
+                    url: this.serviceURL + 'recordings',
                 
                     // IMPORTANT!!! You might think this should be set to 'multipart/form-data' 
                     // but this is not true because when we are sending up files the request 
@@ -338,11 +362,11 @@ angular.module('musicSPA.services', [])
                 .success(function(data /*, status, headers, config */) {
                     console.log("Successfully created new Recording with id: " + data.id + ", data: " + data);
                     scope.recording = data;     // create returns the new Recording
+                    scope.setRecordingsChanged(true);
                     $state.go('app.recordingEdit', {id: scope.recording.id}, {inherit: false});
                 })
                 .error(function(response /*, status, headers, config */) {
-                    scope.message = "Error: " + response.status + " " + response.statusText;
-                    console.log(scope.message);
+                    setErrorMessage(scope, response);
                 });
         };
 
@@ -356,11 +380,11 @@ angular.module('musicSPA.services', [])
                 .$promise.then(
                     function(response) {
                         scope.recording = response;     // update returns the updated Recording
+                        scope.setRecordingsChanged(true);
                         console.log("Successfully updated Recording with id: " + id + ", response: " + JSON.stringify(response));
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
@@ -377,8 +401,7 @@ angular.module('musicSPA.services', [])
                         console.log("Successfully added Performers to Recording with id: " + rId + ", response: " + JSON.stringify(response));
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 
@@ -395,8 +418,7 @@ angular.module('musicSPA.services', [])
                         console.log("Successfully added Performers to Recording with id: " + rId + ", response: " + JSON.stringify(response));
                     },
                     function(response) {
-                        scope.message = "Error: " + response.status + " " + response.statusText;
-                        console.log(scope.message);
+                        setErrorMessage(scope, response);
                     });
         };
 

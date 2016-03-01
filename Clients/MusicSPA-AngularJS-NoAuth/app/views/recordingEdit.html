@@ -59,7 +59,7 @@
                 <label for="inputYear">Recording Year</label>
             </div>
             <div class="col-xs-12 col-sm-3">
-                <input id="inputYear" type="number" name="year" size="4" maxlength="4" min="1900" max="2020" class="form-control"
+                <input id="inputYear" type="number" name="year" size="4" maxlength="4" min="1900" max="{{currentYear}}" class="form-control"
                        ng-model="recording.year" placeHolder="Recording Year" required>
             </div>
         </div>

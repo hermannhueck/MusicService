@@ -1,0 +1,68 @@
+
+<div class="container">
+        
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <ul class="breadcrumb">
+                <li><a ui-sref="app">Home</a></li>
+                <li><a ui-sref="app.settings" class="active">Settings</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <h2>Settings</h2>
+        </div>
+    </div>
+
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <p style="padding:5px"></p>
+        </div>
+    </div>
+
+    <form name="performerForm" ng-submit="submitPerformer()" class="form-horizontal" novalidate>
+
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-2 control-label">
+                <label for="inputName">Music Service URL</label>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <input id="inputName" type="text" name="name" maxlength="200" class="form-control"
+                       ng-model="url.value" placeholder="http://[host]:[port]/">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="hidden-xs col-sm-2">
+                <label for="buttonPing"></label>
+            </div>
+            <div class="col-xs-6 col-sm-2">
+                <button id="buttonPing" type="button" value="Ping" class="form-control btn btn-primary" ng-click="ping()"
+                       data-toggle="tooltip" data-placement="bottom" title="Test connectivity: Try to ping MusicService at the specified URL">
+                    Ping
+                </button>
+            </div>
+            <div class="col-xs-6 col-sm-2">
+                <button id="buttonChange" type="button" value="Ping" class="form-control btn btn-primary" ng-click="changeServiceURL()"
+                       data-toggle="tooltip" data-placement="bottom" title="Use URL in Textbox to access MusicService">
+                    Change
+                </button>
+            </div>
+            <div class="col-xs-6 col-sm-2">
+                <button id="buttonDefault" type="button" value="Ping" class="form-control btn btn-primary" ng-click="setDefaultServiceURL()"
+                       data-toggle="tooltip" data-placement="bottom" title="Set Default URL: {{defaultURL}}">
+                    Set Default
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row row-dense-content">
+        <div class="col-xs-12">
+            <p style="padding:30px"></p>
+        </div>
+    </div>
+        
+</div>
