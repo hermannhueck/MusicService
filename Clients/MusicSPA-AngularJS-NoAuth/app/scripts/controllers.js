@@ -138,7 +138,12 @@ angular.module('musicSPA.controllers', [])
 
         $scope.url = { value: $scope.serviceURL };
 
+        $scope.appendSlash = function(url) {
+            return url.endsWith('/') ? url : url + '/';
+        };
+
         $scope.changeServiceURL = function() {
+            $scope.url.value = $scope.appendSlash($scope.url.value);
             $scope.setServiceURL($scope.url.value);
         };
 
@@ -148,7 +153,7 @@ angular.module('musicSPA.controllers', [])
         };
 
         $scope.ping = function() {
-            $scope.pingService($scope.url.value);
+            $scope.pingService($scope.appendSlash($scope.url.value));
         };
 
     })
