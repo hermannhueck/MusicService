@@ -69,8 +69,9 @@ class WebServiceSpec extends PlaySpecification with Results with BeforeAfter wit
       response.header(CONTENT_TYPE) must beSome.which(_.startsWith("application/json"))
 
       val json: JsValue = Json.parse(response.body)
-      json.isInstanceOf[JsBoolean] must beTrue
-      json.as[Boolean] must beTrue
+      json.isInstanceOf[JsObject] must beTrue
+      val pingResult = (json \ "pingResult" ).get
+      pingResult.as[Boolean] must beTrue
     }
 
 

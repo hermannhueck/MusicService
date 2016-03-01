@@ -39,7 +39,8 @@ class WsApi(val servicePort: Int) {
     l.debug("ping(): GET " + url)
 
     WS.url(url).execute(GET) map { response =>
-      Json.parse(response.body).as[Boolean]
+      val json = Json.parse(response.body)
+      (json \ "pingResult" ).get.as[Boolean]
     }
   }
 

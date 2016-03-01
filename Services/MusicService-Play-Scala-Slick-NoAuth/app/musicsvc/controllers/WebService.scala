@@ -60,7 +60,7 @@ class WebService extends Controller {
 
     l.debug("ping()")
 
-    Ok(Json.toJson(true))
+    Ok(" { \"pingResult\": true }").withHeaders("Content-Type" -> "application/json")
   }
 
 
