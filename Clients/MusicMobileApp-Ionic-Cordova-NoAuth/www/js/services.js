@@ -3,7 +3,7 @@
 angular.module('MusicApp.services', ['ngResource'])
 
 
-    .constant("defaultURL", "http://192.168.43.206:9000/")
+    .constant("defaultURL", "http://localhost:9000/")
 
 
     .factory('dataService', function($resource, $state, $http) {
