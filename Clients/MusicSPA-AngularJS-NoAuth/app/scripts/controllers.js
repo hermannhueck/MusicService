@@ -33,7 +33,7 @@ angular.module('musicSPA.controllers', [])
 
         $scope.clearMessage = function() {
             $scope.message = "";
-        }
+        };
 
     
         $scope.performers = [];
@@ -110,10 +110,10 @@ angular.module('musicSPA.controllers', [])
 
         $scope.setPerformersChanged = function(trueOrFalse) {
             $scope.performersChanged = trueOrFalse;
-        }
+        };
         $scope.setRecordingsChanged = function(trueOrFalse) {
             $scope.recordingsChanged = trueOrFalse;
-        }
+        };
         
         $scope.setPerformersChanged(false);
         $scope.setRecordingsChanged(false);
@@ -225,7 +225,7 @@ angular.module('musicSPA.controllers', [])
         $scope.$watch(function(scope) {
             return scope.performersChanged;
         }, function(performersChangedNewValue, performersChangedOldValue) {
-            console.log("performersChanged: " + performersChangedOldValue + " --> " + performersChangedNewValue)
+            console.log("performersChanged: " + performersChangedOldValue + " --> " + performersChangedNewValue);
             if (performersChangedNewValue === true) {
                 $scope.queryPerformers();
             }
@@ -308,7 +308,7 @@ angular.module('musicSPA.controllers', [])
         $scope.$watch(function(scope) {
             return scope.recordingsChanged;
         }, function(recordingsChangedNewValue, recordingsChangedOldValue) {
-            console.log("recordingsChanged: " + recordingsChangedOldValue + " --> " + recordingsChangedNewValue)
+            console.log("recordingsChanged: " + recordingsChangedOldValue + " --> " + recordingsChangedNewValue);
             if (recordingsChangedNewValue === true) {
                 $scope.queryRecordings();
             }

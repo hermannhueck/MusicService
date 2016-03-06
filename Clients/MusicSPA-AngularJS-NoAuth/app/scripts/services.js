@@ -27,7 +27,7 @@ angular.module('musicSPA.services', [])
         };
 
         this.getServiceURL = function() {
-            return this.serviceURL = url;
+            return this.serviceURL;
         };
 
         this.pingService = function(scope, url) {

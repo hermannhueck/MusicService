@@ -82,7 +82,11 @@ the start page of the app.
 --------------------------------------------
 
 Use any text editor to view or edit the code.
-"Brackets" is a very good choice for editing HTML.
+"Brackets" is a very good choice for editing HTML, CSS and JavaScript.
+
+See/download:
+
+    http://brackets.io
 
 
 05. Why AngularJS?
