@@ -22,7 +22,7 @@ Currently there are three implementations.
 - Single Page Web App in HTML5, CSS and JavaScript using AngularJS and Bootstrap accessing the web service in JavaScript (implemented)
 - Hybrid Mobile App in HTML5, CSS and JavaScript using Ionic, AngularJS and Cordova accessing the web service in JavaScript (implemented)
 
-But I've ideas for some more.
+But I've ideas for some more ...
 
 - Web App in Play using the web service client library of Akka-HTTP (not implemented)
 - Web App in Play using Retrofit (with RxScala) as web service client library (not implemented)
