@@ -1,5 +1,7 @@
 # MusicService
-A case study for Scala, Akka (not yet) and Play
+
+A case study for a service implemented with Scala, Akka (not yet) and Play
+using clients implemented with different technologies
 
 The MusicService is designed to manage two kinds of entities:
 - Recording entities are music recordings
@@ -14,14 +16,17 @@ for future implementations.
 - RESTful Web service implementation with Akka-HTTP in Scala (not yet implemented)
 
 The "Clients" subdirectory contains different implementions of the MusicService REST clients.
-Currently there is only one implementation written with Play in Scala. But I've some ideas
-for future implementations.
+Currently there are three implementations.
 
 - Web App in Play using the web service client library of Play (implemented)
-- Web App in Play using the web service client library of Akka-HTTP (not yet implemented)
-- Web App in Play using Retrofit (with RxScala) as web service client library (not yet implemented)
-- Single Page Web App in HTML5, CSS and JavaScript accessing the web service in JavaScript (not yet implemented)
-- Android App using Retrofit (with RxJava) as web service client library (not yet implemented)
+- Single Page Web App in HTML5, CSS and JavaScript using AngularJS and Bootstrap accessing the web service in JavaScript (implemented)
+- Hybrid Mobile App in HTML5, CSS and JavaScript using Ionic, AngularJS and Cordova accessing the web service in JavaScript (implemented)
+
+But I've ideas for some more.
+
+- Web App in Play using the web service client library of Akka-HTTP (not implemented)
+- Web App in Play using Retrofit (with RxScala) as web service client library (not implemented)
+- Android App using Retrofit (with RxJava) as web service client library (not implemented)
 
 Work is in progress. I'll add bug fixes, improvements, refactorings and more projects
 depending on the time I can spare to implement them.
@@ -29,7 +34,7 @@ No promises. No time lines. This is just a fun job.
 
 Note: There is a README in each project directory containing some brief informations,
 which help you to unterstand the fundamentals of the architecture as well as how to compile,
-test and run the respective application.
+test and run the respective service or application.
 
 Have fun.
 
