@@ -1,0 +1,38 @@
+<ion-view view-title="Settings">
+    <ion-content>
+        
+        <div class="card">
+
+            <div class="item item-divider">
+                Music Service URL
+            </div>
+            
+            <div class="item item-input-inset">
+                <label class="item-input">
+                    <input type="text" ng-model="url.value" placeholder="http://[host]:[port]/">
+                </label>
+            </div>
+            
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="ping()">Ping</button>
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="changeServiceURL()">Change</button>
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="setDefaultServiceURL()">Default</button>
+                </div>
+            </div>
+
+        </div>
+        
+    </ion-content>
+    
+    <div class="bar bar-footer bar-assertive" ng-if="hasMessage() && isErrorMessage()">
+        {{message}}
+    </div>
+    <div class="bar bar-footer bar-stable" ng-if="hasMessage() && !isErrorMessage()">
+        {{message}}
+    </div>
+
+</ion-view>

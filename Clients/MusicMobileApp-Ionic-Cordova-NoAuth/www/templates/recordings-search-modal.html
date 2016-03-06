@@ -1,0 +1,62 @@
+<ion-modal-view>
+
+    <ion-header-bar class="bar-royal">
+        <h1 class="title">Search Recordings</h1>
+        <div class="buttons">
+            <button class="button button-clear button-dark" ng-click="searchModal.hide();">&times;</button>
+        </div>
+    </ion-header-bar>
+
+    <ion-content>
+        <ion-list>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Title</span>
+                <input type="text" ng-model="criteria.title">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Composer</span>
+                <input type="text" ng-model="criteria.composer">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Min. Recording Year</span>
+                <input type="number" min="1900" max="{{currentYear}}" ng-model="criteria.yearMin">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Max. Recording Year</span>
+                <input type="number" min="1900" max="{{currentYear}}" ng-model="criteria.yearMax">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Performed by</span><br>
+                <select ng-model="criteria.performedBy"
+                        ng-options='p.id as (p.name + " (" + p.performerType + ")") for p in performers track by p.id'>
+                    <option value="">Select ...</option>
+                </select>
+            </label>
+ 
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="searchRecordings()">Search</button>
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="resetCriteria()">Reset</button>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-dark" type="button"
+                        ng-click="searchModal.hide()">
+                        Close
+                    </button>
+                </div>
+            </div>
+                
+        </ion-list>
+    </ion-content>
+
+</ion-modal-view>

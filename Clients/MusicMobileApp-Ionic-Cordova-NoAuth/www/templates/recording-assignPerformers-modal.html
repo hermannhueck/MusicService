@@ -1,0 +1,76 @@
+<ion-modal-view>
+
+    <ion-header-bar class="bar-royal">
+        <h1 class="title">Assign Performers To Recording</h1>
+        <div class="buttons">
+            <button class="button button-clear button-dark" ng-click="modalAssignPerformersToRecording.hide()">&times;</button>
+        </div>
+    </ion-header-bar>
+        
+    <ion-content>
+        
+        <ion-list>
+
+            <div class="item item-divider">Recording</div>
+                
+            <div class="item item-text-wrap">
+                <h2 class="title">{{recording.title}}</h2>
+                <p>composed by: {{recording.composer}}</p>
+                <p>recorded in: {{recording.year}}</p>
+            </div>
+
+            <div class="item item-divider">Performers assigned to this Recording</div>
+
+            <div class="item item-input item-stacked-label">
+                <div ng-if="recording.performers.length === 0">
+                    <span style="font-size:75%">--- No Performers assigned to this Recording ---</span>
+                </div>
+                <select multiple ng-multiple="true" size="5" style="width: 95%; max-width: 95%"
+                        ng-if="recording.performers.length > 0" ng-model="performersToDelete.ids"
+                        ng-options='p.id as (p.name + ", " + p.performerType) for p in recording.performers'>
+                </select>
+            </div>
+
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                            ng-click="deletePerformersFromRecording()" ng-disabled="recording.performers.length === 0">
+                        Delete selected Performers
+                    </button>
+                </div>
+            </div>
+
+            <div class="item item-divider">Performers <u>not</u> assigned to this Recording</div>
+
+            <div class="item item-input item-stacked-label">
+                <div ng-if="recording.performers.length === performers.length">
+                    <span style="font-size:75%">--- No Performers left to be assigned to this Recording ---</span>
+                </div>
+                <select multiple ng-multiple="true" size="10" style="width: 95%; max-width: 95%"
+                        ng-if="recording.performers.length < performers.length" ng-model="performersToAdd.ids"
+                        ng-options='p.id as (p.name + ", " + p.performerType) for p in performers | filterPerformersNotAssignedToCurrentRecording:recording'>
+                </select>
+            </div>
+
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                            ng-click="addPerformersToRecording()" ng-disabled="recording.performers.length === performers.length">
+                        Add selected Performers
+                    </button>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-dark" type="button"
+                        ng-click="modalAssignPerformersToRecording.hide()">
+                        Close
+                    </button>
+                </div>
+            </div>
+                
+        </ion-list>
+    </ion-content>
+
+</ion-modal-view>

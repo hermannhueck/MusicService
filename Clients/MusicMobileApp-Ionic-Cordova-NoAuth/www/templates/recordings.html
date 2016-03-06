@@ -1,0 +1,67 @@
+<ion-view view-title="Recordings">
+    
+    <ion-nav-buttons side="secondary">
+        <div class="buttons">
+            <button class="button button-icon icon ion-ios-search" ng-click="searchModal.show()"></button>
+            <button class="button button-icon icon ion-ios-more" ng-click="popover.show($event)"></button>
+        </div>
+    </ion-nav-buttons>
+    
+    <ion-content>
+        
+        <div class="card" ng-if="hasSearchCriteria()">
+
+            <div class="item item-divider">Last Search Criteria</div>
+            <div class="item item-body item-text-wrap">
+                <ul>
+                    <li ng-if="criteria.title">Name: [{{criteria.title}}]</li>
+                    <li ng-if="criteria.composer">Composer: [{{criteria.composer}}]</li>
+                    <li ng-if="criteria.yearMin">Min. Year: [{{criteria.yearMin}}]</li>
+                    <li ng-if="criteria.yearMax">Max. Year: [{{criteria.yearMax}}]</li>
+                    <li ng-if="criteria.performedBy">Performed by: [{{performerById(criteria.performedBy).name}}]</li>
+                </ul>
+            </div>
+ 
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="searchRecordings()">Repeat Search</button>
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="resetCriteria();searchRecordings()">Reset Search</button>
+                </div>
+            </div>
+
+        </div>
+
+        <ion-list show-delete="shouldShowDelete" show-reorder="shouldShowReorder">
+            
+            <!-- If the item-height and item-width attributes are not supplied, it will be assumed
+                    that every item in the list has the same dimensions as the first item. -->
+            
+            <ion-item class="item" ng-if="!recordings || recordings.length === 0">
+                --- No Recordings found ---
+            </ion-item>
+            
+            <ion-item ng-repeat="r in recordings" ui-sref="app.recordingDetails({id: r.id})" class="item item-text-wrap"
+                       on-swipe-left="deleteRecording2(r)">
+                <h2>{{r.title}} <span style="font-size:75%">(by {{r.composer}}, recorded in {{r.year}})</span></h2>
+                <ion-delete-button class="ion-ios-minus-outline" ng-click="deleteRecording2(r)">
+                </ion-delete-button>
+                <!-- Reordering doesn't work correctly!
+                <ion-reorder-button class="ion-drag" on-reorder="moveListItem(item, $fromIndex, $toIndex)">
+                </ion-reorder-button>
+                -->
+            </ion-item>
+            
+        </ion-list>
+        
+    </ion-content>
+    
+    <div class="bar bar-footer bar-assertive" ng-if="hasMessage() && isErrorMessage()">
+        {{message}}
+    </div>
+    <div class="bar bar-footer bar-stable" ng-if="hasMessage() && !isErrorMessage()">
+        {{message}}
+    </div>
+    
+</ion-view>

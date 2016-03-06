@@ -1,0 +1,47 @@
+<ion-modal-view>
+
+    <ion-header-bar class="bar-royal">
+        <h1 class="title">New Performer</h1>
+        <div class="buttons">
+            <button class="button button-clear button-dark" ng-click="modalNewPerformer.hide()">&times;</button>
+        </div>
+    </ion-header-bar>
+
+    <ion-content>
+        <ion-list>
+                
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Name</span>
+                <input type="text" ng-model="performerData.name">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Performer Type</span><br>
+                <select ng-model="performerData.performerType"
+                        ng-options='o.value as o.label for o in optionsPerformerType'>
+                    <option value="">Select ...</option>
+                </select>
+            </label>
+ 
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="newPerformer()">Create Performer</button>
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="resetPerformerData()">Reset</button>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-dark" type="button"
+                        ng-click="modalNewPerformer.hide()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+                
+        </ion-list>
+    </ion-content>
+
+</ion-modal-view>

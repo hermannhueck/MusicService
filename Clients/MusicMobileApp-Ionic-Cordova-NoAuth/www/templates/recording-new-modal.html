@@ -1,0 +1,54 @@
+<ion-modal-view>
+
+    <ion-header-bar class="bar-royal">
+        <h1 class="title">New Recording</h1>
+        <div class="buttons">
+            <button class="button button-clear button-dark" ng-click="modalNewRecording.hide()">&times;</button>
+        </div>
+    </ion-header-bar>
+
+    <ion-content>
+        <ion-list>
+                
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">MP3 File</span><br>
+                <input type="file" name="mp3file" id="mp3file" onchange="angular.element(this).scope().fileChanged(this)">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Title</span>
+                <input type="text" ng-model="recordingData.title">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Composer</span>
+                <input type="text" ng-model="recordingData.composer">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Year Recorded</span>
+                <input type="number" min="1900" max="{{currentYear}}" ng-model="recordingData.year">
+            </label>
+ 
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="newRecording()">Create Recording</button>
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="resetRecordingData()">Reset</button>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-dark" type="button"
+                        ng-click="modalNewRecording.hide()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+                
+        </ion-list>
+    </ion-content>
+
+</ion-modal-view>

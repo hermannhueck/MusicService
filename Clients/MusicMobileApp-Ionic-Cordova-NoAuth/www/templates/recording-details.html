@@ -1,0 +1,69 @@
+<ion-view view-title="Recording Details">
+    
+    <ion-content>
+        
+        <div class="card">
+
+            <div class="item item-divider">Title</div>
+            <div class="item item-body item-text-wrap">{{recording.title}}</div>
+
+            <div class="item item-divider">Composer</div>
+            <div class="item item-body item-text-wrap">{{recording.composer}}</div>
+
+            <div class="item item-divider">Year</div>
+            <div class="item item-body item-text-wrap">{{recording.year}}</div>
+
+            <div class="item item-divider">Performed by</div>
+            <div class="item item-body item-text-wrap">
+                <div ng-if="recording.performers.length === 0">
+                    <span style="font-size:75%">--- No Performers assigned to this Recording ---</span>
+                </div>
+                <ul>
+                    <li ng-repeat="p in recording.performers">
+                        <a ui-sref="app.performerDetails({id: p.id})">{{p.name}} <span style="font-size:75%">({{p.performerType}})</span></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="item item-divider">Play</div>
+            <div class="item item-body item-text-wrap">
+                <audio controls ng-src="{{getAudioUrl(recording.id)}}">
+                    <source type="audio/mpeg">
+                    Your browser does not support the audio tag.
+                </audio>
+            </div>
+                
+            <div class="item item-divider">Actions</div>
+            <div class="item item-body">
+                <div class="button-bar">
+                    <button class="button button-outline button-small button-positive"
+                                type="button" ng-click="modalEditRecording.show()">Edit Recording</button>
+                    <button class="button button-outline button-small button-positive"
+                                type="button" ng-click="modalAssignPerformersToRecording.show()">Assign Performers</button>
+                </div>
+            </div>
+            <div class="item item-body">
+                <div class="button-bar">
+                    <button class="button button-outline button-small button-assertive"
+                                type="button" ng-click="deleteRecording2(recording);">Delete Recording</button>
+                </div>
+            </div>
+            <div class="item item-body">
+                <div class="button-bar">
+                    <button class="button button-outline button-small button-dark"
+                                type="button" ng-click="goToRecordings()">Back to Recordings</button>
+                </div>
+            </div>
+
+        </div>
+
+    </ion-content>
+    
+    <div class="bar bar-footer bar-assertive" ng-if="hasMessage() && isErrorMessage()">
+        {{message}}
+    </div>
+    <div class="bar bar-footer bar-stable" ng-if="hasMessage() && !isErrorMessage()">
+        {{message}}
+    </div>
+    
+</ion-view>

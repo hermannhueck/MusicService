@@ -1,0 +1,60 @@
+<ion-view view-title="Performer Details">
+    
+    <ion-content>
+        
+        <div class="card">
+
+            <div class="item item-divider">Name</div>
+            <div class="item item-body item-text-wrap">{{performer.name}}</div>
+
+            <div class="item item-divider">Performer Type</div>
+            <div class="item item-body item-text-wrap">{{performer.performerType}}</div>
+
+            <div class="item item-divider">Performing in</div>
+            <div class="item item-body item-text-wrap">
+                <div ng-if="performer.recordings.length === 0">
+                    <span style="font-size:75%">--- No Recordings assigned to this Performer ---</span>
+                </div>
+                <ul>
+                    <li ng-repeat="r in performer.recordings">
+                        <a ui-sref="app.recordingDetails({id: r.id})">{{r.title}} <span style="font-size:75%">({{r.composer}})</span></a>
+                    </li>
+                </ul>
+            </div>
+                
+            <div class="item item-divider">Actions</div>
+            <div class="item item-body">
+                <div class="button-bar">
+                    <button class="button button-outline button-small button-positive"
+                                type="button" ng-click="modalEditPerformer.show()">Edit Performer</button>
+                    <button class="button button-outline button-small button-positive"
+                                type="button" ng-click="modalAssignRecordingsToPerformer.show()">Assign Recordings</button>
+                </div>
+            </div>
+            <div class="item item-body">
+                <div class="button-bar">
+                    <button class="button button-outline button-small button-assertive" type="button"
+                            ng-click="deletePerformer2(performer)" ng-disabled="!canDeletePerformer(performer)">
+                        Delete Performer
+                    </button>
+                </div>
+            </div>
+            <div class="item item-body">
+                <div class="button-bar">
+                    <button class="button button-outline button-small button-dark"
+                                type="button" ng-click="goToPerformers()">Back to Performers</button>
+                </div>
+            </div>
+
+        </div>
+
+    </ion-content>
+    
+    <div class="bar bar-footer bar-assertive" ng-if="hasMessage() && isErrorMessage()">
+        {{message}}
+    </div>
+    <div class="bar bar-footer bar-stable" ng-if="hasMessage() && !isErrorMessage()">
+        {{message}}
+    </div>
+    
+</ion-view>

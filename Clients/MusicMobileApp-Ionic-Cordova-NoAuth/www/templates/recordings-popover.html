@@ -1,0 +1,34 @@
+<ion-popover-view>
+
+    <ion-header-bar>
+        <h1 class="title">Recordings</h1>
+        <div class="buttons">
+            <button class="button button-clear button-dark" ng-click="popover.hide()">&times;</button>
+        </div>
+    </ion-header-bar>
+     
+    <ion-content>
+        <ion-list>
+            <div class="popover-inner-content">
+                <ion-item menu-close ng-click="queryRecordings();popover.hide()">
+                    <i class="icon ion-ios-reload"><span style="font-size:75%"> Reload Recordings</span></i>
+                </ion-item>
+                <ion-item menu-close ng-click="modalNewRecording.show();popover.hide()">
+                    <i class="icon ion-ios-plus-outline"><span style="font-size:75%"> New Recording</span></i>
+                </ion-item>
+                <ion-item menu-close ng-click="deleteAllRecordings();popover.hide()" ng-disabled="!canDeleteAllPerformers()">
+                    <i class="icon ion-ios-minus icon"><span style="font-size:75%"> Delete all</span></i>
+                </ion-item>
+                <ion-item menu-close ng-click="toggleDelete();popover.hide()">
+                    <i class="icon ion-ios-minus-outline"><span style="font-size:75%"> {{toggleDeleteLabel()}}</span></i>
+                </ion-item>
+                <!-- Reordering doesn't work correctly!
+                <ion-item menu-close ng-click="toggleReorder();popover.hide()">
+                    <i class="icon ion-drag"><span style="font-size:75%"> {{toggleReorderLabel()}}</span></i>
+                </ion-item>
+                -->
+            </div>
+        </ion-list>
+    </ion-content>
+      
+</ion-popover-view>

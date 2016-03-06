@@ -1,0 +1,95 @@
+<ion-view view-title="Performers">
+    
+    <div class="tabs-striped tabs-color-royal">
+        <ul class="tabs">
+            <li ng-class="{active:isSelected(0)}" class="tab-item">
+                <a ng-click="select(0)">All</a>
+            </li>
+            <li ng-class="{active:isSelected(1)}" class="tab-item">
+                <a ng-click="select(1)">Soloists</a>
+            </li>
+            <li ng-class="{active:isSelected(2)}" class="tab-item">
+                <a ng-click="select(2)">Ensembles</a>
+            </li>
+            <li ng-class="{active:isSelected(3)}" class="tab-item">
+                <a ng-click="select(3)">Conductors</a>
+            </li>
+        </ul>
+    </div>
+    
+    <ion-nav-buttons side="secondary">
+        <div class="buttons">
+            <button class="button button-icon icon ion-ios-search" ng-click="searchModal.show()"></button>
+            <button class="button button-icon icon ion-ios-more" ng-click="popover.show($event)"></button>
+        </div>
+    </ion-nav-buttons>
+    
+    <ion-content>
+        
+        <div class="card" ng-if="hasSearchCriteria()">
+
+            <div class="item item-divider">Last Search Criteria</div>
+            <div class="item item-body item-text-wrap">
+                <ul>
+                    <li ng-if="criteria.name">Name: [{{criteria.name}}]</li>
+                    <li ng-if="criteria.performerType">Type: [{{criteria.performerType}}]</li>
+                    <li ng-if="criteria.performingIn">Performing in: [{{recordingById(criteria.performingIn).title}}]</li>
+                </ul>
+            </div>
+ 
+            <div class="item">
+                <div class="button-bar">
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="searchPerformers()">Repeat Search</button>
+                    <button class="button button-block button-outline button-small button-positive" type="button"
+                                    ng-click="resetCriteria();searchPerformers()">Reset Search</button>
+                </div>
+            </div>
+
+        </div>
+
+        <ion-list show-delete="shouldShowDelete" show-reorder="shouldShowReorder">
+            
+            <!-- If the item-height and item-width attributes are not supplied, it will be assumed
+                    that every item in the list has the same dimensions as the first item. -->
+            
+            <ion-item class="item" ng-if="!performers || performers.length === 0">
+                --- No Performers found ---
+            </ion-item>
+            
+            <ion-item ng-repeat="p in performers | filter : {performerType: textFilters[tabIndex]}"
+                        ui-sref="app.performerDetails({id: p.id})" class="item" on-swipe-left="deletePerformer2(p)">
+                <h2>{{p.name}} <span style="font-size:75%">({{p.performerType}})</span></h2>
+                <ion-delete-button class="ion-ios-minus-outline" ng-click="deletePerformer2(p)" ng-disabled="!canDeletePerformer(p)">
+                </ion-delete-button>
+                <!-- Reordering doesn't work correctly!
+                <ion-reorder-button class="ion-drag" on-reorder="moveListItem(item, $fromIndex, $toIndex)">
+                </ion-reorder-button>
+                -->
+            </ion-item>
+
+            <ion-item class="item item-body item-text-wrap"
+                      ng-if="performers && performers.length > 0 && !canDeleteAllPerformers(performers)">
+                <blockquote><span style="font-size:60%">{{messageCannotDeletePerformer}}</span></blockquote>
+            </ion-item>
+            
+        </ion-list>
+        
+    </ion-content>
+
+    <div class="bar bar-footer bar-assertive" ng-if="hasMessage() && isErrorMessage()">
+        {{message}}
+    </div>
+    <div class="bar bar-footer bar-stable" ng-if="hasMessage() && !isErrorMessage()">
+        {{message}}
+    </div>
+    <!--
+    <div class="bar bar-footer bar-energized"
+                ng-if="!hasMessage() && performers && performers.length > 0 && !canDeleteAllPerformers(performers)">
+        <ion-item class="item item-body item-text-wrap" style="background-color: #ffc900">
+            <span style="font-size:100%">{{messageCannotDeletePerformer}}</span>
+        </ion-item>
+    </div>
+    -->
+    
+</ion-view>
