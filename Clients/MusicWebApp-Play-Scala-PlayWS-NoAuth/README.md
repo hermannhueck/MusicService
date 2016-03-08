@@ -230,14 +230,13 @@ If you know Scala ...
 - Scala is designed to avoid shared mutable state which very often is the basic problem
   of traditional concurrent Java programs. Furthermore, if you use Scala collections
   you use immutable collections by default.
-- The _Option_ type used consequently saves you from NPEs.
 - Scala is much better prepared for asynchronous and concurrent programming than Java is.
 
 Scala learned from the deficiencies of Java, e.g.
 - No checked Exceptions force you to handle or to propagate them thus cluttering your
   method signatures.
-- You (almost) never deal with NPEs if you consequently use the Option type. (Java 8 also
-  got a new type "Optional" persueing the same purpose.)
+- You (almost) never deal with NPEs if you consequently use the _Option_ type. (Java 8 also
+  got a new type "Optional" persueing the same purpose, but it is used rarely.)
 - Exception handling is much more elegant with Try objects.
 - and much more ...
 
