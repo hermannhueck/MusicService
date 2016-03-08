@@ -141,7 +141,7 @@ are implemented in the respective packages: _musicWebApp.models_, _musicWebApp.v
 _musicWebApp.controllers_.
 
 Incoming HTTP requests are routed to the controllers. Routing is configured in
-conf/routes. This file specifies (in three columns)
+_conf/routes_. This file specifies (in three columns)
 - the request method of a HTTP request (GET, POST, PUT, DELETE)
 - the URL path of a supported HTTP request
 - the controller method (and parameters) where the request is routed to
@@ -182,16 +182,16 @@ All test classes are located in the "test" directory.
 
 Why did I choose the Play Framework for the implementation?
 
-    1. Play is containerless.
-    2. Play is reactive.
+1. Play is containerless.
+2. Play is reactive.
 
-Containerless: Traditional web containers or application servers use the
+__Containerless__: Traditional web containers or application servers use the
 "one thread per request" model. If a request blocks during I/O (typically while
 accessing the database, a file or another web service) the thread is blocked.
 If there is heavy load on the service (thousands of requests per second)
 traditional web containers run out of resources. Play doesn't.
 
-Reactive: Play is light weight and reactive by design, traditional web containers
+__Reactive__: Play is light weight and reactive by design, traditional web containers
 are not. The framework never blocks during a request. Thus it is ideal for concurrent
 and non-blocking processing. Every request is handled asynchronously using Scala Futures.
 The developer must fulfill this non-blocking promise as well. In the implementation of
