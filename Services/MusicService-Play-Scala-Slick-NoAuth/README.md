@@ -166,7 +166,7 @@ Data entities are stored in an H2 in-memory SQL database with 3 tables:
   (see class musicsvc.models.Performers)
 - __RECORDINGS__: this table stores entities of type Recording
   (see class musicsvc.models.Recordings)
-- __RECORDINGS_PERFORMERS_: this table stores the many-to-many relationship
+- __RECORDINGS_PERFORMERS__: this table stores the many-to-many relationship
   between Recordings and Performers
   (see class musicsvc.models.RecordingsPerformers)
 
