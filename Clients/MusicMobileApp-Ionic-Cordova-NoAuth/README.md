@@ -50,12 +50,12 @@ The project build and management of components is based on ionic, npm, bower and
 
 Installation of
 
-* NodeJS
-* bower
-* gulp
-* jshint
-* ionic
-* cordova
+- NodeJS
+- bower
+- gulp
+- jshint
+- ionic
+- cordova
 
 If not yet installed, download and install [NodeJS](https://nodejs.org) on your system.
 This also makes npm (Node package manager) available on your machine.
@@ -156,9 +156,9 @@ To run the app in an Android emulator ...
 - you must have at least one virtual device configure in the Android Virtual Device Manager.
 
 If these preconditions are met use
-
-    ionic state reset
-
+```bash
+    $ ionic state reset
+```
 to install the configured platforms (ios and android) and cordova plugins.
 
 Before starting the emulator find the IP address of your computer where MusicService is running.
@@ -175,23 +175,23 @@ To prepare your device ...
 - connect your Android device with a USB cable to your PC or Mac
 
 Everything prepared run the command
-
-    ionic run android
-
+```bash
+    $ ionic run android
+```
 This command compiles and packages the app and deploys it to the Android device.
 
 Then invoke
-
-    ionic resources
-
+```bash
+    $ ionic resources
+```
 in order to generate icon and splash resources for different sizes in ios and Android.
 
 To access the data hosted in the MusicService this service mus be running.
 
 For more information see:
 
-    http://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html
-    http://ionicframework.com/docs/cli/run.html
+* http://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html
+* http://ionicframework.com/docs/cli/run.html
 
 
 06. How to run the app on a real Android device
