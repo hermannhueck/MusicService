@@ -15,10 +15,10 @@ Table of Contents
 08. Why Ionic + Cordova?
 
 
-01. What is the "MusicSPA"?
--------------------------------
+01. What is the "MusicMobileApp"?
+---------------------------------
 
-This  App is a Hybrid Mobile Application. It is
+This  App is a Hybrid (= multi-platform) Mobile Application. It is
 - based on web technologies: HTML, CSS, JavaScript
 - using Ionic, AngularJS and Cordova.
 
