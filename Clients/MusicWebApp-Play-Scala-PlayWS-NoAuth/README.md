@@ -68,7 +68,7 @@ Enter the command:
     $ java -version
 ```
 This command gives you the version number of the Java Runtime found in your PATH.
-This shoud give you something like ...
+This shoud show up something like ...
 ```bash
     java version 1.8.0_66"
 ```
@@ -89,10 +89,11 @@ not configurable.)
 
 After having lauched MusicService go to the MusicWebApp project directory and lauch
 the following commands:
-
+```bash
 [unix/osx] $  ./activator test                    # runs the tests
 [windows ] >  .\activator.bat test                # runs the tests
-
+```
+```bash
 [unix/osx] $  ./activator run [ -Dhttp.port=<some_port> ]         # launches the app
 [windows ] >  .\activator.bat run [ -Dhttp.port=<some_port> ]     # launches the app
 
