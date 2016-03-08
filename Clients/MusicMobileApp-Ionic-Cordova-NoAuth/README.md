@@ -22,11 +22,11 @@ This  App is a Hybrid (= multi-platform) Mobile Application. It is
 - based on web technologies: HTML, CSS, JavaScript
 - using Ionic, AngularJS and Cordova.
 
-The MusicApp manages music Performers and Recordings. It is a RESTful
+The MusicMobileApp manages music Performers and Recordings. It is a RESTful
 web service client to the web service MusicService.
-The MusicApp cannot do any work without MusicService being started.
+The MusicMobileApp cannot do any work without MusicService being started.
 
-With MusicApp the user can perform the following operations on a mobile device:
+With MusicMobileApp the user can perform the following operations on a mobile device:
 - Add, change, delete and query Performers and Recordings
 - listen to Recordings
 
