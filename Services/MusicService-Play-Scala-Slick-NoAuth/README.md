@@ -99,13 +99,14 @@ If you see this you know that the Java compiler is installed correctly and is fo
 -----------------------------------------------
 
 Go to the project directory and lauch the following commands:
-
+```bash
 [unix/osx] $  ./activator test                    # runs the tests
 [windows ] >  .\activator.bat test                # runs the tests
-
+```
+```bash
 [unix/osx] $  ./activator run [ -Dhttp.port=<some_port> ]         # launches the app
 [windows ] >  .\activator.bat run [ -Dhttp.port=<some_port> ]     # launches the app
-
+```
 If you don't specify the http.port the App uses port 9000 as default.
 After having launched the App you can access with your browser at http://localhost:9000
 
@@ -124,9 +125,10 @@ After having launched the App you can access with your browser at http://localho
 05. How to import the project into (Eclipse based) ScalaIDE
 -----------------------------------------------------------
 
-[unix/osx] $  ./activator eclipse        # generates Eclipse project files
-[windows ] >  .\activator.bat eclipse    # generates Eclipse project files
-
+```bash
+[unix/osx] $  ./activator gen-idea        # generates IntelliJ project files
+[windows ] >  .\activator.bat gen-idea    # generates IntelliJ project files
+```
 - Open ScalaIDE
 - Select "File -> Import..."
 - Select "General -> Existing Projects into Workspace"
