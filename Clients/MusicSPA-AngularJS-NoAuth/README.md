@@ -13,7 +13,7 @@ Table of Contents
 
 
 01. What is the "MusicSPA"?
--------------------------------
+---------------------------
 
 This simple App is a "Single Page Application (SPA)". It is
 - a web application running in the browser

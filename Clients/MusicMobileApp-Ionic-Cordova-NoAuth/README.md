@@ -20,7 +20,8 @@ Table of Contents
 
 This  App is a Hybrid (= multi-platform) Mobile Application. It is
 - based on web technologies: HTML, CSS, JavaScript
-- using Ionic, AngularJS and Cordova.
+- using Ionic, AngularJS and Cordova
+- with web pages being rendered on the client (browser or WebView of the mobile device).
 
 The MusicMobileApp manages music Performers and Recordings. It is a RESTful
 web service client to the web service MusicService.
