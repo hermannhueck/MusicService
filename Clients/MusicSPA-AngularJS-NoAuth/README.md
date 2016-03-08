@@ -22,8 +22,8 @@ This simple App is a "Single Page Application (SPA)". It is
 - using AngularJS as client-side MVC framework
 - and Bootstrap web style sheets.
 
-The MusicSPA manages music Performers and Recordings. It is a RESTful
-web service client to the web service MusicService which hosts the data.
+The MusicSPA manages music Performers and Recordings. It is a REST client
+to the web service MusicService which hosts the data.
 The MusicSPA cannot do any work without MusicService being started.
 
 With MusicSPA the user can perform the following operations in the browser:
@@ -49,18 +49,21 @@ The project build and management of components is based on npm, bower and gulp.
 ----------------------------------------------------
 
 Installation of
-    - NodeJS
-    - bower
-    - gulp
-    - jshint
 
-If not yet installed, download and install NodeJS on your system.
+- NodeJS
+- bower
+- gulp
+- jshint
+
+If not yet installed, download and install [NodeJS](https://nodejs.org) on your system.
 This also makes npm (Node package manager) available on your machine.
 
-With npm being available, use it to instsall the other tools on your system:
-    - npm install bower -g
-    - npm install gulp -g
-    - npm install jshint -g
+With npm being available, use it to install the other tools on your system:
+```bash
+    $ npm install bower -g
+    $ npm install gulp -g
+    $ npm install jshint -g
+```
 If working on OSX or Linux precede these commands with "sudo".
 
 
@@ -71,9 +74,9 @@ In order to run the app MusicService must already be running at http://localhost
 (This URL can be changed in app/scripts/services.js.)
 
 After having lauched MusicService go to the MusicSPA project directory and run this command:
-
-    gulp watch
-
+```bash
+    $ gulp watch
+```
 This command builds and packages MusicSPA from the source files to the dist dirctory,
 deploys the app into a local server and opens a browser window in which it presents
 the start page of the app.
@@ -87,12 +90,11 @@ Use any text editor to view or edit the code.
 
 See/download:
 
-    http://brackets.io
+- http://brackets.io
 
 
 05. Why AngularJS?
 ------------------
 
-There are other frameworks available. I chose Angular because it is currently the
-leading client-side MVC web framework in the market.
-
+There are other frameworks out there (Ember, Backbone, React, Meteor, Polymer, Knockout etc.).
+I chose Angular because it is currently the leading client-side MVC web framework in the market.

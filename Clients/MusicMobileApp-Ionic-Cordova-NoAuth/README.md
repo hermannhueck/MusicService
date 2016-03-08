@@ -176,15 +176,9 @@ To prepare your device ...
 
 Everything prepared run the command
 ```bash
-    $ ionic run android
+    $ ionic emulate android
 ```
 This command compiles and packages the app and deploys it to the Android device.
-
-Then invoke
-```bash
-    $ ionic resources
-```
-in order to generate icon and splash resources for different sizes in ios and Android.
 
 To access the data hosted in the MusicService this service mus be running.
 
@@ -211,12 +205,6 @@ If these preconditions are met use
     $ ionic state reset
 ```
 to install the configured platforms (ios and android) and cordova plugins.
-
-Then invoke
-```bash
-    $ ionic resources
-```
-in order to generate icon and splash resources for different sizes in ios and Android.
 
 Before starting the emulator find the IP address of your computer where MusicService is running.
 In www/js/services.js (line 6) change the "defaultURL" accordingly. Do not use "localhost"
