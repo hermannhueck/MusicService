@@ -139,8 +139,8 @@ To access the data hosted in the MusicService this service mus be running.
 
 For more information see:
 
-* http://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-* http://ionicframework.com/docs/cli/run.html
+- http://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
+- http://ionicframework.com/docs/cli/run.html
 
 
 05. How to run the app in an Android emulator
@@ -207,15 +207,15 @@ To run the app on an Android device ...
 - you must have at least one virtual device configure in the Android Virtual Device Manager.
 
 If these preconditions are met use
-
-    ionic state reset
-
+```bash
+    $ ionic state reset
+```
 to install the configured platforms (ios and android) and cordova plugins.
 
 Then invoke
-
-    ionic resources
-
+```bash
+    $ ionic resources
+```
 in order to generate icon and splash resources for different sizes in ios and Android.
 
 Before starting the emulator find the IP address of your computer where MusicService is running.
@@ -223,20 +223,20 @@ In www/js/services.js (line 6) change the "defaultURL" accordingly. Do not use "
 or "127.0.0.1", use the external IP address of the host MusicService is running on.
 
 Now run
-
-    ionic emulate android
-
+```bash
+    $ ionic emulate android
+```
 This command compiles and packages the app and deploys it to the Android emulator which is started
 if necessary.
 
 You can control the app and view the apps log on the connected device from within Chrome using the URL:
 
-    chrome://inspect
+- chrome://inspect
 
 For more information see:
 
-    http://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html
-    http://ionicframework.com/docs/cli/run.html
+- http://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html
+- http://ionicframework.com/docs/cli/run.html
 
 
 07. How to view/edit the project source code
