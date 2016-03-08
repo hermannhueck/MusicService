@@ -31,15 +31,15 @@ CRUD operations on Performers and Recordings, up- and download of music data
 Performers and the removal of these assignments.
 
 One entity is a "Performer" with the following attributes:
-- name:             the Performer's name
-- performerType:    one of "Soloist", "Ensemble", "Conductor"
-- recordings:       the Recordings this Performer is performing in
+- _name_:             the Performer's name
+- _performerType_:    one of "Soloist", "Ensemble", "Conductor"
+- _recordings_:       the Recordings this Performer is performing in
 
 The other entity is a "Recording" with these attributes:
-- title:            the Recording's title
-- composer:         the composer of the music contained in the recording
-- year:             the year in which the music has bin recorded
-- performers:       the Performers by whom the Recording was performed
+- _title_:            the Recording's title
+- _composer_:         the composer of the music contained in the recording
+- _year_:             the year in which the music has bin recorded
+- _performers_:       the Performers by whom the Recording was performed
 
 The Music Service allows a client (web service client or web client) to perform
 the following operations:
