@@ -9,11 +9,15 @@ The MusicService is designed to manage two kinds of entities:
 - Many-to-Many describes the type of relationship between these two entities. (A performer can perform in many recordings. A recording can have many performers.)
 
 The "Services" subdirectory contains different implementations of the MusicService web service.
-Currently there is only one implementation written with Play in Scala. But I've some ideas
-for future implementations.
+Currently there is one implementation written with Play in Scala.
 
-- RESTful Web Service implementation with Play in Scala (implemented)
-- RESTful Web service implementation with Akka-HTTP in Scala (not yet implemented)
+- RESTful Web Service implementation with Play in Scala persisting data in an SQL database with Slick (implemented)
+
+But I've some ideas for future implementations.
+
+- RESTful Web Service implementation with Play in Scala persisting data in the MongoDB NoSQL database (not implemented)
+- RESTful Web service implementation with Akka-HTTP in Scala persisting data in the Cassandra NoSQL database (not implemented)
+- RESTful Web service implementation with NodeJS persisting data in the MongoDB NoSQL database (not implemented)
 
 The "Clients" subdirectory contains different implementions of the MusicService REST clients.
 Currently there are three implementations.
