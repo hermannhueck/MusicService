@@ -63,14 +63,21 @@ The project build is based on SBT (Scala Build Tool).
 To check the correct installation of the JDK, open a new command window after
 the JDK installation.
 
-Enter the command:       java -version
-
+Enter the command:
+```bash
+    $ java -version
+```
 This command gives you the version number of the Java Runtime found in your PATH.
-This shoud give you something like "java version 1.8.0_66"
-
-Enter another command:      javac       # invokes the java compiler
-
+This shoud give you something like ...
+```bash
+    java version 1.8.0_66"
+```
+Enter another command:
+```bash
+    $ javac       # invokes the java compiler
+```
 This command should show up the usage of the java compiler with a list of options.
+If you see this you know that the Java compiler is installed correctly and is found in the class path.
 
 
 03. How to test and run (from the command line)
