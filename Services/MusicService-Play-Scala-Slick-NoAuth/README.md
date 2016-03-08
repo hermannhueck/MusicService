@@ -251,7 +251,7 @@ write your Play web app in Scala or in Java.
 10. Why Scala?
 --------------
 
-Functional Programming (FP) and Object-Oriented Programming (OOP) are no contradiction.
+__Functional__ Programming (FP) and __Object-Oriented__ Programming (OOP) are no contradiction.
 These paradigms complement each other. Functional Programming can make programs clearer
 and more concise.
 
