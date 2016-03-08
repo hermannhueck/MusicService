@@ -30,8 +30,8 @@ CRUD operations on Performers and Recordings, up- and download of music data
 (mp3 files) as well as assigning Performers to Recordings or Recordings to
 Performers and the removal of these assignments.
 
-One entity is a "Performer" with the following attributes:
-- _name_:             the Performer's name
+One entity is a __Performer__ with the following attributes:
+- ___name___:             the Performer's name
 - _performerType_:    one of "Soloist", "Ensemble", "Conductor"
 - _recordings_:       the Recordings this Performer is performing in
 
