@@ -60,7 +60,7 @@ Installation of
 If not yet installed, download and install [NodeJS](https://nodejs.org) on your system.
 This also makes npm (Node package manager) available on your machine.
 
-With npm being available, use it to instsall the other tools on your system:
+With npm being available, use it to install the other tools on your system:
 ```bash
     $ npm install bower -g
     $ npm install gulp -g
@@ -104,7 +104,7 @@ To run the app in an iOS emulator ...
 
 - you must have a Mac (doesn't work on Windows or Linux)
 - you must have XCode installed
-- you need to install the node module "ios-sim" (lets Ionic/Cordova control the iOS simulator)
+- you need to install the node module _ios-sim_ (to let Ionic/Cordova control the iOS simulator)
 
 If ios-sim is not yet installed, install on your Mac with:
 ```bash
