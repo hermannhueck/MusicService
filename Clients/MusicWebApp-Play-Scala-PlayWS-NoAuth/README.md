@@ -96,15 +96,16 @@ the following commands:
 ```bash
 [unix/osx] $  ./activator run [ -Dhttp.port=<some_port> ]         # launches the app
 [windows ] >  .\activator.bat run [ -Dhttp.port=<some_port> ]     # launches the app
-
+```
 If you don't specify the http.port the App uses port 9000 as default.
 After having launched the App you can access with your browser at http://localhost:9000
 
 If you have already started MusicService on port 9000, use a different port,
 e.g. 9001 as port when starting up MusicWebApp.
-
+```bash
 [unix/osx] $  ./activator run -Dhttp.port=9001         # launches the app on port 9001
 [windows ] >  .\activator.bat run -Dhttp.port=9001     # launches the app on port 9001
+```
 
 
 04. How to import the project into IntelliJ IDEA
