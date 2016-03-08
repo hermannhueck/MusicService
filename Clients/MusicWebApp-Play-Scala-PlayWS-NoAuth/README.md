@@ -137,8 +137,8 @@ e.g. 9001 as port when starting up MusicWebApp.
 -----------------------------
 
 The project uses the MVC (Model View Controller) pattern. The roles of this pattern
-are implemented in the respective packages: musicsvc.models, musicsvc.views and
-musicsvc.controllers.
+are implemented in the respective packages: _musicWebApp.models_, _musicWebApp.views_ and
+_musicWebApp.controllers_.
 
 Incoming HTTP requests are routed to the controllers. Routing is configured in
 conf/routes. This file specifies (in three columns)
@@ -146,12 +146,12 @@ conf/routes. This file specifies (in three columns)
 - the URL path of a supported HTTP request
 - the controller method (and parameters) where the request is routed to
 
-There is just one controllers:
-- musicWebApp.controllers.WebApplication provides the web application
+There is just one controller:
+- _musicWebApp.controllers.WebApplication_ provides the web application
   to be run in the browser.
 
 The controllers access the web service layer. Class
-musicWebApp.ws.WsApi provides the interface for web service access.
+_musicWebApp.ws.WsApi_ provides the interface for web service access.
 
 All application classes are located in the "app" directory.
 All test classes are located in the "test" directory.
@@ -161,19 +161,19 @@ All test classes are located in the "test" directory.
 -------------------------------------------------
 
 - A data model with 2 entities: Recording and Performer.
-  (implemented in musicWebApp.models.Models.scala)
+  (implemented in _musicWebApp.models.Models.scala_)
 
-- The web service layer in class musicWebApp.ws.WsApi provides RESTful access
+- The web service layer in class _musicWebApp.ws.WsApi_ provides RESTful access
   to MusicService.
 
-- The web service layer is intensively tested in musicWebApp.test.WsApiSpec
+- The web service layer is intensively tested in _musicWebApp.test.WsApiSpec_
 
-- Class musicWebApp.controllers.WebApplication implements the web application and
+- Class _musicWebApp.controllers.WebApplication_ implements the web application and
   accesses the web service layer to store and load Recordings in the MusicService.
-  Together with the views in package musicWebApp.views it provides the user interface
+  Together with the views in package _musicWebApp.views_ it provides the user interface
   according to the MVC pattern.
 
-- Class musicWebApp.test.WebApplicationSpec contains some basic test which have to be
+- Class _musicWebApp.test.WebApplicationSpec_ contains some basic test which have to be
   extended.
 
 
