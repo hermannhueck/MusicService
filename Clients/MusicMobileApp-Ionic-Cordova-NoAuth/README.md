@@ -231,7 +231,7 @@ if necessary.
 
 You can control the app and view the apps log on the connected device from within Chrome using the URL:
 
-- chrome://inspect
+- [chrome://inspect](chrome://inspect)
 
 For more information see:
 
