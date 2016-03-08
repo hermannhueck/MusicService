@@ -12,10 +12,9 @@ Table of Contents
 05. How to import the project into (Eclipse based) ScalaIDE
 06. MusicService Architecture
 07. What the MusicService implementation provides
-08. What the implementation does not yet provide - Intended next implementation steps
-09. Why Slick?
-10. Why Play Framework?
-11. Why Scala?
+08. Why Slick?
+09. Why Play Framework?
+10. Why Scala?
 
 
 01. What is the "MusicService"?
@@ -206,22 +205,7 @@ All test classes are located in the "test" directory.
   extended.
 
 
-08. What the implementation does not yet provide - Intended next implementation steps
--------------------------------------------------------------------------------------
-
-- Add more tests for the web application in musicsvc.test.WebApplicationSpec
-  (using Selenium Tests)
-
-- The web application currently uses the Repository interface to access Performer
-  and Recording entities. This should be refactored to use the RESTful web service
-  interface to access these entities.
-
-- Reimplement the web application and make it a "single page web app" which uses
-  the RESTful web service API with JavaScript (and/or CoffeeScript, TypeScript,
-  jQuery, AngularJS, bootstrap) to access Recordings and Performers
-
-
-09. Why Slick?
+08. Why Slick?
 --------------
 
 Why did I choose the Slick for data access?
@@ -229,7 +213,7 @@ Why did I choose the Slick for data access?
     1. Slick takes an FRM aproach to access the data model
     2. Slick is reactive.
 
-FRM (Functional Relational Mapping): With FRM you can treat data sets almost in
+FRM (Functional Relational Mapping): With FRM you can treat data sets (almost) in
 the same way as Scala collections. Thus data access is integrated into Scala
 without frictions.
 
@@ -239,32 +223,32 @@ returns a result. Instead it returns a Future of a result. Thus Slick is a perfe
 fit for Scala reactive applications written with Akka or Play.
 
 
-10. Why Play Framework?
+09. Why Play Framework?
 -----------------------
 
 Why did I choose the Play Framework for the implementation?
 
-    1. Play is containerless.
-    2. Play is reactive.
+1. Play is containerless.
+2. Play is reactive.
 
-Containerless: Traditional web containers or application servers use the
+__Containerless__: Traditional web containers or application servers use the
 "one thread per request" model. If a request blocks during I/O (typically while
 accessing the database, a file or another web service) the thread is blocked.
 If there is heavy load on the service (thousands of requests per second)
-traditional web containers run out of resources. Play doesn't.
+traditional web containers run out of thread resources. Play doesn't.
 
-Reactive: Play is light weight and reactive by design, traditional web containers
+__Reactive__: Play is light weight and reactive by design, traditional web containers
 are not. The framework never blocks during a request. Thus it is ideal for concurrent
 and non-blocking processing. Every request is handled asynchronously using Scala Futures.
 The developer must fulfill this non-blocking promise as well. In the implementation of
 request handlers (Actions in the controller classes) he/she must never block
-(e.g. never wait for a database request to return a result).
+(e.g. never wait for a database or network request to return a result).
 
 Play itself is written in Scala, but it has a Scala and a Java API. Thus you can
 write your Play web app in Scala or in Java.
 
 
-11. Why Scala?
+10. Why Scala?
 --------------
 
 Functional Programming (FP) and Object-Oriented Programming (OOP) are no contradiction.
@@ -272,7 +256,7 @@ These paradigms complement each other. Functional Programming can make programs 
 and more concise.
 
 Java has obtained some functional features in version 8 (about 20 years after it's birth).
-Scala is designed as a functional language from the beginning. Thus it supports FP much better.
+Scala is designed as a functional language from ground up. Thus it supports FP much better.
 Functional features are not an add-on (as in Java) but the foundation of Scala.
 
 Scala is compatible with Java. It runs on the JVM. Every existing Java library can be used
@@ -297,11 +281,10 @@ If you know Scala ...
 Scala learned from the deficiencies of Java, e.g.
 - No checked Exceptions force you to handle or to propagate them thus cluttering your
   method signatures.
-- You (almost) never deal with NPEs if you consequently use the Option type. (Java 8 also
-  got a new type "Optional" persueing the same purpose.)
-- Exception handling is much more elegant with Try objects.
+- You (almost) never deal with NPEs if you consequently use the _Option_ type. (Java 8 also
+  got a new type _Optional_ persueing the same purpose, but it is used rarely.)
+- Exception handling is much more elegant with _Try_ objects.
 - and much more ...
 
 Java is fun.
 Scala is more fun ... and more productive.
-
