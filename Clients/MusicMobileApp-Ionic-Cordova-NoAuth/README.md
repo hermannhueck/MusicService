@@ -57,7 +57,7 @@ Installation of
 * ionic
 * cordova
 
-If not yet installed, download and install NodeJS on your system.
+If not yet installed, download and install [NodeJS](https://nodejs.org) on your system.
 This also makes npm (Node package manager) available on your machine.
 
 With npm being available, use it to instsall the other tools on your system:
