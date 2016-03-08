@@ -8,7 +8,7 @@ The MusicService is designed to manage two kinds of entities:
 
 - __Recording__ entities are music recordings
 - __Performer__ entities are performers who perform in the recordings. A Performer can be either a "Soloist" or an "Ensemble" or a "Conductor.
-- Many-to-Many describes the type of relationship between these two entities. (A performer can perform in many recordings. A recording can have many performers.)
+- __Many-to-Many__ describes the type of relationship between these two entities. (A performer can perform in many recordings. A recording can have many performers.)
 
 The "Services" subdirectory contains different implementations of the MusicService web service.
 Currently there is one implementation written with Play in Scala.
