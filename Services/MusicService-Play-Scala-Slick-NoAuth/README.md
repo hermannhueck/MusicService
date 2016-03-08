@@ -213,7 +213,7 @@ Why did I choose the Slick for data access?
     1. Slick takes an FRM aproach to access the data model
     2. Slick is reactive.
 
-FRM (Functional Relational Mapping): With FRM you can treat data sets (almost) in
+__FRM (Functional Relational Mapping)__: With FRM you can treat data sets (almost) in
 the same way as Scala collections. Thus data access is integrated into Scala
 without frictions.
 
