@@ -97,4 +97,4 @@ See/download:
 ------------------
 
 There are other frameworks out there (Ember, Backbone, React, Meteor, Polymer, Knockout etc.).
-I chose Angular because it is currently the leading client-side MVC web framework in the market.
+I chose Angular as it is currently the leading client-side MVC web framework in the market.
