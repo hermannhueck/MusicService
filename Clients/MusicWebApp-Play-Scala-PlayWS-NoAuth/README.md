@@ -189,14 +189,14 @@ __Containerless__: Traditional web containers or application servers use the
 "one thread per request" model. If a request blocks during I/O (typically while
 accessing the database, a file or another web service) the thread is blocked.
 If there is heavy load on the service (thousands of requests per second)
-traditional web containers run out of resources. Play doesn't.
+traditional web containers run out of thread resources. Play doesn't.
 
 __Reactive__: Play is light weight and reactive by design, traditional web containers
 are not. The framework never blocks during a request. Thus it is ideal for concurrent
 and non-blocking processing. Every request is handled asynchronously using Scala Futures.
 The developer must fulfill this non-blocking promise as well. In the implementation of
 request handlers (Actions in the controller classes) he/she must never block
-(e.g. never wait for a database request to return a result).
+(e.g. never wait for a database or network request to return a result).
 
 Play itself is written in Scala, but it has a Scala and a Java API. Thus you can
 write your Play web app in Scala or in Java.
@@ -210,7 +210,7 @@ These paradigms complement each other. Functional Programming can make programs 
 and more concise.
 
 Java has obtained some functional features in version 8 (about 20 years after it's birth).
-Scala is designed as a functional language from the beginning. Thus it supports FP much better.
+Scala is designed as a functional language from ground up. Thus it supports FP much better.
 Functional features are not an add-on (as in Java) but the foundation of Scala.
 
 Scala is compatible with Java. It runs on the JVM. Every existing Java library can be used
