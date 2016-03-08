@@ -111,9 +111,10 @@ e.g. 9001 as port when starting up MusicWebApp.
 04. How to import the project into IntelliJ IDEA
 ------------------------------------------------
 
+```bash
 [unix/osx] $  ./activator gen-idea        # generates IntelliJ project files
 [windows ] >  .\activator.bat gen-idea    # generates IntelliJ project files
-
+```
 - Open IntelliJ (with Scala Plugin installed)
 - Select "File -> Open Project"
 - Select "Select the project directory"
@@ -121,10 +122,10 @@ e.g. 9001 as port when starting up MusicWebApp.
 
 05. How to import the project into (Eclipse based) ScalaIDE
 -----------------------------------------------------------
-
+```bash
 [unix/osx] $  ./activator eclipse        # generates Eclipse project files
 [windows ] >  .\activator.bat eclipse    # generates Eclipse project files
-
+```
 - Open ScalaIDE
 - Select "File -> Import..."
 - Select "General -> Existing Projects into Workspace"
