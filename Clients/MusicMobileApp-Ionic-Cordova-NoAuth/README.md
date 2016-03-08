@@ -190,8 +190,8 @@ To access the data hosted in the MusicService this service mus be running.
 
 For more information see:
 
-* http://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html
-* http://ionicframework.com/docs/cli/run.html
+- http://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html
+- http://ionicframework.com/docs/cli/run.html
 
 
 06. How to run the app on a real Android device
