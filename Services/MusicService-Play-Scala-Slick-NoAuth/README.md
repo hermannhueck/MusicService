@@ -217,7 +217,7 @@ FRM (Functional Relational Mapping): With FRM you can treat data sets (almost) i
 the same way as Scala collections. Thus data access is integrated into Scala
 without frictions.
 
-Reactive: Database access is asynchronous and non-blocking from the bottom.
+__Reactive__: Database access is asynchronous and non-blocking from the bottom.
 When you run a database operation (query, insert update or delete) Slick never
 returns a result. Instead it returns a Future of a result. Thus Slick is a perfect
 fit for Scala reactive applications written with Akka or Play.
