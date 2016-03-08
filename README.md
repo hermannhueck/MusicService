@@ -1,5 +1,5 @@
-MusicService
-============
+MusicService + Clients
+======================
 
 A case study for a service implemented with Scala, Akka (not yet) and Play
 using clients implemented with different technologies
