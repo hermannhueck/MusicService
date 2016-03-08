@@ -140,33 +140,33 @@ After having launched the App you can access with your browser at http://localho
 -----------------------------
 
 The project uses the MVC (Model View Controller) pattern. The roles of this pattern
-are implemented in the respective packages: musicsvc.models, musicsvc.views and
-musicsvc.controllers.
+are implemented in the respective packages: _musicsvc.models_, _musicsvc.views_ and
+_musicsvc.controllers_.
 
 Incoming HTTP requests are routed to the controllers. Routing is configured in
-conf/routes. This file specifies (in three columns)
+_conf/routes_. This file specifies (in three columns)
 - the request method of a HTTP request (GET, POST, PUT, DELETE)
 - the URL path of a supported HTTP request
 - the controller method (and parameters) where the request is routed to
 
 There are currently two controllers:
-- musicsvc.controllers.WebService provides the web service interface.
-- musicsvc.controllers.WebApplication provides the web application
+- _musicsvc.controllers.WebService_ provides the web service interface.
+- _musicsvc.controllers.WebApplication_ provides the web application
   to be run in the browser.
 
 The controllers access the persistence layer. Class
-musicsvc.persistence.Repository provides the interface for repository access
-and delegates to musicsvc.persistence.RepositoryPerformers and
-musicsvc.persistence.RepositoryRecordings. RepositoryPerformers implements
+_musicsvc.persistence.Repository_ provides the interface for repository access
+and delegates to _musicsvc.persistence.RepositoryPerformers_ and
+_musicsvc.persistence.RepositoryRecordings_. RepositoryPerformers implements
 access to persistent Performer entities. RepositoryRecordings impements access
 to persistent Recording entities.
 
 Data entities are stored in an H2 in-memory SQL database with 3 tables:
-- PERFORMERS: this table stores entities of type Performer
+- __PERFORMERS__: this table stores entities of type Performer
   (see class musicsvc.models.Performers)
-- RECORDINGS: this table stores entities of type Recording
+- __RECORDINGS__: this table stores entities of type Recording
   (see class musicsvc.models.Recordings)
-- RECORDINGS_PERFORMERS: this table stores the many-to-many relationship
+- __RECORDINGS_PERFORMERS_: this table stores the many-to-many relationship
   between Recordings and Performers
   (see class musicsvc.models.RecordingsPerformers)
 
@@ -177,32 +177,32 @@ All test classes are located in the "test" directory.
 07. What the MusicService implementation provides
 -------------------------------------------------
 
-- A data model with 2 entities: Recording and Performer. Recordings and Performer
+- A data model with 2 entities: ___Recording___ and ___Performer___. Recordings and Performer
   are in a many-to-many relationship: One Recording may have many Performers and
   one Performer may perform in many Recordings.
-  (implemented in musicsvc.models.Models.scala)
+  (implemented in _musicsvc.models.Models.scala_)
 
-- The persistence layer in class musicsvc.persistence.Repository provides access
+- The persistence layer in class _musicsvc.persistence.Repository_ provides access
   to entities of type Recording which are stored in the table "RECORDINGS" and to
   entities of type Performer which are stored in table "PERFORMERS". Table
   "RECORDINGS_PERFORMERS" is a join table which models the many-to-many
   relationship between Performer entities and Recording entities.
 
-- The persistence layer is intensively tested in musicsvc.test.RepositoryPerformersSpec
-  and musicsvc.test.RepositoryRecordingsSpec
+- The persistence layer is intensively tested in _musicsvc.test.RepositoryPerformersSpec_
+  and _musicsvc.test.RepositoryRecordingsSpec_.
 
-- Class musicsvc.controllers.WebService implements the RESTful web service interface and
+- Class _musicsvc.controllers.WebService_ implements the RESTful web service interface and
   accesses the persistence layer to store and load Recordings and Performers.
 
 - Extensive tests are available for the RESTful web service API. These tests
-  are implemented in musicsvc.test.WebServiceSpec.scala in the test directory.
+  are implemented in _musicsvc.test.WebServiceSpec.scala_ in the test directory.
 
-- Class musicsvc.controllers.WebApplication implements the web application and
+- Class _musicsvc.controllers.WebApplication_ implements the web application and
   accesses the persistence layer to store and load Recordings. Together with
   the views in package musicsvc.views it provides the user interface according
   to the MVC pattern.
 
-- Class musicsvc.test.WebApplicationSpec contains some basic test which have to be
+- Class _musicsvc.test.WebApplicationSpec_ contains some basic test which have to be
   extended.
 
 
