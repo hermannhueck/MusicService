@@ -136,11 +136,11 @@ If you want to install/run the app on a real iOS device you need an Apple develo
 
 To access the data hosted in the MusicService this service mus be running.
 
-For more information see
-    - [Cordova Platform Guide](http://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html)
-    - http://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-    - http://ionicframework.com/docs/cli/run.html
-    - [http://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html](http://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html)
+For more information see:
+    * [Cordova Platform Guide](http://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html)
+    * http://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
+    * http://ionicframework.com/docs/cli/run.html
+    * [http://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html](http://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html)
 
 
 05. How to run the app in an Android emulator
