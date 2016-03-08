@@ -50,12 +50,12 @@ The project build and management of components is based on ionic, npm, bower and
 
 Installation of
 
-    * NodeJS
-    * bower
-    * gulp
-    * jshint
-    * ionic
-    * cordova
+* NodeJS
+* bower
+* gulp
+* jshint
+* ionic
+* cordova
 
 If not yet installed, download and install NodeJS on your system.
 This also makes npm (Node package manager) available on your machine.
