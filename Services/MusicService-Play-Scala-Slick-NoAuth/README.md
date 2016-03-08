@@ -30,16 +30,16 @@ CRUD operations on Performers and Recordings, up- and download of music data
 (mp3 files) as well as assigning Performers to Recordings or Recordings to
 Performers and the removal of these assignments.
 
-One entity is a __Performer__ with the following attributes:
+One entity is a ___Performer___ with the following attributes:
 - ___name___:             the Performer's name
-- _performerType_:    one of "Soloist", "Ensemble", "Conductor"
-- _recordings_:       the Recordings this Performer is performing in
+- ___performerType___:    one of "Soloist", "Ensemble", "Conductor"
+- ___recordings___:       the Recordings this Performer is performing in
 
-The other entity is a "Recording" with these attributes:
-- _title_:            the Recording's title
-- _composer_:         the composer of the music contained in the recording
-- _year_:             the year in which the music has bin recorded
-- _performers_:       the Performers by whom the Recording was performed
+The other entity is a ___Recording___ with these attributes:
+- ___title___:            the Recording's title
+- ___composer___:         the composer of the music contained in the recording
+- ___year___:             the year in which the music has bin recorded
+- ___performers___:       the Performers by whom the Recording was performed
 
 The Music Service allows a client (web service client or web client) to perform
 the following operations:
@@ -52,7 +52,7 @@ The App is a small case study using ...
 - the Play Framework as containerless Web framework
 - Scala as implementation language
 - Slick as persistence layer
-- an H2 database to persist the entities
+- an H2 relational database to persist the entities
 - Currently no client authentication to access Performers and Recordings
 - Currently no client roles with different access priviledges
 
@@ -78,14 +78,21 @@ The project build is based on SBT (Scala Build Tool).
 To check the correct installation of the JDK, open a new command window after
 the JDK installation.
 
-Enter the command:       java -version
-
+Enter the command:
+```bash
+    $ java -version
+```
 This command gives you the version number of the Java Runtime found in your PATH.
-This shoud give you something like "java version 1.8.0_66"
-
-Enter another command:      javac       # invokes the java compiler
-
+This shoud show up something like ...
+```bash
+    java version 1.8.0_66"
+```
+Enter another command:
+```bash
+    $ javac       # invokes the java compiler
+```
 This command should show up the usage of the java compiler with a list of options.
+If you see this you know that the Java compiler is installed correctly and is found in the class path.
 
 
 03. How to test and run (from the command line)
