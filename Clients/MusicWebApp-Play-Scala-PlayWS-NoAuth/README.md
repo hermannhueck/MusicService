@@ -236,8 +236,8 @@ Scala learned from the deficiencies of Java, e.g.
 - No checked Exceptions force you to handle or to propagate them thus cluttering your
   method signatures.
 - You (almost) never deal with NPEs if you consequently use the _Option_ type. (Java 8 also
-  got a new type "Optional" persueing the same purpose, but it is used rarely.)
-- Exception handling is much more elegant with Try objects.
+  got a new type _Optional_ persueing the same purpose, but it is used rarely.)
+- Exception handling is much more elegant with _Try_ objects.
 - and much more ...
 
 Java is fun.
