@@ -230,6 +230,7 @@ If you know Scala ...
 - Scala is designed to avoid shared mutable state which very often is the basic problem
   of traditional concurrent Java programs. Furthermore, if you use Scala collections
   you use immutable collections by default.
+- The _Option_ type used consequently saves you from NPEs.
 - Scala is much better prepared for asynchronous and concurrent programming than Java is.
 
 Scala learned from the deficiencies of Java, e.g.
