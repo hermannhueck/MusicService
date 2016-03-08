@@ -61,11 +61,11 @@ This also makes npm (Node package manager) available on your machine.
 
 With npm being available, use it to instsall the other tools on your system:
 ```bash
-    npm install bower -g
-    npm install gulp -g
-    npm install jshint -g
-    npm install ionic -g
-    npm install cordova -g
+    $ npm install bower -g
+    $ npm install gulp -g
+    $ npm install jshint -g
+    $ npm install ionic -g
+    $ npm install cordova -g
 ```
 If working on OSX or Linux precede these commands with "sudo".
 
@@ -75,19 +75,19 @@ If working on OSX or Linux precede these commands with "sudo".
 
 In order to run the app MusicService must already be running at http://localhost:9000.
 (This URL can be changed in app/scripts/services.js. Alternatively start the App
-and change the base URL in the settings.)
+and change the base URL in the app's settings.)
 
 After having lauched MusicService go to the MusicMobileApp project directory and run this command:
-
-    ionic serve
-
+```bash
+    $ ionic serve
+```
 This command deploys the app into a local server and opens a browser window in which it presents
 the start page of the app as a browser application.
 
 Preferably run this command:
-
-    ionic serve --lab
-
+```bash
+    $ ionic serve --lab
+```
 This command deploys the app into a local server and opens a browser window in which it presents
 the start page of the app in the browser. The browser window presents the emulation of an iOS device
 on the left and the emulation of an Android device on the right. That you way you can easily
@@ -106,19 +106,19 @@ To run the app in an iOS emulator ...
 - you need to install the node module "ios-sim" (lets Ionic/Cordova control the iOS simulator)
 
 If ios-sim is not yet installed, install on your Mac with:
-
-    sudo npm install ios-sim -g
-
+```bash
+    $ sudo npm install ios-sim -g
+```
 If these preconditions are met use
-
-    ionic state reset
-
+```bash
+    $ ionic state reset
+```
 to install the configured platforms (ios and android) and cordova plugins.
 
 Then invoke
-
-    ionic resources
-
+```bash
+    $ ionic resources
+```
 in order to generate icon and splash resources for different sizes in ios and Android.
 
 Before starting the emulator find the IP address of your computer where MusicService is running.
@@ -126,9 +126,9 @@ In www/js/services.js (line 6) change the "defaultURL" accordingly. Do not use "
 or "127.0.0.1", use the external IP address of the host MusicService is running on.
 
 Now run
-
-    ionic emulate ios
-
+```bash
+    $ ionic emulate ios
+```
 This command compiles and packages the app and deploys it to the iOS simulator which is started
 if necessary.
 
