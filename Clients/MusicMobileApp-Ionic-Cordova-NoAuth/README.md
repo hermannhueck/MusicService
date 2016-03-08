@@ -60,11 +60,13 @@ If not yet installed, download and install NodeJS on your system.
 This also makes npm (Node package manager) available on your machine.
 
 With npm being available, use it to instsall the other tools on your system:
-    - npm install bower -g
-    - npm install gulp -g
-    - npm install jshint -g
-    - npm install ionic -g
-    - npm install cordova -g
+```bash
+    npm install bower -g
+    npm install gulp -g
+    npm install jshint -g
+    npm install ionic -g
+    npm install cordova -g
+```
 If working on OSX or Linux precede these commands with "sudo".
 
 
