@@ -9,7 +9,7 @@
 		exit 1
 	}
 
-	( set -x; npm install ) status=$?; echo "===> npm status = $status"
+	( set -x; npm install ); status=$?; echo "===> npm status = $status"
 }
 
 [ -f bower.json ] && {
@@ -21,5 +21,5 @@
 		exit 1
 	}
 
-	( set -x; bower install ) status=$?; echo "===> bower status = $status"
+	( set -x; bower install ); status=$?; echo "===> bower status = $status"
 }

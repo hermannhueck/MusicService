@@ -73,7 +73,13 @@ If working on OSX or Linux precede these commands with "sudo".
 In order to run the app MusicService must already be running at http://localhost:9000.
 (This URL can be changed in app/scripts/services.js.)
 
-After having lauched MusicService go to the MusicSPA project directory and run this command:
+After having lauched MusicService go to the MusicSPA project directory and install
+the modules configured in package.json and bower.json. Invoke:
+```bash
+    $ npm install
+    $ bower install
+```
+Then run:
 ```bash
     $ gulp watch
 ```
